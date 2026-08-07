@@ -5,39 +5,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ระบบคำนวณสินเชื่อสหกรณ์ (มาตรฐาน Actual/365)</title>
   
+  <!-- Google Font: TH Chakra Petch -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <!-- Tailwind & DaisyUI CDN -->
   <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.0/dist/full.css" rel="stylesheet" type="text/css" />
   <script src="https://cdn.tailwindcss.com"></script>
   
   <!-- Vue 3 CDN -->
-  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@3.4.31/dist/vue.global.prod.js"></script>
   
   <style>
-    /* ตั้งค่าฟอนต์ */
-    body { font-family: 'Sarabun', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    /* ตั้งค่าฟอนต์ TH Chakra Petch */
+    body { font-family: 'Chakra Petch', 'Sarabun', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     
     /* จัดการความสวยงามของตาราง */
-    .table th { background-color: #f9fafb; font-weight: 600; text-align: right; border-bottom: 2px solid #e5e7eb; }
+    .table th { background-color: #f9fafb; font-weight: 600; text-align: right; border-bottom: 2px solid #e5e7eb; white-space: nowrap; }
     .table th:first-child, .table td:first-child { text-align: center; }
-    .table td { text-align: right; border-bottom: 1px solid #f3f4f6; }
+    .table td { text-align: right; border-bottom: 1px solid #f3f4f6; white-space: nowrap; }
     .table td.text-center { text-align: center; }
 
-    /* ป้องกัน Scrollbar ซ้อนกันกับ Iframe ของ Google Sites */
-    ::-webkit-scrollbar {
-      display: none;
-      width: 0px;
+    /* ตารางต้องมีความกว้างขั้นต่ำ เพื่อบังคับให้เกิด horizontal scroll บนมือถือเมื่อ overflow */
+    .schedule-table { min-width: 700px; }
+
+    /* จัดสไตล์ scrollbar แนวนอนของตารางให้ดูดี แทนที่จะซ่อนไปเลย */
+    .table-scroll-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+    }
+    .table-scroll-wrap::-webkit-scrollbar {
+      display: block;
+      height: 8px;
       background: transparent;
     }
+    .table-scroll-wrap::-webkit-scrollbar-thumb {
+      background-color: #d1d5db;
+      border-radius: 9999px;
+    }
+
+    /* ป้องกัน Scrollbar แนวตั้งซ้อนกันกับ Iframe ของ Google Sites (คงเฉพาะแนวตั้งของหน้า) */
     html, body {
       scrollbar-width: none; 
       -ms-overflow-style: none; 
       height: auto; /* ปล่อยให้ความสูงยืดตามเนื้อหา */
     }
+    html::-webkit-scrollbar, body::-webkit-scrollbar {
+      display: none;
+      width: 0px;
+      background: transparent;
+    }
   </style>
 </head>
 <body class="bg-gray-100 p-4 md:p-8">
 
-<div id="app" class="max-w-5xl mx-auto bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-200">
+<div id="app" class="max-w-5xl mx-auto bg-white rounded-xl shadow-lg p-4 md:p-6 mb-8 border border-gray-200">
   
   <!-- ส่วนหัว -->
   <div class="flex items-center gap-3 border-b pb-4 mb-6 text-rose-800">
@@ -102,8 +126,9 @@
   </div>
 
   <!-- ตารางแสดงผล -->
-  <div class="w-full overflow-hidden" v-if="schedule.length > 0">
-    <table class="table table-zebra w-full text-sm">
+  <div class="w-full rounded-lg border border-gray-200" v-if="schedule.length > 0">
+    <div class="table-scroll-wrap">
+    <table class="table table-zebra schedule-table w-full text-sm">
       <thead>
         <tr class="text-gray-700">
           <th>งวดที่</th>
@@ -150,6 +175,7 @@
         </tr>
       </tfoot>
     </table>
+    </div>
   </div>
 
 </div>
