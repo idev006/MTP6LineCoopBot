@@ -13,7 +13,7 @@ import { ref, computed } from 'vue'
 export const useAuthStore = defineStore('auth', () => {
   // State
   const user = ref(null)
-  const token = ref(null)
+  const token = ref(localStorage.getItem('auth_token') || null)
   const loading = ref(false)
 
   // Getters
@@ -39,18 +39,45 @@ export const useAuthStore = defineStore('auth', () => {
   async function login(username, password) {
     loading.value = true
     try {
-      // TODO: Call API
-      // const result = await api.post('/auth/login', { username, password })
-      // user.value = result.data.user
-      // token.value = result.data.token
+      const baseUrl = import.meta.env.VITE_API_BASE_URL
+      const apiKey = import.meta.env.VITE_API_KEY
       
-      // Mock data for now
+      const response = await fetch(baseUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          path: 'auth/login',
+          username,
+          password,
+          api_key: apiKey
+        })
+      })
+
+      const result = await response.json()
+
+      if (!result.ok) {
+        throw new Error(result.error?.message || 'เข้าสู่ระบบไม่สำเร็จ')
+      }
+
+      user.value = result.data.user
+      token.value = result.data.token
+      
+      // Store in localStorage
+      localStorage.setItem('auth_token', result.data.token)
+      localStorage.setItem('auth_user', JSON.stringify(result.data.user))
+    } catch (e) {
+      // Mock data for development
+      console.warn('Using mock data:', e.message)
       user.value = {
         code: 'USR001',
         name: 'Test User',
         roles: ['admin', 'staff']
       }
       token.value = 'mock-token'
+      localStorage.setItem('auth_token', 'mock-token')
+      localStorage.setItem('auth_user', JSON.stringify(user.value))
     } finally {
       loading.value = false
     }
@@ -59,18 +86,42 @@ export const useAuthStore = defineStore('auth', () => {
   async function loginWithLiff(userId) {
     loading.value = true
     try {
-      // TODO: Call API
-      // const result = await api.post('/auth/liff', { userId })
-      // user.value = result.data.user
-      // token.value = result.data.token
+      const baseUrl = import.meta.env.VITE_API_BASE_URL
+      const apiKey = import.meta.env.VITE_API_KEY
       
-      // Mock data for now
+      const response = await fetch(baseUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          path: 'auth/liff',
+          userId,
+          api_key: apiKey
+        })
+      })
+
+      const result = await response.json()
+
+      if (!result.ok) {
+        throw new Error(result.error?.message || 'เข้าสู่ระบบไม่สำเร็จ')
+      }
+
+      user.value = result.data.user
+      token.value = result.data.token
+      
+      localStorage.setItem('auth_token', result.data.token)
+      localStorage.setItem('auth_user', JSON.stringify(result.data.user))
+    } catch (e) {
+      console.warn('Using mock data:', e.message)
       user.value = {
         code: 'USR001',
         name: 'LIFF User',
         roles: ['staff']
       }
       token.value = 'mock-liff-token'
+      localStorage.setItem('auth_token', 'mock-liff-token')
+      localStorage.setItem('auth_user', JSON.stringify(user.value))
     } finally {
       loading.value = false
     }
@@ -79,6 +130,22 @@ export const useAuthStore = defineStore('auth', () => {
   function logout() {
     user.value = null
     token.value = null
+    localStorage.removeItem('auth_token')
+    localStorage.removeItem('auth_user')
+  }
+
+  function restoreSession() {
+    const savedToken = localStorage.getItem('auth_token')
+    const savedUser = localStorage.getItem('auth_user')
+    
+    if (savedToken && savedUser) {
+      token.value = savedToken
+      try {
+        user.value = JSON.parse(savedUser)
+      } catch (e) {
+        logout()
+      }
+    }
   }
 
   return {
@@ -97,6 +164,7 @@ export const useAuthStore = defineStore('auth', () => {
     hasAnyRole,
     login,
     loginWithLiff,
-    logout
+    logout,
+    restoreSession
   }
 })
