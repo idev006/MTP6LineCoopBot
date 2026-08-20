@@ -2,7 +2,7 @@
 /**
  * Member Detail View
  * 
- * หน้ารายละเอียดสมาชิก
+ * หน้ารายละเอียดสมาชิก (Staff/Admin)
  */
 
 import { ref, onMounted } from 'vue'
@@ -14,12 +14,18 @@ const router = useRouter()
 const memberStore = useMemberStore()
 
 const member = ref(null)
+const savings = ref([])
+const loans = ref([])
+const dividends = ref([])
 const loading = ref(true)
 
 onMounted(async () => {
   try {
-    await memberStore.fetchMemberDetail(route.params.code)
+    const data = await memberStore.fetchMemberDetail(route.params.code)
     member.value = memberStore.currentMember
+    savings.value = data.savings || []
+    loans.value = data.loans || []
+    dividends.value = data.dividends || []
   } finally {
     loading.value = false
   }
@@ -27,6 +33,15 @@ onMounted(async () => {
 
 function handleBack() {
   router.push('/app/members')
+}
+
+function formatCurrency(amount) {
+  return new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(amount || 0)
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return '-'
+  return new Date(dateStr).toLocaleDateString('th-TH')
 }
 </script>
 
@@ -73,11 +88,11 @@ function handleBack() {
             </div>
             <div>
               <p class="text-sm text-base-content/70">วันที่มีผล</p>
-              <p class="font-medium">{{ member.mem_eff_dt || '-' }}</p>
+              <p class="font-medium">{{ formatDate(member.mem_eff_dt) }}</p>
             </div>
             <div>
               <p class="text-sm text-base-content/70">วันหมดอายุ</p>
-              <p class="font-medium">{{ member.mem_exp_dt || '-' }}</p>
+              <p class="font-medium">{{ formatDate(member.mem_exp_dt) }}</p>
             </div>
             <div>
               <p class="text-sm text-base-content/70">LINE User ID</p>
@@ -127,24 +142,96 @@ function handleBack() {
               </div>
               <div class="stat">
                 <div class="stat-title">เงินกู้คงค้าง</div>
-                <div class="stat-value text-error">{{ (member.mem_bk || 0).toLocaleString() }} บาท</div>
+                <div class="stat-value text-error">{{ formatCurrency(member.mem_bk) }}</div>
               </div>
               <div class="stat">
                 <div class="stat-title">เงินหุ้น</div>
-                <div class="stat-value text-success">{{ (member.mem_bh || 0).toLocaleString() }} บาท</div>
+                <div class="stat-value text-success">{{ formatCurrency(member.mem_bh) }}</div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Not found -->
-    <div v-else class="text-center py-8">
-      <p class="text-xl text-base-content/70">ไม่พบข้อมูลสมาชิก</p>
-      <button @click="handleBack" class="btn btn-primary mt-4">
-        กลับ
-      </button>
-    </div>
-  </div>
-</template>
+      <!-- Financial Data -->
+      <div class="lg:col-span-3">
+        <!-- Savings -->
+        <div class="card bg-base-100 shadow mb-4">
+          <div class="card-body">
+            <h3 class="card-title">💰 บัญชีเงินฝาก</h3>
+            <div v-if="savings.length > 0" class="overflow-x-auto">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>เลขบัญชี</th>
+                    <th>ประเภท</th>
+                    <th>ยอดเงิน</th>
+                    <th>วันที่เปิด</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="s in savings" :key="s.acct_no">
+                    <td>{{ s.acct_no }}</td>
+                    <td>{{ s.acct_type }}</td>
+                    <td class="text-right">{{ formatCurrency(s.balance) }}</td>
+                    <td>{{ formatDate(s.open_dt) }}</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr class="font-bold">
+                    <td colspan="2">รวม</td>
+                    <td class="text-right">{{ formatCurrency(savings.reduce((sum, s) => sum + (s.balance || 0), 0)) }}</td>
+                    <td></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <p v-else class="text-base-content/70">ไม่มีข้อมูลบัญชีเงินฝาก</p>
+          </div>
+        </div>
+
+        <!-- Loans -->
+        <div class="card bg-base-100 shadow mb-4">
+          <div class="card-body">
+            <h3 class="card-title">🏦 สัญญาเงินกู้</h3>
+            <div v-if="loans.length > 0" class="overflow-x-auto">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>เลขสัญญา</th>
+                    <th>ยอดเงินกู้</th>
+                    <th>ยอดคงค้าง</th>
+                    <th>วันครบกำหนด</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="l in loans" :key="l.loan_no">
+                    <td>{{ l.loan_no }}</td>
+                    <td class="text-right">{{ formatCurrency(l.loan_amount) }}</td>
+                    <td class="text-right">{{ formatCurrency(l.outstanding) }}</td>
+                    <td>{{ formatDate(l.due_dt) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p v-else class="text-base-content/70">ไม่มีสัญญาเงินกู้</p>
+          </div>
+        </div>
+
+        <!-- Dividends -->
+        <div class="card bg-base-100 shadow">
+          <div class="card-body">
+            <h3 class="card-title">💎 เงินปันผล</h3>
+            <div v-if="dividends.length > 0" class="overflow-x-auto">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>ปี</th>
+                    <th>เงินปันผล</th>
+                    <th>เงินหุ้น</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="d in dividends" :key="d.year">
+                    <td>{{ d.year }}</td>
+    
