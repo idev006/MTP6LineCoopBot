@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MTP6LineCoopBot - LIFF</title>
+  
+  <!-- TailwindCSS + DaisyUI -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+  
+  <!-- LIFF SDK -->
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  
+  <style>
+    body { font-family: 'Sarabun', 'Noto Sans Thai', sans-serif; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body class="bg-base-200 min-h-screen">
+  
+  <!-- Loading -->
+  <div id="loading" class="flex justify-center items-center min-h-screen">
+    <span class="loading loading-spinner loading-lg"></span>
+  </div>
+
+  <!-- Error -->
+  <div id="error" class="hidden">
+    <div class="hero min-h-screen">
+      <div class="hero-content text-center">
+        <div class="max-w-md">
+          <h1 class="text-2xl font-bold text-error">เกิดข้อผิดพลาด</h1>
+          <p id="error-message" class="py-4"></p>
+          <button onclick="location.reload()" class="btn btn-primary">ลองใหม่</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div id="app" class="hidden">
+    <!-- Header -->
+    <div class="navbar bg-primary text-primary-content shadow-md">
+      <div class="flex-1">
+        <span class="text-lg font-bold">🏦 สหกรณ์ออมทรัพย์</span>
+      </div>
+      <div class="flex-none">
+        <button id="btn-logout" class="btn btn-ghost btn-sm">ออก</button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="container mx-auto px-4 py-6">
+      
+      <!-- Tabs -->
+      <div class="tabs tabs-boxed mb-6 bg-base-100">
+        <a class="tab tab-active" data-tab="home">🏠 หน้าหลัก</a>
+        <a class="tab" data-tab="profile">👤 ข้อมูลส่วนตัว</a>
+        <a class="tab" data-tab="savings">💰 เงินฝาก</a>
+        <a class="tab" data-tab="loans">🏦 เงินกู้</a>
+      </div>
+
+      <!-- Home Tab -->
+      <div id="tab-home" class="tab-content">
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title">สวัสดี, <span id="user-name">-</span></h2>
+            <p class="text-base-content/70">รหัสสมาชิก: <span id="user-code">-</span></p>
+            
+            <div class="divider"></div>
+            
+            <div class="stats stats-vertical shadow">
+              <div class="stat">
+                <div class="stat-title">สถานะ</div>
+                <div class="stat-value text-primary" id="user-status">-</div>
+              </div>
+              <div class="stat">
+                <div class="stat-title">วันหมดอายุ</div>
+                <div class="stat-value text-warning" id="user-expiry">-</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Tab -->
+      <div id="tab-profile" class="tab-content hidden">
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title">👤 ข้อมูลส่วนตัว</h2>
+            
+            <div class="overflow-x-auto">
+              <table class="table">
+                <tbody>
+                  <tr><td class="font-medium">ชื่อ-นามสกุล</td><td id="profile-name">-</td></tr>
+                  <tr><td class="font-medium">ตำแหน่ง</td><td id="profile-position">-</td></tr>
+                  <tr><td class="font-medium">วันที่มีผล</td><td id="profile-eff">-</td></tr>
+                  <tr><td class="font-medium">วันหมดอายุ</td><td id="profile-exp">-</td></tr>
+                  <tr><td class="font-medium">คะแนนความดี</td><td id="profile-kk">-</td></tr>
+                  <tr><td class="font-medium">เงินกู้คงค้าง</td><td id="profile-bk">-</td></tr>
+                  <tr><td class="font-medium">เงินหุ้น</td><td id="profile-bh">-</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Savings Tab -->
+      <div id="tab-savings" class="tab-content hidden">
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title">💰 บัญชีเงินฝาก</h2>
+            
+            <div id="savings-list" class="space-y-4">
+              <div class="text-center py-4">
+                <span class="loading loading-spinner"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loans Tab -->
+      <div id="tab-loans" class="tab-content hidden">
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title">🏦 สัญญาเงินกู้</h2>
+            
+            <div id="loans-list" class="space-y-4">
+              <div class="text-center py-4">
+                <span class="loading loading-spinner"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
