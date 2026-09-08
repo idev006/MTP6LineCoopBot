@@ -1,8 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 @plugin "daisyui";
 
 /* Custom theme */
 @theme {
+  --font-sans: "Chakra Petch", system-ui, sans-serif;
   --color-primary: #37cdbe;
   --color-secondary: #64748b;
   --color-accent: #f59e0b;
@@ -14,4 +16,14 @@
   --color-success: #36d399;
   --color-warning: #fbbd23;
   --color-error: #f87272;
+}
+
+
+html,
+body,
+button,
+input,
+select,
+textarea {
+  font-family: "Chakra Petch", system-ui, sans-serif;
 }
