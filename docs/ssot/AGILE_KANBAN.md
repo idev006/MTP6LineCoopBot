@@ -81,17 +81,37 @@ Weekly review:
 
 ## Live Execution Board — 2026-09-08
 
-### READY — WIP intake (3)
+### IN_PROGRESS / TEST
 
+1. `APP-SCHEDULED-001` — MTLineCoopBot #13  
+   PR #22 — headless expiry/notice/reminder capabilities  
+   Current gate: CI #69
+
+### READY
+
+1. `CORE-FIN-001` — MTLineCoopBot #14  
+   Make LoanCalculationEngine the canonical formula authority
+
+2. `SEC-WEB-002` — MTP6LineCoopBot #16  
+   Server-verified Web Session Principal boundary
+
+3. `UI-DEPS-001` — MTP6LineCoopBot #26  
+   Controlled latest-stable frontend dependency refresh
 
 ### BACKLOG
 
-- `UI-DEPS-001` — MTP6LineCoopBot #26 — controlled latest-stable Vue/Router/Pinia/Tailwind/daisyUI/Vite refresh
-- `APP-SCHEDULED-001` — MTLineCoopBot #13 — expiry/notice/reminder engines (NEXT READY)
-- `ARCH-PORTS-002` — MTLineCoopBot #12 — AuditPort + ConfigPort
-- `APP-SCHEDULED-001` — MTLineCoopBot #13 — expiry/notice/reminder engines
-- `CORE-FIN-001` — MTLineCoopBot #14 — canonical LoanCalculationEngine
-- `SEC-WEB-002` — MTP6LineCoopBot #16 — server-verified Web Session Principal
+- Web admin completion / RBAC workflows
+- remaining legacy lineUserId retirement audit
+- scheduled runtime adapter migration after APP-SCHEDULED-001 foundation CI
+- release/staging/UAT hardening
+
+### DONE
+
+- `SEC-LIFF-001` — MTP6LineCoopBot #15 — DONE @ d3deac7; LIFF CI #5 PASS
+- `ARCH-DATA-001` — MTLineCoopBot #9 — DONE @ 255d862; backend CI #60 PASS
+- `APP-MEMBER-001` — MTLineCoopBot #10 — DONE @ 91bd7cb; backend CI #63 PASS
+- `APP-MEMBER-002` — MTLineCoopBot #11 — DONE @ 4dd0391; backend CI #65 PASS
+- `ARCH-PORTS-002` — MTLineCoopBot #12 — DONE @ 58ee3d9; backend CI #67 PASS
 
 ## Pull Rule for Live Board
 
@@ -128,16 +148,3 @@ Canonical process:
 - `process/TEAM_DEVELOPMENT_PIPELINE.md`
 - `process/CI_PIPELINE_STANDARD.md`
 - `process/RELEASE_DEPLOYMENT_PIPELINE.md`
-
-
-### DONE
-
-- `SEC-LIFF-001` — MTP6LineCoopBot #15 — DONE @ d3deac7; LIFF CI #5 PASS
-
-- `ARCH-DATA-001` — MTLineCoopBot #9 — DONE @ 255d862; backend CI #60 PASS
-
-- `APP-MEMBER-001` — MTLineCoopBot #10 — DONE @ 91bd7cb; backend CI #63 PASS
-
-- `APP-MEMBER-002` — MTLineCoopBot #11 — DONE @ 4dd0391; backend CI #65 PASS
-
-- `ARCH-PORTS-002` — MTLineCoopBot #12 — DONE @ 58ee3d9; backend CI #67 PASS
