@@ -80,9 +80,11 @@ CI workflow มี:
 ## Known Baseline Risks / Gaps
 
 ### BL-SEC-001 — Fail-open Web Authentication
-`webapp/src/stores/auth.js` fallback เป็น mock admin/staff เมื่อ API error
+เดิม `webapp/src/stores/auth.js` fallback เป็น mock admin/staff เมื่อ API error
 
-สถานะ: OPEN / HIGH
+สถานะ: CLOSED IN CODE — `MTP6LineCoopBot@e1a54aa`; Webapp CI run #3 PASS
+
+หมายเหตุ: client session state ไม่ใช่ server-side authorization; session expiry/verification ฝั่ง server ยังต้องทำตาม REQ-SEC-004/005
 
 ### BL-SEC-002 — LIFF mock financial fallback
 LIFF เดิมแสดง mock profile/savings/loans เมื่อ backend error
