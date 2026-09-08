@@ -10,7 +10,7 @@
 | REQ-SEC-002 | LIFF identity ต้อง verify server-side | API_DATA_CONTRACT | backend verified identity @ 865569b + LIFF raw ID-token migration @ d3deac7 | backend CI #53 + LIFF CI #5 PASS | VERIFIED FOR MEMBER SELF-SERVICE PATHS |
 | REQ-SEC-003 | Authorization ต้อง server-side | ARCHITECTURE_CONTRACT | member gate exists, trusted principal boundary incomplete | Test.js partial | PARTIAL |
 | REQ-DATA-001 | Data schema มี SSOT | API_DATA_CONTRACT | MTLineCoopBot/app/DataDict.js | data/repository tests declared | CODE_PRESENT / TEST_IMPLEMENTED |
-| REQ-CORE-001 | Business rule ไม่ duplicate ข้าม UI | ADR-0002 | Core/LoanCalculator.js + UI calculator duplicate | backend loan tests declared | BLOCKED |
+| REQ-CORE-001 | Business rule ไม่ duplicate ข้าม UI | ADR-0002 | Core.LoanCalculator + CalculateLoanUseCase + /api/loan/calculate @ 45582b4; frontend canonical UI @ 0de0c0e; backend duplicate retired @ daffda7 | backend CI #74 + frontend Loan Calculator CI #1 + backend CI #76 PASS | VERIFIED / SINGLE FORMULA AUTHORITY |
 | REQ-ARCH-001 | Business capability ต้องอยู่ใน headless engine | ADR-0002 | Engine.MemberAccessEngine @ de7fc1f + app/Core/* | headless engine test + CI run #43 PASS | PARTIAL / MEMBER ACCESS ENGINE VERIFIED |
 | REQ-ARCH-002 | Infrastructure เปลี่ยนผ่าน ports/adapters | ADR-0002 | MTLineCoopBot Ports.MemberRepositoryPort + Sheets adapter @ f06dfb5 | reusable contract test + CI run #41 PASS | PARTIAL / VERIFIED FIRST PORT |
 | REQ-ARCH-003 | UI ไม่เป็นเจ้าของ business rule | ADR-0002 | API validity + LINE gate/expiry checks routed through MemberAccessEngine @ 9a589db | full regression + architecture/engine tests; CI #46 PASS | PARTIAL / PRIMARY MEMBER ACCESS PATHS VERIFIED |
@@ -64,3 +64,6 @@
 
 
 | REQ-APP-SCHED-001 | Expiry/Notice/Reminder scheduled capabilities must execute through headless Application Layer | UC-SYS-001/002/003 + SEQ-EXPIRY-SCAN/SEQ-NOTICE-BROADCAST/SEQ-LOAN-REMINDER + ADR-0003 | MessagingPort + MemberMenuPort + ExpiryScanUseCase + NoticeBroadcastUseCase + LoanReminderUseCase @ b0194b5; production trigger delegation @ 5489622 | backend CI #70 foundation PASS + CI #72 runtime delegation PASS | VERIFIED PRIMARY SCHEDULED RUNTIME |
+
+
+| REQ-FIN-001 | Loan calculation must use canonical Actual/365 engine with deterministic contract | UC-MEM-007 / ADR-0002 / API_DATA_CONTRACT | Core.LoanCalculator + CalculateLoanUseCase + POST /api/loan/calculate @ 45582b4 | property/boundary + application + delivery tests; CI #74 PASS | VERIFIED |
