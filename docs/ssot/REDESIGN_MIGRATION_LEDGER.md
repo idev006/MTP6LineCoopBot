@@ -53,3 +53,6 @@ Legacy implementation จะถูกลบเมื่อ:
 
 
 | Web staff renewal | legacy/disabled client renewal path | RenewMemberByStaffUseCase + protected Web session write | MIGRATED | backend 5fd6d28 CI #98; frontend 3d6f04e CI #19 | keep activation/binding separate; retire legacy web renewal callers after reference audit |
+
+
+| Web admin staff | placeholder/no server authority | admin-only Staff Accounts read + sanitized UI | STAFF READ MIGRATED | backend 715318a CI #106; frontend 4b2987b Webapp CI #21 | role catalog + protected staff role/write flows remain |
