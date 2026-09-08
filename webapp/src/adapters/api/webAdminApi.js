@@ -29,6 +29,8 @@ export function createWebAdminClient({ baseUrl, fetchImpl = fetch } = {}) {
 
   return Object.freeze({
     getSettings: sessionToken =>
-      post('/api/web/admin/settings', { sessionToken })
+      post('/api/web/admin/settings', { sessionToken }),
+    getAuditLog: (sessionToken, options = {}) =>
+      post('/api/web/admin/audit-log', { sessionToken, ...options })
   })
 }
