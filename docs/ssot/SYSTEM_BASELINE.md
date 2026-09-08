@@ -96,11 +96,12 @@ LIFF เดิมแสดง mock profile/savings/loans เมื่อ backend
 ### BL-SEC-003 — Client API key / unverified identity
 เดิม Web/LIFF ใช้ client API key และ client-provided identity ในหลาย path
 
-สถานะ: PARTIALLY CLOSED / HIGH REMAINDER
+สถานะ: PARTIALLY CLOSED / CONTROLLED REMAINDER
 - LIFF self-service identity migrated to verified raw ID token
 - Web authentication/session migrated to opaque server session + verified Principal
-- Web member list/detail migrated to server-side RBAC and no client API key/mock fallback
-- remaining legacy Web write/admin and legacy lineUserId/API-key routes are still open under follow-up migration
+- Web member/admin protected reads/writes migrated to server-side RBAC
+- legacy lineUserId GET profile/savings/loans/dividends/validity routes retired @ 95d4f66
+- remaining client-trust compatibility is concentrated in activate/renew identity-binding flows and is governed by SEC-WEB-004
 
 ### BL-DOC-001 — Duplicate documentation
 เอกสารสำเนาระหว่างสอง repo มีโอกาส drift
