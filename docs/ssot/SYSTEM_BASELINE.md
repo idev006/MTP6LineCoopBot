@@ -85,9 +85,11 @@ CI workflow มี:
 สถานะ: OPEN / HIGH
 
 ### BL-SEC-002 — LIFF mock financial fallback
-LIFF แสดง mock profile/savings/loans เมื่อ backend error บางกรณี
+LIFF เดิมแสดง mock profile/savings/loans เมื่อ backend error
 
-สถานะ: OPEN / HIGH
+สถานะ: CLOSED IN CODE — `MTP6LineCoopBot@14c2da2`; LIFF CI run #1 PASS
+
+หมายเหตุ: การยืนยัน identity ของ LIFF ยังอยู่ใน BL-SEC-003/REQ-SEC-002 และยังไม่ถือว่าปลอดภัยครบ
 
 ### BL-SEC-003 — Client API key / unverified identity
 Web/LIFF ใส่ API key ใน client และ backend API accepts lineUserId from request context
