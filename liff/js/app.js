@@ -53,21 +53,9 @@ async function loadUserData() {
     }
   } catch (error) {
     console.error('Error loading user data:', error);
-    // Use mock data for development
-    currentUser = {
-      mem_code: 'MEM001',
-      mem_title: 'นาย',
-      mem_fname: 'สมชาย',
-      mem_lname: 'ใจดี',
-      mem_status: 'active',
-      mem_eff_dt: '2026-01-01',
-      mem_exp_dt: '2026-12-31',
-      mem_position: 'กรรมการ',
-      mem_kk: 85,
-      mem_bk: 50000,
-      mem_bh: 10000
-    };
-    updateUI();
+    currentUser = null;
+    showError(error.message || 'ไม่สามารถโหลดข้อมูลสมาชิกได้');
+    throw error;
   }
 }
 
@@ -104,12 +92,20 @@ async function loadSavings() {
     renderSavings(savings);
   } catch (error) {
     console.error('Error loading savings:', error);
-    // Mock data
-    renderSavings([
-      { acct_no: 'SAV-0001', acct_type: 'ออมทรัพย์', balance: 25000, open_dt: '2026-01-01' },
-      { acct_no: 'SAV-0011', acct_type: 'ออมทรัพย์พิเศษ', balance: 100000, open_dt: '2026-01-01' }
-    ]);
+    renderDataError('savings-list', error.message || 'ไม่สามารถโหลดข้อมูลเงินฝากได้');
   }
+}
+
+
+// Render an explicit data-load error. Never substitute financial mock data.
+function renderDataError(containerId, message) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.textContent = '';
+  const p = document.createElement('p');
+  p.className = 'text-center text-error';
+  p.textContent = message;
+  container.appendChild(p);
 }
 
 // Render savings
@@ -160,10 +156,7 @@ async function loadLoans() {
     renderLoans(loans);
   } catch (error) {
     console.error('Error loading loans:', error);
-    // Mock data
-    renderLoans([
-      { loan_no: 'LN-2024-001', loan_amount: 100000, outstanding: 45000, due_dt: '2026-12-31' }
-    ]);
+    renderDataError('loans-list', error.message || 'ไม่สามารถโหลดข้อมูลเงินกู้ได้');
   }
 }
 
