@@ -373,3 +373,23 @@ Response:
 - read-only contract
 
 Role taxonomy is not mutable through this endpoint. Role assignment/change requires a separate protected write workflow with audit evidence.
+
+
+### POST /api/web/admin/staff/role
+
+Authorization:
+- opaque Web session required
+- `admin` role required server-side
+
+Request:
+```json
+{"sessionToken":"<opaque token>","memberCode":"S001","role":"staff|manager|admin"}
+```
+
+Security rules:
+- role must be present in the canonical assignable staff role catalog
+- admin may not change their own role through this workflow
+- privileged audit attempt must be durably recorded before persistence
+- persistence success/failure/no-op is auditable
+- browser role checks are presentation-only
+- browser-visible API keys are not authentication proof
