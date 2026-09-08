@@ -24,8 +24,8 @@ Authority: ADR-0003 + TARGET_SYSTEM_ARCHITECTURE.md
 | LIFF identity | client lineUserId | Line ID Token Identity Adapter | MIGRATED (member self-service) | backend verifier @ 865569b + LIFF switch @ d3deac7; LIFF CI #5 PASS | retire remaining legacy protected lineUserId paths after reference audit |
 | Web auth | fail-open mock admin | Web Session Identity Adapter | PARTIAL | fail-open closed @ e1a54aa; Webapp CI #3 PASS | server-verified session/Principal adapter + expiry/revocation tests |
 | Web frontend | component/store direct fetches | shared API client + presentation-only UI | PLANNED | - | unit/E2E gates |
-| Audit logging | mixed direct logs/sheets | AuditPort + adapter | PLANNED | - | critical writes audit through port |
-| Config | Config.get globals | ConfigPort | PLANNED | - | engines/use cases no global config reads |
+| Audit logging | mixed direct logs/sheets | AuditPort + adapter | PARTIAL | AuditPort + repository/in-memory adapters @ 58ee3d9, CI #67 PASS; activation/renewal migrated | migrate scheduled/admin critical writes through AuditPort |
+| Config | Config.get globals | ConfigPort | PARTIAL | ConfigPort + AppsScriptConfigAdapter @ 58ee3d9, CI #67 PASS; SystemFactory wired | migrate remaining direct global config reads incrementally |
 
 ## Migration State Vocabulary
 
