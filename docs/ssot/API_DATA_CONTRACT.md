@@ -393,3 +393,39 @@ Security rules:
 - persistence success/failure/no-op is auditable
 - browser role checks are presentation-only
 - browser-visible API keys are not authentication proof
+
+
+## Secure Self-Activation / LINE Identity Binding Contract
+
+Authority: ADR-0004
+
+### POST /api/member/me/activate
+
+Request:
+```json
+{"idToken":"<raw LINE ID token>","activateCode":"<activation code>"}
+```
+
+Identity rules:
+- server verifies raw LINE ID token
+- LINE subject comes only from verified claims
+- activation code proves entitlement to the member record only
+- request must not use client-provided `lineUserId` as authority
+- staff/admin direct arbitrary LINE binding is not supported
+
+Binding outcomes:
+- target unbound + subject unbound → bind/activate
+- target already bound to same verified subject → idempotent success, no identity rewrite
+- target bound to another subject → `BINDING_CONFLICT`
+- verified subject already bound to another member → `SUBJECT_ALREADY_BOUND`
+- invalid code → `MEMBER_NOT_FOUND`
+- invalid/missing token → `UNAUTHENTICATED`
+
+Audit:
+- record verified actor subject, target member code, outcome and timestamp
+- do not persist raw activation code in the secure audit event
+
+Migration:
+- legacy `POST /api/member/activate` remains compatibility-only until LIFF/chat callers migrate
+- chat activation must hand off to verified LIFF activation rather than directly creating a binding
+- legacy `renew:CODE` remains under identity-binding review because it can mutate LINE binding
