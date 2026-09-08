@@ -1,0 +1,43 @@
+name: Webapp CI — Engine Tests, Security & Build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'webapp/**'
+      - '.github/workflows/webapp-ci.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'webapp/**'
+      - '.github/workflows/webapp-ci.yml'
+  workflow_dispatch:
+
+jobs:
+  webapp:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: webapp
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: webapp/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: Headless engine tests
+        run: npm run test:engine
+
+      - name: Security scan
+        run: npm run security:scan
+
+      - name: Production build
+        run: npm run build
