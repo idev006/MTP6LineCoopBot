@@ -7,9 +7,11 @@ Status: ACCEPTED
 ### UC-MEM-001 — Activate Membership
 Primary actor: Member  
 Goal: link verified LINE identity to a cooperative member record and activate membership.  
-Target application: ActivateMemberUseCase  
+Target application: ActivateCurrentLineMemberUseCase  
 Key ports: MemberRepositoryPort, ClockPort, AuditPort  
-Key negatives: invalid code, used code, identity mismatch, duplicate retry.
+Identity: verified LINE Principal from raw ID token only.  
+Key negatives: invalid code, target binding conflict, subject already bound elsewhere, invalid token, duplicate retry.  
+Policy: activation code is entitlement proof only; staff/admin cannot directly bind an arbitrary LINE identity.
 
 ### UC-MEM-002 — Renew Membership
 Primary actor: Member / authorized Staff/Admin  
@@ -46,8 +48,13 @@ Target application: SearchMemberUseCase
 Target application: GetMemberDetailUseCase  
 Authorization: staff/admin/auditor according to RBAC.
 
-### UC-STAFF-003 — Activate/Renew on Behalf
-Target application: controlled staff/admin operation with audit trail.
+### UC-STAFF-003 — Renew on Behalf
+Target application: RenewMemberByStaffUseCase with server-side RBAC and audit trail.
+
+### UC-STAFF-004 — Assist Member Activation
+Primary actor: Staff/Manager/Admin (support only)  
+Goal: help the member reach the verified self-activation handoff.  
+Security: support actor cannot choose or submit authoritative LINE identity; binding is completed only by the member's verified LINE Principal.
 
 ### UC-ADMIN-001 — Manage Staff
 Target application: StaffManagementUseCase
