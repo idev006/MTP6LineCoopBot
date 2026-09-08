@@ -1,6 +1,6 @@
 # ADR-0002 — Engine-first Lego/Plug-in Architecture
 
-Status: PROPOSED  
+Status: ACCEPTED  
 Date: 2026-09-08
 
 ## Context
@@ -9,7 +9,7 @@ Date: 2026-09-08
 
 ## Decision
 
-เสนอให้ architecture หลักของโครงการเป็น:
+architecture หลักของโครงการเป็น:
 - Engine-first
 - Ports and Adapters
 - Explicit dependency injection/wiring
@@ -74,10 +74,11 @@ Date: 2026-09-08
 
 ## Rollback
 
-ก่อน ACCEPTED สามารถไม่ใช้แนวทางนี้ได้โดย revert documentation PR; หลัง ACCEPTED การ deviation ต้องมี ADR ใหม่
+หลัง ACCEPTED การ deviation ต้องมี superseding ADR
 
 ## Approval
 
-- Product/Project: PENDING
-- Engineering: PENDING
-- Test/Audit: PENDING
+- Product/Project: APPROVED 2026-09-08
+- Engineering: APPROVED 2026-09-08
+- Test/Audit: APPROVED 2026-09-08
+- Evidence: GOVERNANCE_REVIEW_RECORD-2026-09-08.md
