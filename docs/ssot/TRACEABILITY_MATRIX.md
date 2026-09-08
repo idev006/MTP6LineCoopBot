@@ -7,7 +7,7 @@
 | Req ID | Requirement | Design/ADR | Code Evidence | Test Evidence | Current Status |
 |---|---|---|---|---|---|
 | REQ-SEC-001 | Authentication ต้อง fail-closed | ARCHITECTURE_CONTRACT | Web auth mock fallback removed @ e1a54aa | headless session tests + security scan + production build; Webapp CI #3 PASS | VERIFIED FOR WEB CLIENT FAILURE PATHS; SERVER SESSION AUTHORITY PENDING |
-| REQ-SEC-002 | LIFF identity ต้อง verify server-side | API_DATA_CONTRACT | LineIdTokenVerifier + LineIdentityAdapter @ 865569b | line-identity headless tests + full CI #53 PASS | PARTIAL / VERIFIED STACK; DELIVERY SWITCH PENDING |
+| REQ-SEC-002 | LIFF identity ต้อง verify server-side | API_DATA_CONTRACT | backend verified identity @ 865569b + LIFF raw ID-token migration @ d3deac7 | backend CI #53 + LIFF CI #5 PASS | VERIFIED FOR MEMBER SELF-SERVICE PATHS |
 | REQ-SEC-003 | Authorization ต้อง server-side | ARCHITECTURE_CONTRACT | member gate exists, trusted principal boundary incomplete | Test.js partial | PARTIAL |
 | REQ-DATA-001 | Data schema มี SSOT | API_DATA_CONTRACT | MTLineCoopBot/app/DataDict.js | data/repository tests declared | CODE_PRESENT / TEST_IMPLEMENTED |
 | REQ-CORE-001 | Business rule ไม่ duplicate ข้าม UI | ADR-0002 | Core/LoanCalculator.js + UI calculator duplicate | backend loan tests declared | BLOCKED |
@@ -22,7 +22,7 @@
 | REQ-TEST-003 | Engine tests ไม่พึ่ง UI/network/production | TEST_STRATEGY | MemberAccessEngine + ClockPort @ de7fc1f | deterministic headless test; CI #43 PASS | VERIFIED FOR MEMBER ACCESS ENGINE |
 | REQ-TEST-004 | Adapter ใหม่ผ่าน reusable contract tests | TEST_STRATEGY | tests/contracts/member-repository.contract.test.js @ f06dfb5 | CI run #41 PASS | PARTIAL / REUSABLE REPOSITORY CONTRACT VERIFIED |
 | REQ-DOC-001 | SSOT change ผ่าน team review | ADR-0001 | docs/ssot + review record | PR #1 | ACCEPTED ON BRANCH |
-| REQ-SEC-004 | Protected use case ต้องรับ verified Principal | ADR-0003 / TARGET_SYSTEM_ARCHITECTURE | GetCurrentMemberProfileUseCase accepts Principal @ 060fe63 | application headless tests + full CI #51 PASS | PARTIAL / FIRST PROTECTED USE CASE VERIFIED |
+| REQ-SEC-004 | Protected use case ต้องรับ verified Principal | ADR-0003 / TARGET_SYSTEM_ARCHITECTURE | protected profile/finance APIs + LIFF raw ID-token client @ d3deac7 / backend protected endpoints | backend + LIFF protected delivery tests PASS | PARTIAL / MEMBER SELF-SERVICE VERIFIED |
 | REQ-SEC-005 | Authentication แยกจาก Authorization | ADR-0003 | IdentityPort + AuthorizationEngine @ a2253eb | identity/authz engine tests; CI #48 PASS | VERIFIED FOUNDATION |
 | REQ-ARCH-007 | Delivery → Application → Domain → Ports → Adapters | ADR-0003 | member profile Application boundary + member-code repository port @ 060fe63 | application/architecture/contract CI #51 PASS | PARTIAL / DELIVERY SWITCH PENDING |
 | REQ-ARCH-008 | Application use cases ต้อง headless | ADR-0003 | GetCurrentMemberProfileUseCase @ 060fe63 | tests/application/current-member-profile.test.js; CI #51 PASS | PARTIAL / FIRST USE CASE VERIFIED |
