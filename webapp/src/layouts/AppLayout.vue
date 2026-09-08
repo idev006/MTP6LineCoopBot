@@ -78,6 +78,15 @@ async function handleLogout() {
             </router-link>
           </li>
 
+          <li v-if="auth.hasAnyRole('staff', 'admin', 'manager')">
+            <router-link to="/app/reports" class="flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6m4 6V7m4 10v-3M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+              รายงานสรุป
+            </router-link>
+          </li>
+
           <!-- Admin section -->
           <template v-if="auth.hasRole('admin')">
             <li class="menu-title mt-4">
