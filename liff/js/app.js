@@ -6,7 +6,7 @@
 
 // State
 let currentUser = null;
-let lineUserId = null;
+let idToken = null;
 
 // DOM Elements
 const loadingEl = document.getElementById('loading');
@@ -26,10 +26,13 @@ async function initLiff() {
       return;
     }
 
-    // Get user profile
-    const profile = await liff.getProfile();
-    lineUserId = profile.userId;
-    
+    // Obtain the raw ID token for server-side verification.
+    // Never use client profile/userId as identity proof for protected member data.
+    idToken = liff.getIDToken();
+    if (!idToken) {
+      throw new Error('ไม่พบข้อมูลยืนยันตัวตนจาก LINE กรุณาเข้าสู่ระบบใหม่');
+    }
+
     // Load user data
     await loadUserData();
     
@@ -44,7 +47,7 @@ async function initLiff() {
 async function loadUserData() {
   try {
     // Get member profile
-    const profile = await API.getMemberProfile(lineUserId);
+    const profile = await API.getCurrentMemberProfile(idToken);
     if (profile) {
       currentUser = profile;
       updateUI();
@@ -88,7 +91,7 @@ function updateUI() {
 // Load savings data
 async function loadSavings() {
   try {
-    const savings = await API.getSavings(lineUserId);
+    const savings = await API.getCurrentSavings(idToken);
     renderSavings(savings);
   } catch (error) {
     console.error('Error loading savings:', error);
@@ -152,7 +155,7 @@ function renderSavings(savings) {
 // Load loans data
 async function loadLoans() {
   try {
-    const loans = await API.getLoans(lineUserId);
+    const loans = await API.getCurrentLoans(idToken);
     renderLoans(loans);
   } catch (error) {
     console.error('Error loading loans:', error);
