@@ -342,3 +342,19 @@ Rules:
 4. Client-side route/menu role checks are presentation-only.
 5. `Auditor` is currently a conceptual actor/permission profile in analysis documents, not a canonical persisted `mem_role` unless a future controlled change adds it.
 6. Adding/removing/renaming a canonical role requires SSOT + authorization + migration + test updates in the same controlled change.
+
+
+### POST /api/web/admin/staff
+
+Authorization:
+- opaque Web session required
+- server resolves verified Web Principal
+- `admin` role required
+
+Response:
+- sanitized staff/manager/admin account list only
+- canonical operational role vocabulary: `staff|manager|admin`
+- exposes boolean `lineLinked`, never raw `line_user_id`
+- must not expose `activate_code` or persistence metadata
+
+This endpoint is read-only. Staff/role writes require separate protected write use cases with audit trail.
