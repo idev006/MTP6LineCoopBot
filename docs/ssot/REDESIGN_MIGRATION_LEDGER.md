@@ -22,7 +22,7 @@ Authority: ADR-0003 + TARGET_SYSTEM_ARCHITECTURE.md
 | Loan reminder | LoanReminderService | LoanReminder use case/engine | PLANNED | - | scheduled adapter thin |
 | Loan calculation | Core + standalone UI formula | canonical LoanCalculationEngine | BLOCKED DUPLICATION | BL-ARCH-001 | one formula authority + property tests |
 | LIFF identity | client lineUserId | Line ID Token Identity Adapter | HIGH PRIORITY | mock-data fallback closed @ 14c2da2; identity still BL-SEC-003 | backend token verification + negative tests |
-| Web auth | fail-open mock admin | Web Session Identity Adapter | HIGH PRIORITY | BL-SEC-001 | fail-closed tests + no production mock path |
+| Web auth | fail-open mock admin | Web Session Identity Adapter | PARTIAL | fail-open closed @ e1a54aa; Webapp CI #3 PASS | server-verified session/Principal adapter + expiry/revocation tests |
 | Web frontend | component/store direct fetches | shared API client + presentation-only UI | PLANNED | - | unit/E2E gates |
 | Audit logging | mixed direct logs/sheets | AuditPort + adapter | PLANNED | - | critical writes audit through port |
 | Config | Config.get globals | ConfigPort | PLANNED | - | engines/use cases no global config reads |
