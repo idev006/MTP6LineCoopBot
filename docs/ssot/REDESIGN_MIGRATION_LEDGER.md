@@ -17,9 +17,9 @@ Authority: ADR-0003 + TARGET_SYSTEM_ARCHITECTURE.md
 | Member profile | ApiHandlers direct repository lookup | GetCurrentMemberProfileUseCase | PARTIAL | backend 060fe63, CI #51 PASS | protected API/LINE delivery switch to verified Principal |
 | Member activation | ApiHandlers + ActivationService | MemberActivationEngine + ActivateMemberUseCase | MIGRATED PRIMARY PATH | backend 91bd7cb, CI #63 PASS | retire legacy activateMember persistence-policy compatibility after no callers remain |
 | Member renewal | legacy ApiHandlers/RenewalService | Principal-based RenewMemberUseCase + protected self-renew | MIGRATED PRIMARY SELF-SERVICE | backend 4dd0391, CI #65 PASS | migrate/retire legacy lineUserId renewal path after caller audit |
-| Expiry | ExpiryService | ExpiryScan application/engine | PLANNED | - | scheduled adapter thin + fake messaging/repo tests |
-| Notice | NoticeService | PublishNotice/Broadcast use case | PLANNED | - | messaging/audit ports + contract tests |
-| Loan reminder | LoanReminderService | LoanReminder use case/engine | PLANNED | - | scheduled adapter thin |
+| Expiry | ExpiryService orchestration | ExpiryScanUseCase + MessagingPort + MemberMenuPort | MIGRATED PRIMARY RUNTIME | foundation b0194b5 CI #70; runtime switch 5489622 CI #72 | retire legacy opts compatibility path after reference audit |
+| Notice | NoticeService orchestration | NoticeBroadcastUseCase + MessagingPort | MIGRATED PRIMARY RUNTIME | foundation b0194b5 CI #70; runtime switch 5489622 CI #72 | retire legacy opts compatibility path after reference audit |
+| Loan reminder | LoanReminderService orchestration | LoanReminderUseCase + MessagingPort + AuditPort | MIGRATED PRIMARY RUNTIME | foundation b0194b5 CI #70; runtime switch 5489622 CI #72 | retire legacy opts compatibility path after reference audit |
 | Loan calculation | Core + standalone UI formula | canonical LoanCalculationEngine | BLOCKED DUPLICATION | BL-ARCH-001 | one formula authority + property tests |
 | LIFF identity | client lineUserId | Line ID Token Identity Adapter | MIGRATED (member self-service) | backend verifier @ 865569b + LIFF switch @ d3deac7; LIFF CI #5 PASS | retire remaining legacy protected lineUserId paths after reference audit |
 | Web auth | fail-open mock admin | Web Session Identity Adapter | PARTIAL | fail-open closed @ e1a54aa; Webapp CI #3 PASS | server-verified session/Principal adapter + expiry/revocation tests |
