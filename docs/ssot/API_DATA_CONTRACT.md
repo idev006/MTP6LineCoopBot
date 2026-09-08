@@ -358,3 +358,18 @@ Response:
 - must not expose `activate_code` or persistence metadata
 
 This endpoint is read-only. Staff/role writes require separate protected write use cases with audit trail.
+
+
+### POST /api/web/admin/roles
+
+Authorization:
+- opaque Web session required
+- `admin` role required server-side
+
+Response:
+- canonical role IDs: `member|staff|manager|admin`
+- staff-assignable roles: `staff|manager|admin`
+- presentation-safe descriptions/capabilities
+- read-only contract
+
+Role taxonomy is not mutable through this endpoint. Role assignment/change requires a separate protected write workflow with audit evidence.
