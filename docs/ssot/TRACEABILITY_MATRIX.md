@@ -45,3 +45,9 @@
 
 
 | REQ-TEST-005 | Test composition ต้องใช้ persistence adapter แบบ in-memory ได้ | ADR-0002 / TEST_SUITE_CATALOG | InMemoryMemberRepository @ 255d862 | backend CI #60 PASS | VERIFIED |
+
+
+| REQ-UI-001 | Frontend must never trust client for identity/auth/business authority | ui/FRONTEND_ENGINEERING_STANDARD.md / ADR-0003 | LIFF verified Principal paths + fail-closed web auth | backend/LIFF/Web security CI evidence | PARTIAL / ENFORCED ON MIGRATED PATHS |
+| REQ-UI-002 | Business logic must not live in UI | ui/FRONTEND_ENGINEERING_STANDARD.md / ADR-0002 | activation/profile/finance logic moved to backend engines/use cases | backend engine/application tests | PARTIAL / MIGRATING |
+| REQ-UI-003 | daisyUI-first + Tailwind/Vue/Router/Pinia frontend standard | ui/FRONTEND_ENGINEERING_STANDARD.md | webapp stack | Webapp CI | ACCEPTED / ACTIVE |
+| REQ-UI-004 | Chakra Petch is canonical UI font | ui/FRONTEND_ENGINEERING_STANDARD.md | Web App + LIFF @ d08c7ff | Webapp CI #5 + LIFF CI #7 PASS | VERIFIED |
