@@ -77,3 +77,6 @@
 
 
 | REQ-SEC-WEB-003B | Audit Log read ต้องใช้ Web session + admin RBAC + data minimization | SEC-WEB-003 / ADR-0003 | AuditQueryPort + GetAuditLogUseCase + protected route @ 82cf8ee; AuditLogView migration @ 481b175 | backend CI #94 + Webapp CI #15 PASS | VERIFIED |
+
+
+| REQ-SEC-WEB-003C | Summary reports ต้องใช้ Web session + staff/manager/admin RBAC และ aggregate ที่ backend | SEC-WEB-003 / ADR-0003 | ReportQueryPort + GetSummaryReportUseCase + protected route @ 820bd14; ReportView migration @ dbb1df2 | backend CI #96 + Webapp CI #17 PASS | VERIFIED |
