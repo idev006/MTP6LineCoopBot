@@ -1,0 +1,31 @@
+name: Loan Calculator CI — API Authority Contract
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'loan_calculator.html'
+      - 'tools/loan_calculator.html'
+      - 'tests/loan-calculator-ui-contract.test.js'
+      - '.github/workflows/loan-calculator-ci.yml'
+      - 'liff/js/config.js'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'loan_calculator.html'
+      - 'tools/loan_calculator.html'
+      - 'tests/loan-calculator-ui-contract.test.js'
+      - '.github/workflows/loan-calculator-ci.yml'
+      - 'liff/js/config.js'
+  workflow_dispatch:
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: UI architecture contract
+        run: node tests/loan-calculator-ui-contract.test.js
