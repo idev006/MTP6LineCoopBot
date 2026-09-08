@@ -83,13 +83,10 @@ Weekly review:
 
 ### READY — WIP intake (3)
 
-1. `SEC-LIFF-001` — MTP6LineCoopBot #15  
-   Switch LIFF member data to raw ID-token protected endpoints
-
-2. `ARCH-DATA-001` — MTLineCoopBot #9  
+1. `ARCH-DATA-001` — MTLineCoopBot #9  
    Add InMemoryMemberRepository plug-compatible adapter
 
-3. `APP-MEMBER-001` — MTLineCoopBot #10  
+2. `APP-MEMBER-001` — MTLineCoopBot #10  
    Extract ActivateMember application use case
 
 ### BACKLOG
@@ -135,3 +132,8 @@ Canonical process:
 - `process/TEAM_DEVELOPMENT_PIPELINE.md`
 - `process/CI_PIPELINE_STANDARD.md`
 - `process/RELEASE_DEPLOYMENT_PIPELINE.md`
+
+
+### DONE
+
+- `SEC-LIFF-001` — MTP6LineCoopBot #15 — DONE @ d3deac7; LIFF CI #5 PASS
