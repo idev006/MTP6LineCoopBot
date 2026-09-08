@@ -25,6 +25,20 @@ Goal:
 Authentication:
 - server-verified Web Session Principal
 
+### ACT-MANAGER — Manager
+Goal:
+- perform elevated operational member-service work
+- search/view member data and reports under server-side RBAC
+- renew members on behalf where explicitly authorized
+- retain own member self-service when member-bound
+
+Authentication:
+- server-verified Web Session Principal for operational capabilities
+- verified LINE/LIFF Principal for own member self-service
+
+Boundary:
+- Manager is not equivalent to Administrator; admin-only settings, staff/role management, and audit capabilities require explicit admin authorization.
+
 ### ACT-ADMIN — Administrator
 Goal:
 - manage staff/roles/configuration
