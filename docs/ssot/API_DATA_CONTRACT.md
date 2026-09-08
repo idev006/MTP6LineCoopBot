@@ -299,3 +299,28 @@ Server authority:
   - Loans: `outstanding`
   - Dividends: `dividend_amt`
 - UI formats returned values only; it must not recalculate report business totals
+
+
+### POST /api/web/members/renew
+
+Authorization:
+- opaque Web session required
+- `staff|manager|admin` roles allowed server-side
+- target is specified by `memberCode`; browser may not supply authoritative new expiry/status values
+
+Request:
+```json
+{"sessionToken":"<opaque token>","memberCode":"M001"}
+```
+
+Server behavior:
+1. resolve verified Web Principal
+2. authorize staff/manager/admin
+3. load target member by memberCode
+4. compute renewal with `Core.MemberRules.computeRenewal` and server clock
+5. persist via MemberRepositoryPort
+6. record critical-write audit evidence including verified actor LINE identity when available
+
+Client behavior:
+- no optimistic expiry mutation
+- reload member detail from server after success
