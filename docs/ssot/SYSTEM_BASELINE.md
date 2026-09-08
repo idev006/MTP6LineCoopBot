@@ -114,9 +114,13 @@ webapp package scripts ยังไม่มี unit/e2e/lint gates
 สถานะ: OPEN / EVIDENCE GAP
 
 ### BL-ARCH-001 — Loan formula duplication
-loan calculator UI มีสูตรของตัวเอง ขณะที่ backend มี Core/LoanCalculator.js
+เดิม loan calculator UI หลายจุดมีสูตร Actual/365/PMT ของตัวเอง ขณะที่ backend มี Core/LoanCalculator.js
 
-สถานะ: OPEN
+สถานะ: CLOSED / VERIFIED
+- canonical backend authority: `MTLineCoopBot@45582b4`; CI #74 PASS
+- canonical API-backed frontend calculator: `MTP6LineCoopBot@0de0c0e`; Loan Calculator CI #1 PASS
+- backend duplicate HTML retired: `MTLineCoopBot@daffda7`; CI #76 PASS
+- architecture guards ป้องกัน formula duplication กลับมา
 
 ### BL-ARCH-002 — Hidden dependency wiring
 repository/config/time/services ถูก resolve ผ่าน globals/factories หลายจุด
