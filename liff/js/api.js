@@ -56,6 +56,16 @@ const API = {
     return this.postProtected('member/me/profile', idToken);
   },
 
+  async activateCurrentMember(idToken, activateCode) {
+    const code = String(activateCode || '').trim();
+    if (!code) {
+      const error = new Error('กรุณาระบุรหัส activate');
+      error.code = 'VALIDATION';
+      throw error;
+    }
+    return this.postProtected('member/me/activate', idToken, { activateCode: code });
+  },
+
   async getCurrentSavings(idToken) {
     const data = await this.postProtected('member/me/savings', idToken);
     return data?.savings || [];
