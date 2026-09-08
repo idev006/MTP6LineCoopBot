@@ -21,7 +21,7 @@ Authority: ADR-0003 + TARGET_SYSTEM_ARCHITECTURE.md
 | Notice | NoticeService | PublishNotice/Broadcast use case | PLANNED | - | messaging/audit ports + contract tests |
 | Loan reminder | LoanReminderService | LoanReminder use case/engine | PLANNED | - | scheduled adapter thin |
 | Loan calculation | Core + standalone UI formula | canonical LoanCalculationEngine | BLOCKED DUPLICATION | BL-ARCH-001 | one formula authority + property tests |
-| LIFF identity | client lineUserId | Line ID Token Identity Adapter | HIGH PRIORITY | mock-data fallback closed @ 14c2da2; identity still BL-SEC-003 | backend token verification + negative tests |
+| LIFF identity | client lineUserId | Line ID Token Identity Adapter | PARTIAL | verifier/identity stack @ 865569b, CI #53 PASS; delivery still legacy | protected API/LIFF delivery switched to raw ID token + Principal |
 | Web auth | fail-open mock admin | Web Session Identity Adapter | PARTIAL | fail-open closed @ e1a54aa; Webapp CI #3 PASS | server-verified session/Principal adapter + expiry/revocation tests |
 | Web frontend | component/store direct fetches | shared API client + presentation-only UI | PLANNED | - | unit/E2E gates |
 | Audit logging | mixed direct logs/sheets | AuditPort + adapter | PLANNED | - | critical writes audit through port |
