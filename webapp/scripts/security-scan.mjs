@@ -9,7 +9,9 @@ const files = [
   new URL('../src/router/index.js', import.meta.url),
   new URL('../src/views/app/admin/SettingsView.vue', import.meta.url),
   new URL('../src/views/app/admin/AuditLogView.vue', import.meta.url),
-  new URL('../src/adapters/api/webAdminApi.js', import.meta.url)
+  new URL('../src/adapters/api/webAdminApi.js', import.meta.url),
+  new URL('../src/views/app/ReportView.vue', import.meta.url),
+  new URL('../src/adapters/api/webReportApi.js', import.meta.url)
 ]
 
 const forbidden = [
@@ -30,6 +32,7 @@ const forbidden = [
   /U1234567890/,
   /path:\s*['"]admin\/settings['"]/,
   /path:\s*['"]admin\/audit-log['"]/,
+  /path:\s*['"]user\/reports['"]/,
   /api_key\s*:/
 ]
 
@@ -110,6 +113,22 @@ if (!/createWebAdminClient/.test(auditSrc) || !/auth\.token/.test(auditSrc)) {
 }
 if (/VITE_API_KEY/.test(auditSrc) || /Using mock data/i.test(auditSrc) || /Mock data/i.test(auditSrc) || /activateCode/.test(auditSrc)) {
   console.error('FAIL security-scan: admin audit log must not use client API key, synthetic fallback or activation secrets')
+  failed = true
+}
+
+const reportSrc = fs.readFileSync(new URL('../src/views/app/ReportView.vue', import.meta.url), 'utf8')
+if (!/createWebReportClient/.test(reportSrc) || !/auth\.token/.test(reportSrc)) {
+  console.error('FAIL security-scan: report view must use session-authorized API')
+  failed = true
+}
+if (/VITE_API_KEY/.test(reportSrc) || /Using mock data/i.test(reportSrc) || /Mock data/i.test(reportSrc)) {
+  console.error('FAIL security-scan: report view must not use client API key or synthetic fallback')
+  failed = true
+}
+
+const reportApiSrc = fs.readFileSync(new URL('../src/adapters/api/webReportApi.js', import.meta.url), 'utf8')
+if (!reportApiSrc.includes('/api/web/reports/summary')) {
+  console.error('FAIL security-scan: protected summary report endpoint missing from report API client')
   failed = true
 }
 
