@@ -29,6 +29,10 @@ Includes:
 - Canonical Use Case Diagram
 - Sequence Diagrams
 
+## Current Handoff
+
+- DEVELOPMENT_HANDOFF_CHECKPOINT-2026-09-08.md — current authorized development handoff
+
 ## Execution Documents
 
 | เอกสาร | หน้าที่ |
