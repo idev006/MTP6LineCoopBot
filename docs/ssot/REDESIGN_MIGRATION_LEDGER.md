@@ -56,3 +56,6 @@ Legacy implementation จะถูกลบเมื่อ:
 
 
 | Web admin staff | placeholder/no server authority | admin-only Staff Accounts read + sanitized UI | STAFF READ MIGRATED | backend 715318a CI #106; frontend 4b2987b Webapp CI #21 | role catalog + protected staff role/write flows remain |
+
+
+| Web admin role catalog | placeholder/hardcoded UI taxonomy | Security.RoleCatalog + admin-only role catalog API | ROLE CATALOG MIGRATED | backend 1f8ec59 CI #108; frontend 3051119 Webapp CI #23 | protected role assignment write + audit remain |
