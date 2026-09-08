@@ -13,10 +13,10 @@
 | REQ-CORE-001 | Business rule ไม่ duplicate ข้าม UI | ADR-0002 | Core/LoanCalculator.js + UI calculator duplicate | backend loan tests declared | BLOCKED |
 | REQ-ARCH-001 | Business capability ต้องอยู่ใน headless engine | ADR-0002 | Engine.MemberAccessEngine @ de7fc1f + app/Core/* | headless engine test + CI run #43 PASS | PARTIAL / MEMBER ACCESS ENGINE VERIFIED |
 | REQ-ARCH-002 | Infrastructure เปลี่ยนผ่าน ports/adapters | ADR-0002 | MTLineCoopBot Ports.MemberRepositoryPort + Sheets adapter @ f06dfb5 | reusable contract test + CI run #41 PASS | PARTIAL / VERIFIED FIRST PORT |
-| REQ-ARCH-003 | UI ไม่เป็นเจ้าของ business rule | ADR-0002 | LINE calls API in some flows; EventHandler still broad | Bot/API tests declared | PARTIAL |
+| REQ-ARCH-003 | UI ไม่เป็นเจ้าของ business rule | ADR-0002 | API validity + LINE gate/expiry checks routed through MemberAccessEngine @ 9a589db | full regression + architecture/engine tests; CI #46 PASS | PARTIAL / PRIMARY MEMBER ACCESS PATHS VERIFIED |
 | REQ-ARCH-004 | Dependency wiring explicit/testable | ENGINE_ARCHITECTURE_STANDARD | Composition.SystemFactory + ClockPort @ de7fc1f; legacy globals remain | architecture + engine tests; CI #43 PASS | PARTIAL / CLOCK WIRING VERIFIED |
 | REQ-ARCH-005 | Composition root แยก production/test wiring | ADR-0002 | Composition.SystemFactory @ f06dfb5 | system-factory architecture test + CI run #41 PASS | PARTIAL / CODE_PRESENT |
-| REQ-ARCH-006 | Repository port ต้อง persistence-only | ADR-0002 | MemberRepositoryPort excludes isActiveMember/hasRole @ f06dfb5 | contract test checks policy exclusion; CI #41 PASS | VERIFIED CONTRACT; legacy adapter still exposes extras |
+| REQ-ARCH-006 | Repository port ต้อง persistence-only | ADR-0002 | primary API/LINE member-access consumers no longer depend on repo policy @ 9a589db | regression + engine tests; CI #46 PASS | PARTIAL / POLICY EXTRACTION IN PROGRESS |
 | REQ-TEST-001 | Critical backend rules automated | TEST_STRATEGY | Test.js + ci-test.js | 34 tests declared | TEST_IMPLEMENTED; RUN_EVIDENCE_MISSING |
 | REQ-TEST-002 | Web critical behavior automated | TEST_STRATEGY | no test scripts in web package | none | BLOCKED |
 | REQ-TEST-003 | Engine tests ไม่พึ่ง UI/network/production | TEST_STRATEGY | MemberAccessEngine + ClockPort @ de7fc1f | deterministic headless test; CI #43 PASS | VERIFIED FOR MEMBER ACCESS ENGINE |
