@@ -83,13 +83,11 @@ Weekly review:
 
 ### READY — WIP intake (3)
 
-1. `APP-MEMBER-001` — MTLineCoopBot #10  
-   Extract ActivateMember application use case
 
 ### BACKLOG
 
 - `UI-DEPS-001` — MTP6LineCoopBot #26 — controlled latest-stable Vue/Router/Pinia/Tailwind/daisyUI/Vite refresh
-- `APP-MEMBER-002` — MTLineCoopBot #11 — RenewMember use case
+- `APP-MEMBER-002` — MTLineCoopBot #11 — RenewMember use case (NEXT READY)
 - `ARCH-PORTS-002` — MTLineCoopBot #12 — AuditPort + ConfigPort
 - `APP-SCHEDULED-001` — MTLineCoopBot #13 — expiry/notice/reminder engines
 - `CORE-FIN-001` — MTLineCoopBot #14 — canonical LoanCalculationEngine
@@ -137,3 +135,5 @@ Canonical process:
 - `SEC-LIFF-001` — MTP6LineCoopBot #15 — DONE @ d3deac7; LIFF CI #5 PASS
 
 - `ARCH-DATA-001` — MTLineCoopBot #9 — DONE @ 255d862; backend CI #60 PASS
+
+- `APP-MEMBER-001` — MTLineCoopBot #10 — DONE @ 91bd7cb; backend CI #63 PASS

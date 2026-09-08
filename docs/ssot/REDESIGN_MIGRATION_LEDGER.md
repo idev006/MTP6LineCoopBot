@@ -15,7 +15,7 @@ Authority: ADR-0003 + TARGET_SYSTEM_ARCHITECTURE.md
 | Identity | client lineUserId/API key context | Principal + IdentityPort | FOUNDATION | a2253eb, CI #48 | protected delivery paths use verified identity adapter |
 | Authorization | distributed role/member checks | AuthorizationEngine | FOUNDATION | a2253eb, CI #48 | protected use cases own policy; UI/adapter checks non-authoritative |
 | Member profile | ApiHandlers direct repository lookup | GetCurrentMemberProfileUseCase | PARTIAL | backend 060fe63, CI #51 PASS | protected API/LINE delivery switch to verified Principal |
-| Member activation | ApiHandlers + ActivationService | ActivateMember use case/engine | PLANNED | - | behavior characterization + application tests |
+| Member activation | ApiHandlers + ActivationService | MemberActivationEngine + ActivateMemberUseCase | MIGRATED PRIMARY PATH | backend 91bd7cb, CI #63 PASS | retire legacy activateMember persistence-policy compatibility after no callers remain |
 | Member renewal | ApiHandlers + RenewalService | RenewMember use case/engine | PLANNED | - | deterministic clock + regression parity |
 | Expiry | ExpiryService | ExpiryScan application/engine | PLANNED | - | scheduled adapter thin + fake messaging/repo tests |
 | Notice | NoticeService | PublishNotice/Broadcast use case | PLANNED | - | messaging/audit ports + contract tests |
