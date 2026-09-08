@@ -1,69 +1,75 @@
 <script setup>
-/**
- * Audit Log View
- * 
- * หน้า Audit Log (Admin only)
- */
+import { onMounted, ref } from 'vue'
+import { useAuthStore } from '@/stores/auth'
+import { createWebAdminClient } from '@/adapters/api/webAdminApi'
 
-import { ref, onMounted } from 'vue'
-
+const auth = useAuthStore()
 const loading = ref(true)
+const error = ref('')
 const logs = ref([])
 const filterType = ref('all')
 
-onMounted(() => {
-  loadLogs()
-})
+function client() {
+  return createWebAdminClient({ baseUrl: import.meta.env.VITE_API_BASE_URL })
+}
 
 async function loadLogs() {
   loading.value = true
+  error.value = ''
+  logs.value = []
+
   try {
-    const baseUrl = import.meta.env.VITE_API_BASE_URL
-    const apiKey = import.meta.env.VITE_API_KEY
-    
-    const queryParams = new URLSearchParams({
-      path: 'admin/audit-log',
-      type: filterType.value,
-      limit: '50',
-      api_key: apiKey
-    })
-
-    const response = await fetch(`${baseUrl}?${queryParams}`)
-    const result = await response.json()
-
-    if (result.ok) {
-      logs.value = result.data.logs
+    if (!auth.isAuthenticated || !auth.token) {
+      throw new Error('Web session ไม่พร้อมใช้งาน')
     }
+    const data = await client().getAuditLog(auth.token, {
+      type: filterType.value,
+      limit: 50
+    })
+    logs.value = Array.isArray(data?.logs) ? data.logs : []
   } catch (e) {
-    console.warn('Using mock data:', e.message)
-    // Mock data
-    logs.value = [
-      { type: 'activation', id: 'LOG-0001', memCode: 'MEM001', status: 'success', timestamp: '2026-08-20 09:00:00' },
-      { type: 'activation', id: 'LOG-0002', memCode: 'MEM002', status: 'success', timestamp: '2026-08-20 10:30:00' },
-      { type: 'expiry', id: 'ELOG-0001', memCode: 'MEM003', status: 'expiring', daysLeft: 14, timestamp: '2026-08-20 09:00:00' },
-      { type: 'expiry', id: 'ELOG-0002', memCode: 'MEM004', status: 'expired', daysLeft: -5, timestamp: '2026-08-20 09:00:00' }
-    ]
+    error.value = e?.message || 'ไม่สามารถโหลด Audit Log ได้'
+    throw e
   } finally {
     loading.value = false
   }
 }
 
-function handleFilterChange() {
-  loadLogs()
+onMounted(async () => {
+  try {
+    await loadLogs()
+  } catch {
+    // Explicit error state; no synthetic fallback.
+  }
+})
+
+async function handleFilterChange() {
+  try {
+    await loadLogs()
+  } catch {
+    // Error is already rendered.
+  }
 }
 
 function formatDate(dateStr) {
   if (!dateStr) return '-'
-  return new Date(dateStr).toLocaleString('th-TH')
+  const date = new Date(dateStr)
+  return Number.isNaN(date.getTime()) ? dateStr : date.toLocaleString('th-TH')
 }
 
 function getStatusBadgeClass(status) {
   switch (status) {
-    case 'success': return 'badge-success'
-    case 'failed': return 'badge-error'
-    case 'expired': return 'badge-error'
-    case 'expiring': return 'badge-warning'
-    default: return 'badge-info'
+    case 'success':
+    case 'reminded':
+    case 'valid':
+      return 'badge-success'
+    case 'failed':
+    case 'expired':
+      return 'badge-error'
+    case 'expiring':
+      return 'badge-warning'
+    default:
+      return 'badge-info'
   }
 }
 
@@ -71,8 +77,21 @@ function getTypeLabel(type) {
   switch (type) {
     case 'activation': return '🔑 Activate'
     case 'expiry': return '⏰ Expiry'
+    case 'reminder': return '💳 Reminder'
     default: return type
   }
+}
+
+function getDetail(log) {
+  if (log.type === 'expiry' && log.daysLeft !== undefined) {
+    return log.daysLeft >= 0 ? `เหลือ ${log.daysLeft} วัน` : `เลย ${Math.abs(log.daysLeft)} วัน`
+  }
+  if (log.type === 'reminder') {
+    return [log.loanNo ? `สัญญา ${log.loanNo}` : '', log.daysLeft !== undefined ? `เหลือ ${log.daysLeft} วัน` : '']
+      .filter(Boolean)
+      .join(' • ') || '-'
+  }
+  return '-'
 }
 </script>
 
@@ -80,12 +99,17 @@ function getTypeLabel(type) {
   <div>
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-3xl font-bold">Audit Log</h1>
-      
+
       <select v-model="filterType" class="select select-bordered" @change="handleFilterChange">
         <option value="all">ทั้งหมด</option>
         <option value="activation">Activate</option>
         <option value="expiry">Expiry</option>
+        <option value="reminder">Reminder</option>
       </select>
+    </div>
+
+    <div v-if="error" class="alert alert-error mb-6">
+      <span>{{ error }}</span>
     </div>
 
     <div v-if="loading" class="flex justify-center py-8">
@@ -105,31 +129,23 @@ function getTypeLabel(type) {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="log in logs" :key="log.id">
+          <tr v-for="log in logs" :key="`${log.type}:${log.id}`">
             <td>{{ getTypeLabel(log.type) }}</td>
             <td class="font-mono text-sm">{{ log.id }}</td>
-            <td>{{ log.memCode }}</td>
+            <td>{{ log.memCode || '-' }}</td>
             <td>
               <span class="badge" :class="getStatusBadgeClass(log.status)">
-                {{ log.status }}
+                {{ log.status || '-' }}
               </span>
             </td>
-            <td>
-              <span v-if="log.daysLeft !== undefined">
-                {{ log.daysLeft > 0 ? `เหลือ ${log.daysLeft} วัน` : `เลย ${Math.abs(log.daysLeft)} วัน` }}
-              </span>
-              <span v-else-if="log.activateCode">
-                Code: {{ log.activateCode }}
-              </span>
-              <span v-else>-</span>
-            </td>
+            <td>{{ getDetail(log) }}</td>
             <td>{{ formatDate(log.timestamp) }}</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div v-if="!loading && logs.length === 0" class="text-center py-8">
+    <div v-if="!loading && !error && logs.length === 0" class="text-center py-8">
       <p class="text-base-content/70">ไม่มีข้อมูล Audit Log</p>
     </div>
   </div>
