@@ -61,3 +61,6 @@
 
 | REQ-ARCH-010 | Configuration dependencies must be behind ConfigPort | ADR-0002 / ENGINE_ARCHITECTURE_STANDARD | ConfigPort + AppsScriptConfigAdapter @ 58ee3d9 | port/architecture tests + CI #67 PASS | VERIFIED FOUNDATION |
 | REQ-ARCH-011 | Application audit dependencies must be behind AuditPort | ADR-0002 / ENGINE_ARCHITECTURE_STANDARD | AuditPort + MemberRepositoryAuditAdapter + InMemoryAuditAdapter @ 58ee3d9 | port/application/architecture tests + CI #67 PASS | VERIFIED FOR ACTIVATION/RENEWAL |
+
+
+| REQ-APP-SCHED-001 | Expiry/Notice/Reminder scheduled capabilities must execute through headless Application Layer | UC-SYS-001/002/003 + SEQ-EXPIRY-SCAN/SEQ-NOTICE-BROADCAST/SEQ-LOAN-REMINDER + ADR-0003 | MessagingPort + MemberMenuPort + ExpiryScanUseCase + NoticeBroadcastUseCase + LoanReminderUseCase @ b0194b5; production trigger delegation @ 5489622 | backend CI #70 foundation PASS + CI #72 runtime delegation PASS | VERIFIED PRIMARY SCHEDULED RUNTIME |
