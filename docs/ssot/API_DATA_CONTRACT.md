@@ -51,3 +51,48 @@ Schema เชิง implementation ปัจจุบันอยู่ที่
 ## API Inventory Policy
 
 TRACEABILITY_MATRIX ต้องระบุ endpoint ที่ VERIFIED จาก source จริง ไม่ใช้เอกสารเก่าเป็นหลักฐานเพียงอย่างเดียว
+
+
+## Verified LINE / LIFF Identity Contract
+
+Authority: ADR-0003
+
+### Client
+
+LIFF client must obtain the raw ID token via `liff.getIDToken()` and send that token to the backend identity boundary.
+
+The client must not use any of the following as authentication proof:
+- `lineUserId` supplied in query/body
+- data returned from `liff.getProfile()`
+- decoded ID-token payload sent from the browser
+- client-side API key
+
+### Server
+
+The server must:
+1. receive the raw ID token
+2. verify it using the approved LINE ID-token verification mechanism
+3. validate the expected LINE Login channel ID/audience
+4. derive the LINE subject from verified claims
+5. resolve any linked member from the verified subject
+6. create the canonical `Security.Principal`
+7. pass only the Principal into protected application use cases
+
+### Fail-closed behavior
+
+- missing token → anonymous/UNAUTHENTICATED
+- invalid token → anonymous/UNAUTHENTICATED
+- provider failure → authentication failure, never mock success
+- valid LINE identity without member binding → authenticated Principal with no memberCode; member-only use cases deny explicitly
+- client-provided member/user ID never upgrades privileges
+
+### Test Contract
+
+Required automated tests:
+- valid verified token
+- invalid token
+- audience mismatch
+- provider malformed response
+- verified user not linked to member
+- verified linked member
+- client-supplied ID mismatch does not alter Principal
