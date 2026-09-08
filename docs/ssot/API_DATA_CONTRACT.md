@@ -1,6 +1,6 @@
 # API_DATA_CONTRACT
 
-สถานะ: PROPOSED — ต้อง reconcile กับ backend source ก่อน ACCEPTED
+สถานะ: ACCEPTED / ACTIVE — reconciled with verified backend contracts
 
 ## Response Envelope
 
@@ -134,3 +134,71 @@ Fail closed:
 - member not found → MEMBER_NOT_FOUND
 
 Legacy `/api/member/renew` remains transitional and is not the canonical protected self-renew contract.
+
+
+## Public Loan Calculation Contract
+
+Authority: `Core.LoanCalculator` + `CalculateLoanUseCase`
+
+### POST /api/loan/calculate
+
+Authentication:
+- public/read-only
+- no member/PII data
+- no browser API key required
+
+Request:
+```json
+{
+  "loanAmount": 500000,
+  "interestRatePercent": 5,
+  "calcMode": "installment_count",
+  "calcValue": 50,
+  "paymentType": "equal_principal",
+  "startDate": "2026-09-01"
+}
+```
+
+Canonical enums:
+- `calcMode`: `installment_count` | `installment_amount`
+- `paymentType`: `equal_principal` | `equal_installment`
+
+Transitional compatibility:
+- legacy `equal_total` is accepted server-side and normalized to `equal_installment`
+- new UI code must not emit `equal_total`
+
+Success data includes:
+- `contractVersion = "loan-calculation.v1"`
+- canonical `paymentType`
+- `schedule[]`
+- `totalInterest`
+- `totalPrincipal`
+- `totalPayment`
+
+Schedule row:
+```json
+{
+  "period": 1,
+  "remainingPrincipal": 500000,
+  "date": "yyyy-mm-dd",
+  "days": 29,
+  "interest": 1986.30,
+  "principal": 10000,
+  "totalPayment": 11986.30
+}
+```
+
+Formula authority:
+- business formula exists only in backend `Core.LoanCalculator`
+- UI may format/group rows for presentation but must not recalculate interest/principal/payment
+- Actual/365, PMT, period/date calculation must not be duplicated in UI
+
+Required automated evidence:
+- principal conservation
+- totals reconciliation
+- zero-interest behavior
+- legacy alias parity
+- invalid/boundary inputs
+- stable local calendar dates
+- API delivery contract
+- UI no-formula architecture guard
