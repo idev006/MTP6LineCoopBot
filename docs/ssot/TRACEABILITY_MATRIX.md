@@ -27,6 +27,9 @@
 | REQ-ARCH-007 | Delivery → Application → Domain → Ports → Adapters | ADR-0003 | member profile Application boundary + member-code repository port @ 060fe63 | application/architecture/contract CI #51 PASS | PARTIAL / DELIVERY SWITCH PENDING |
 | REQ-ARCH-008 | Application use cases ต้อง headless | ADR-0003 | GetCurrentMemberProfileUseCase @ 060fe63 | tests/application/current-member-profile.test.js; CI #51 PASS | PARTIAL / FIRST USE CASE VERIFIED |
 | REQ-ARCH-009 | Production/Test composition roots ใช้ contracts เดียวกัน | ADR-0003 | SystemFactory wires HTTP/token verifier/LINE identity adapters @ 865569b | architecture + identity tests; CI #53 PASS | PARTIAL / VERIFIED LINE IDENTITY PLUG-IN |
+| REQ-ANL-001 | Actors และ Use Cases ต้องมี canonical SSOT | analysis/ACTOR_CATALOG + ACTOR_USE_CASE_MATRIX + USE_CASE_CATALOG | docs/ssot/analysis | documentation review | DOCUMENTED / ACCEPTED |
+| REQ-ANL-002 | Critical workflows ต้องมี system/business workflow | analysis/BUSINESS_WORKFLOWS + SYSTEM_WORKFLOWS | docs/ssot/analysis | documentation review | DOCUMENTED / ACCEPTED |
+| REQ-ANL-003 | Critical interactions ต้องมี sequence diagram | analysis/sequences/* | docs/ssot/analysis/sequences | documentation review | DOCUMENTED / ACCEPTED |
 | REQ-REL-001 | Release ผ่าน gates ก่อน production | RELEASE_GATES | documented | release evidence TBD | DOCUMENTED |
 
 ## Evidence Rule
