@@ -9,6 +9,7 @@ const files = [
   new URL('../src/router/index.js', import.meta.url),
   new URL('../src/views/app/admin/SettingsView.vue', import.meta.url),
   new URL('../src/views/app/admin/AuditLogView.vue', import.meta.url),
+  new URL('../src/views/app/admin/StaffManageView.vue', import.meta.url),
   new URL('../src/adapters/api/webAdminApi.js', import.meta.url),
   new URL('../src/views/app/ReportView.vue', import.meta.url),
   new URL('../src/adapters/api/webReportApi.js', import.meta.url)
@@ -32,6 +33,7 @@ const forbidden = [
   /U1234567890/,
   /path:\s*['"]admin\/settings['"]/,
   /path:\s*['"]admin\/audit-log['"]/,
+  /path:\s*['"]admin\/staff['"]/,
   /path:\s*['"]user\/reports['"]/,
   /api_key\s*:/
 ]
@@ -107,6 +109,20 @@ if (!adminApiSrc.includes('/api/web/admin/settings')) {
 }
 if (!adminApiSrc.includes('/api/web/admin/audit-log')) {
   console.error('FAIL security-scan: protected admin audit endpoint missing from admin API client')
+  failed = true
+}
+if (!adminApiSrc.includes('/api/web/admin/staff')) {
+  console.error('FAIL security-scan: protected admin staff endpoint missing from admin API client')
+  failed = true
+}
+
+const staffSrc = fs.readFileSync(new URL('../src/views/app/admin/StaffManageView.vue', import.meta.url), 'utf8')
+if (!/createWebAdminClient/.test(staffSrc) || !/auth\.token/.test(staffSrc)) {
+  console.error('FAIL security-scan: staff management must use session-authorized API')
+  failed = true
+}
+if (/VITE_API_KEY/.test(staffSrc) || /Sprint 2/.test(staffSrc) || /mock data/i.test(staffSrc)) {
+  console.error('FAIL security-scan: staff management must not use client API key or placeholder/mock fallback')
   failed = true
 }
 
