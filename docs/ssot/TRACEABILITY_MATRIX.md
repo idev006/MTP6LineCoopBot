@@ -57,3 +57,7 @@
 
 
 | REQ-APP-REN-001 | Self-renewal must use verified Principal and server-side business policy | UC-MEM-002 / SEQ-MEMBER-RENEW / ADR-0003 | RenewMemberUseCase + /api/member/me/renew @ 4dd0391 | backend CI #65 PASS | VERIFIED PRIMARY SELF-SERVICE PATH |
+
+
+| REQ-ARCH-010 | Configuration dependencies must be behind ConfigPort | ADR-0002 / ENGINE_ARCHITECTURE_STANDARD | ConfigPort + AppsScriptConfigAdapter @ 58ee3d9 | port/architecture tests + CI #67 PASS | VERIFIED FOUNDATION |
+| REQ-ARCH-011 | Application audit dependencies must be behind AuditPort | ADR-0002 / ENGINE_ARCHITECTURE_STANDARD | AuditPort + MemberRepositoryAuditAdapter + InMemoryAuditAdapter @ 58ee3d9 | port/application/architecture tests + CI #67 PASS | VERIFIED FOR ACTIVATION/RENEWAL |

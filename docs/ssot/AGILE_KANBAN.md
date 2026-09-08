@@ -87,7 +87,7 @@ Weekly review:
 ### BACKLOG
 
 - `UI-DEPS-001` — MTP6LineCoopBot #26 — controlled latest-stable Vue/Router/Pinia/Tailwind/daisyUI/Vite refresh
-- `ARCH-PORTS-002` — MTLineCoopBot #12 — AuditPort + ConfigPort (NEXT READY)
+- `APP-SCHEDULED-001` — MTLineCoopBot #13 — expiry/notice/reminder engines (NEXT READY)
 - `ARCH-PORTS-002` — MTLineCoopBot #12 — AuditPort + ConfigPort
 - `APP-SCHEDULED-001` — MTLineCoopBot #13 — expiry/notice/reminder engines
 - `CORE-FIN-001` — MTLineCoopBot #14 — canonical LoanCalculationEngine
@@ -139,3 +139,5 @@ Canonical process:
 - `APP-MEMBER-001` — MTLineCoopBot #10 — DONE @ 91bd7cb; backend CI #63 PASS
 
 - `APP-MEMBER-002` — MTLineCoopBot #11 — DONE @ 4dd0391; backend CI #65 PASS
+
+- `ARCH-PORTS-002` — MTLineCoopBot #12 — DONE @ 58ee3d9; backend CI #67 PASS
