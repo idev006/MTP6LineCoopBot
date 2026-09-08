@@ -13,6 +13,12 @@ const loadingEl = document.getElementById('loading');
 const errorEl = document.getElementById('error');
 const errorMessageEl = document.getElementById('error-message');
 const appEl = document.getElementById('app');
+const activationEl = document.getElementById('activation');
+const activationFormEl = document.getElementById('activation-form');
+const activationCodeEl = document.getElementById('activation-code');
+const activationErrorEl = document.getElementById('activation-error');
+const activationErrorMessageEl = document.getElementById('activation-error-message');
+const activationSubmitEl = document.getElementById('activation-submit');
 
 // Initialize LIFF
 async function initLiff() {
@@ -33,11 +39,11 @@ async function initLiff() {
       throw new Error('ไม่พบข้อมูลยืนยันตัวตนจาก LINE กรุณาเข้าสู่ระบบใหม่');
     }
 
-    // Load user data
-    await loadUserData();
-    
-    // Show app
-    showApp();
+    // Load user data. Unlinked verified identities are handed to secure activation.
+    const linked = await loadUserData();
+    if (linked) {
+      showApp();
+    }
   } catch (error) {
     showError(error.message);
   }
@@ -51,14 +57,60 @@ async function loadUserData() {
     if (profile) {
       currentUser = profile;
       updateUI();
-    } else {
-      showError('ไม่พบข้อมูลสมาชิก');
+      return true;
     }
+    showError('ไม่พบข้อมูลสมาชิก');
+    return false;
   } catch (error) {
     console.error('Error loading user data:', error);
     currentUser = null;
+
+    if (error && error.code === 'MEMBER_NOT_LINKED') {
+      showActivation();
+      return false;
+    }
+
     showError(error.message || 'ไม่สามารถโหลดข้อมูลสมาชิกได้');
     throw error;
+  }
+}
+
+function showActivation() {
+  loadingEl.classList.add('hidden');
+  errorEl.classList.add('hidden');
+  appEl.classList.add('hidden');
+  activationErrorEl.classList.add('hidden');
+  activationErrorMessageEl.textContent = '';
+  activationEl.classList.remove('hidden');
+  activationCodeEl.focus();
+}
+
+async function handleActivationSubmit(event) {
+  event.preventDefault();
+  activationErrorEl.classList.add('hidden');
+  activationErrorMessageEl.textContent = '';
+
+  const activateCode = activationCodeEl.value.trim();
+  if (!activateCode) {
+    activationErrorMessageEl.textContent = 'กรุณาระบุรหัส activate';
+    activationErrorEl.classList.remove('hidden');
+    return;
+  }
+
+  activationSubmitEl.disabled = true;
+  try {
+    await API.activateCurrentMember(idToken, activateCode);
+    activationCodeEl.value = '';
+    activationEl.classList.add('hidden');
+    loadingEl.classList.remove('hidden');
+
+    const linked = await loadUserData();
+    if (linked) showApp();
+  } catch (error) {
+    activationErrorMessageEl.textContent = error?.message || 'ไม่สามารถเปิดสิทธิ์สมาชิกได้';
+    activationErrorEl.classList.remove('hidden');
+  } finally {
+    activationSubmitEl.disabled = false;
   }
 }
 
@@ -246,6 +298,8 @@ function formatCurrency(amount) {
     minimumFractionDigits: 2
   }).format(amount || 0);
 }
+
+activationFormEl.addEventListener('submit', handleActivationSubmit);
 
 // Logout
 document.getElementById('btn-logout').addEventListener('click', () => {
