@@ -51,3 +51,6 @@
 | REQ-UI-002 | Business logic must not live in UI | ui/FRONTEND_ENGINEERING_STANDARD.md / ADR-0002 | activation/profile/finance logic moved to backend engines/use cases | backend engine/application tests | PARTIAL / MIGRATING |
 | REQ-UI-003 | daisyUI-first + Tailwind/Vue/Router/Pinia frontend standard | ui/FRONTEND_ENGINEERING_STANDARD.md | webapp stack | Webapp CI | ACCEPTED / ACTIVE |
 | REQ-UI-004 | Chakra Petch is canonical UI font | ui/FRONTEND_ENGINEERING_STANDARD.md | Web App + LIFF @ d08c7ff | Webapp CI #5 + LIFF CI #7 PASS | VERIFIED |
+
+
+| REQ-APP-ACT-001 | Membership activation business logic must be headless and outside UI/delivery | UC-MEM-001 / SEQ-MEMBER-ACTIVATE / ADR-0003 | MemberActivationEngine + ActivateMemberUseCase @ 91bd7cb | backend CI #63 PASS + legacy regression PASS | VERIFIED |
