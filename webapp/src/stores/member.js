@@ -2,7 +2,7 @@
  * Member Store
  *
  * Staff/admin member reads are server-authorized via opaque Web session.
- * No client API key, mock data, or client role is authoritative.
+ * No client API key or synthetic fallback is authoritative.
  */
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
