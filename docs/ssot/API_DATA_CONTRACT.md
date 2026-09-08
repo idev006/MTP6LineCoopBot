@@ -284,3 +284,18 @@ Request:
 
 Response uses a sanitized read projection. It must not expose raw `line_user_id`, `activate_code`, or persistence metadata.
 Audit write responsibilities remain in `AuditPort`; read/query responsibilities are isolated in `AuditQueryPort`.
+
+
+### POST /api/web/reports/summary
+
+Authorization:
+- opaque Web session required
+- `staff|manager|admin` roles allowed server-side
+
+Server authority:
+- member lifecycle counts are computed with `MemberAccessEngine`, server clock and configured expiry warning days
+- financial totals are aggregated from canonical source tables:
+  - Savings: `balance`
+  - Loans: `outstanding`
+  - Dividends: `dividend_amt`
+- UI formats returned values only; it must not recalculate report business totals
