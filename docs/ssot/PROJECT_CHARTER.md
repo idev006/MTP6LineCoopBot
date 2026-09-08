@@ -42,10 +42,16 @@
 8. Evidence-driven status
 9. Small coherent changes
 10. Reversible deployment เมื่อทำได้
+11. Engine-first architecture — business capability ต้องทำงานได้โดยไม่ต้องมี UI
+12. UI/LINE/LIFF/Web/CLI/Test Harness เป็น adapters ที่ครอบ engine
+13. Lego/Plug-in concept — module ต้องถอด เปลี่ยน หรือเพิ่ม implementation ได้ผ่าน contract
+14. Dependency wiring ต้อง explicit และทดสอบได้
+15. Infrastructure/external service ต้องอยู่หลัง port/interface เพื่อ substitute ด้วย fake/in-memory adapter ได้
+16. Full automated test ต้องง่าย รวดเร็ว deterministic และไม่ต้องใช้ production dependency
 
 ## Governance
 
-การเปลี่ยน Mission, Scope, Security model, Data contract, API contract, Role/Permission, Financial formula หรือ Release Gate ต้องผ่าน:
+การเปลี่ยน Mission, Scope, Security model, Data contract, API contract, Role/Permission, Financial formula, Engine Contract, Plug-in Boundary หรือ Release Gate ต้องผ่าน:
 - Proposal
 - Impact analysis
 - Team review
@@ -58,6 +64,8 @@
 - Approved scope มี traceability ครบ
 - ไม่มี Critical/High security defect ที่ยังเปิด
 - Automated tests ผ่าน
+- Core engines ทดสอบแบบ headless ได้
+- Critical integrations มี replaceable test doubles/adapters
 - UAT ผ่าน
 - Production deployment verified
 - Backup/restore/rollback/runbook พร้อม
