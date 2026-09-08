@@ -6,7 +6,7 @@
 
 | Req ID | Requirement | Design/ADR | Code Evidence | Test Evidence | Current Status |
 |---|---|---|---|---|---|
-| REQ-SEC-001 | Authentication ต้อง fail-closed | ARCHITECTURE_CONTRACT | webapp/src/stores/auth.js violates | TBD | BLOCKED / HIGH |
+| REQ-SEC-001 | Authentication ต้อง fail-closed | ARCHITECTURE_CONTRACT | Web auth mock fallback removed @ e1a54aa | headless session tests + security scan + production build; Webapp CI #3 PASS | VERIFIED FOR WEB CLIENT FAILURE PATHS; SERVER SESSION AUTHORITY PENDING |
 | REQ-SEC-002 | LIFF identity ต้อง verify server-side | API_DATA_CONTRACT | backend currently accepts request lineUserId | TBD | BLOCKED / HIGH |
 | REQ-SEC-003 | Authorization ต้อง server-side | ARCHITECTURE_CONTRACT | member gate exists, trusted principal boundary incomplete | Test.js partial | PARTIAL |
 | REQ-DATA-001 | Data schema มี SSOT | API_DATA_CONTRACT | MTLineCoopBot/app/DataDict.js | data/repository tests declared | CODE_PRESENT / TEST_IMPLEMENTED |
@@ -18,7 +18,7 @@
 | REQ-ARCH-005 | Composition root แยก production/test wiring | ADR-0002 | Composition.SystemFactory @ f06dfb5 | system-factory architecture test + CI run #41 PASS | PARTIAL / CODE_PRESENT |
 | REQ-ARCH-006 | Repository port ต้อง persistence-only | ADR-0002 | primary API/LINE member-access consumers no longer depend on repo policy @ 9a589db | regression + engine tests; CI #46 PASS | PARTIAL / POLICY EXTRACTION IN PROGRESS |
 | REQ-TEST-001 | Critical backend rules automated | TEST_STRATEGY | Test.js + ci-test.js | 34 tests declared | TEST_IMPLEMENTED; RUN_EVIDENCE_MISSING |
-| REQ-TEST-002 | Web critical behavior automated | TEST_STRATEGY | no test scripts in web package | none | BLOCKED |
+| REQ-TEST-002 | Web critical behavior automated | TEST_STRATEGY | webapp sessionPolicy tests + security scan + build CI @ e1a54aa | Webapp CI #3 PASS | PARTIAL / AUTH+BUILD GATE VERIFIED |
 | REQ-TEST-003 | Engine tests ไม่พึ่ง UI/network/production | TEST_STRATEGY | MemberAccessEngine + ClockPort @ de7fc1f | deterministic headless test; CI #43 PASS | VERIFIED FOR MEMBER ACCESS ENGINE |
 | REQ-TEST-004 | Adapter ใหม่ผ่าน reusable contract tests | TEST_STRATEGY | tests/contracts/member-repository.contract.test.js @ f06dfb5 | CI run #41 PASS | PARTIAL / REUSABLE REPOSITORY CONTRACT VERIFIED |
 | REQ-DOC-001 | SSOT change ผ่าน team review | ADR-0001 | docs/ssot + review record | PR #1 | ACCEPTED ON BRANCH |
