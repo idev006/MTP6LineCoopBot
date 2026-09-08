@@ -2,6 +2,8 @@ import fs from 'node:fs'
 
 const files = [
   new URL('../src/stores/auth.js', import.meta.url),
+  new URL('../src/stores/member.js', import.meta.url),
+  new URL('../src/adapters/api/webMemberApi.js', import.meta.url),
   new URL('../src/adapters/api/webSessionApi.js', import.meta.url),
   new URL('../src/adapters/line/liffAuth.js', import.meta.url),
   new URL('../src/router/index.js', import.meta.url)
@@ -15,7 +17,14 @@ const forbidden = [
   /auth\/login/,
   /auth\/liff/,
   /localStorage\.setItem/,
-  /getProfile\s*\(/
+  /getProfile\s*\(/,
+  /user\/member-list/,
+  /user\/member-detail/,
+  /admin\/member-activate/,
+  /admin\/member-renew/,
+  /Mock data for development/i,
+  /MEM001/,
+  /U1234567890/
 ]
 
 let failed = false
@@ -51,3 +60,22 @@ if (!/await auth\.ensureServerSession\(\)/.test(routerSrc)) {
 
 if (failed) process.exit(1)
 console.log('PASS security-scan: Web auth requires server session authority and no client API-key trust')
+
+
+const memberSrc = fs.readFileSync(new URL('../src/stores/member.js', import.meta.url), 'utf8')
+if (!/createWebMemberClient/.test(memberSrc) || !/requireSessionToken/.test(memberSrc)) {
+  console.error('FAIL security-scan: web member store must use session-authorized API')
+  failed = true
+}
+if (/VITE_API_KEY/.test(memberSrc) || /mock data/i.test(memberSrc)) {
+  console.error('FAIL security-scan: member store must not use client API key or mock fallback')
+  failed = true
+}
+
+const memberApiSrc = fs.readFileSync(new URL('../src/adapters/api/webMemberApi.js', import.meta.url), 'utf8')
+for (const path of ['/api/web/members/list', '/api/web/members/detail']) {
+  if (!memberApiSrc.includes(path)) {
+    console.error('FAIL security-scan: missing protected member endpoint ' + path)
+    failed = true
+  }
+}
