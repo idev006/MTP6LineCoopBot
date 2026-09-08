@@ -13,8 +13,8 @@ const auth = useAuthStore()
 const ui = useUiStore()
 const router = useRouter()
 
-function handleLogout() {
-  auth.logout()
+async function handleLogout() {
+  await auth.logout()
   router.push('/login')
 }
 </script>

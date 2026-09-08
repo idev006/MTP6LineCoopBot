@@ -137,12 +137,14 @@ const router = createRouter({
 })
 
 // Navigation guards
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const auth = useAuthStore()
   
-  // Check if route requires authentication
-  if (to.meta.requiresAuth && !auth.isAuthenticated) {
-    return next({ name: 'login' })
+  // Never trust persisted browser shape alone. Protected navigation requires
+  // a server-verified session in this runtime.
+  if (to.meta.requiresAuth) {
+    const verified = await auth.ensureServerSession()
+    if (!verified) return next({ name: 'login' })
   }
   
   // Check if route requires admin
