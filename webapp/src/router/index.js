@@ -19,6 +19,7 @@ import LoginView from '@/views/guest/LoginView.vue'
 import DashboardView from '@/views/app/DashboardView.vue'
 import MemberListView from '@/views/app/MemberListView.vue'
 import MemberDetailView from '@/views/app/MemberDetailView.vue'
+import ReportView from '@/views/app/ReportView.vue'
 
 // Admin Views
 import StaffManageView from '@/views/app/admin/StaffManageView.vue'
@@ -74,6 +75,15 @@ const routes = [
         component: MemberDetailView,
         meta: { 
           title: 'Member Detail',
+          roles: ['staff', 'admin', 'manager']
+        }
+      },
+      {
+        path: 'reports',
+        name: 'reports',
+        component: ReportView,
+        meta: {
+          title: 'Reports',
           roles: ['staff', 'admin', 'manager']
         }
       },
