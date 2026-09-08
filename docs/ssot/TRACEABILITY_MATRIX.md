@@ -7,7 +7,7 @@
 | Req ID | Requirement | Design/ADR | Code Evidence | Test Evidence | Current Status |
 |---|---|---|---|---|---|
 | REQ-SEC-001 | Authentication ต้อง fail-closed | ARCHITECTURE_CONTRACT | Web auth mock fallback removed @ e1a54aa | headless session tests + security scan + production build; Webapp CI #3 PASS | VERIFIED FOR WEB CLIENT FAILURE PATHS; SERVER SESSION AUTHORITY PENDING |
-| REQ-SEC-002 | LIFF identity ต้อง verify server-side | API_DATA_CONTRACT | backend currently accepts request lineUserId | TBD | BLOCKED / HIGH |
+| REQ-SEC-002 | LIFF identity ต้อง verify server-side | API_DATA_CONTRACT | LineIdTokenVerifier + LineIdentityAdapter @ 865569b | line-identity headless tests + full CI #53 PASS | PARTIAL / VERIFIED STACK; DELIVERY SWITCH PENDING |
 | REQ-SEC-003 | Authorization ต้อง server-side | ARCHITECTURE_CONTRACT | member gate exists, trusted principal boundary incomplete | Test.js partial | PARTIAL |
 | REQ-DATA-001 | Data schema มี SSOT | API_DATA_CONTRACT | MTLineCoopBot/app/DataDict.js | data/repository tests declared | CODE_PRESENT / TEST_IMPLEMENTED |
 | REQ-CORE-001 | Business rule ไม่ duplicate ข้าม UI | ADR-0002 | Core/LoanCalculator.js + UI calculator duplicate | backend loan tests declared | BLOCKED |
@@ -26,7 +26,7 @@
 | REQ-SEC-005 | Authentication แยกจาก Authorization | ADR-0003 | IdentityPort + AuthorizationEngine @ a2253eb | identity/authz engine tests; CI #48 PASS | VERIFIED FOUNDATION |
 | REQ-ARCH-007 | Delivery → Application → Domain → Ports → Adapters | ADR-0003 | member profile Application boundary + member-code repository port @ 060fe63 | application/architecture/contract CI #51 PASS | PARTIAL / DELIVERY SWITCH PENDING |
 | REQ-ARCH-008 | Application use cases ต้อง headless | ADR-0003 | GetCurrentMemberProfileUseCase @ 060fe63 | tests/application/current-member-profile.test.js; CI #51 PASS | PARTIAL / FIRST USE CASE VERIFIED |
-| REQ-ARCH-009 | Production/Test composition roots ใช้ contracts เดียวกัน | ADR-0003 | SystemFactory wires IdentityPort/Authz; DenyAll + Fake adapters @ a2253eb | architecture + security tests; CI #48 PASS | PARTIAL / SECURITY PLUG-IN VERIFIED |
+| REQ-ARCH-009 | Production/Test composition roots ใช้ contracts เดียวกัน | ADR-0003 | SystemFactory wires HTTP/token verifier/LINE identity adapters @ 865569b | architecture + identity tests; CI #53 PASS | PARTIAL / VERIFIED LINE IDENTITY PLUG-IN |
 | REQ-REL-001 | Release ผ่าน gates ก่อน production | RELEASE_GATES | documented | release evidence TBD | DOCUMENTED |
 
 ## Evidence Rule
