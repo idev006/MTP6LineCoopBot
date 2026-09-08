@@ -1,92 +1,89 @@
 /**
  * Auth Store
  *
- * Fail-closed authentication state.
- * UI state is not a server-side authorization boundary.
+ * Browser state is presentation state only.
+ * Authentication is true only after server-side Web session verification.
  */
-
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import {
   isSessionShapeValid,
   normalizeRoles,
-  parseStoredUser,
   primaryRole as selectPrimaryRole
 } from '@/engine/auth/sessionPolicy'
+import { createWebSessionClient } from '@/adapters/api/webSessionApi'
+import { getVerifiedLineCredential, logoutLine } from '@/adapters/line/liffAuth'
+
+const STORAGE_KEY = 'mtp6_web_session'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref(null)
   const token = ref(null)
+  const expiresAt = ref(null)
   const loading = ref(false)
+  const serverVerified = ref(false)
 
   const roles = computed(() => normalizeRoles(user.value?.roles))
   const isAuthenticated = computed(() =>
+    serverVerified.value &&
     isSessionShapeValid({ token: token.value, user: user.value })
   )
   const primaryRole = computed(() => selectPrimaryRole(roles.value))
 
+  function apiClient() {
+    return createWebSessionClient({ baseUrl: import.meta.env.VITE_API_BASE_URL })
+  }
+
   function hasRole(role) {
-    return roles.value.includes(role)
+    return isAuthenticated.value && roles.value.includes(role)
   }
 
   function hasAnyRole(...roleList) {
-    return roleList.some(r => roles.value.includes(r))
+    return isAuthenticated.value && roleList.some(r => roles.value.includes(r))
   }
 
   function clearSession() {
     user.value = null
     token.value = null
+    expiresAt.value = null
+    serverVerified.value = false
+    sessionStorage.removeItem(STORAGE_KEY)
+
+    // Remove obsolete client-authoritative persistence from earlier versions.
     localStorage.removeItem('auth_token')
     localStorage.removeItem('auth_user')
   }
 
-  function persistSession(nextToken, nextUser) {
+  function acceptVerifiedSession(nextToken, nextUser, nextExpiresAt = null) {
     const normalizedUser = {
       ...nextUser,
-      roles: normalizeRoles(nextUser.roles)
+      roles: normalizeRoles(nextUser?.roles)
     }
 
     if (!isSessionShapeValid({ token: nextToken, user: normalizedUser })) {
       throw new Error('ข้อมูล session จากเซิร์ฟเวอร์ไม่สมบูรณ์')
     }
 
-    user.value = normalizedUser
     token.value = nextToken
-    localStorage.setItem('auth_token', nextToken)
-    localStorage.setItem('auth_user', JSON.stringify(normalizedUser))
+    user.value = normalizedUser
+    expiresAt.value = nextExpiresAt || null
+    serverVerified.value = true
+    sessionStorage.setItem(STORAGE_KEY, nextToken)
   }
 
-  async function login(username, password) {
+  async function loginWithLine() {
     loading.value = true
     clearSession()
-
     try {
-      const baseUrl = import.meta.env.VITE_API_BASE_URL
-      const apiKey = import.meta.env.VITE_API_KEY
-
-      if (!baseUrl) throw new Error('ยังไม่ได้ตั้งค่า API endpoint')
-
-      const response = await fetch(baseUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          path: 'auth/login',
-          username,
-          password,
-          api_key: apiKey
-        })
+      const idToken = await getVerifiedLineCredential({
+        liffId: import.meta.env.VITE_LIFF_ID
       })
 
-      if (!response.ok) {
-        throw new Error('ไม่สามารถเชื่อมต่อระบบยืนยันตัวตนได้')
-      }
+      // liff.login() redirects the browser; no local success is granted.
+      if (!idToken) return { ok: false, redirecting: true }
 
-      const result = await response.json()
-      if (!result.ok) {
-        throw new Error(result.error?.message || 'เข้าสู่ระบบไม่สำเร็จ')
-      }
-
-      persistSession(result.data?.token, result.data?.user)
+      const data = await apiClient().exchangeLineIdToken(idToken)
+      acceptVerifiedSession(data?.token, data?.user, data?.expiresAt)
       return { ok: true }
     } catch (error) {
       clearSession()
@@ -96,79 +93,56 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function loginWithLiff(userId) {
-    loading.value = true
-    clearSession()
+  async function ensureServerSession() {
+    if (isAuthenticated.value) return true
 
-    try {
-      const baseUrl = import.meta.env.VITE_API_BASE_URL
-      const apiKey = import.meta.env.VITE_API_KEY
-
-      if (!baseUrl) throw new Error('ยังไม่ได้ตั้งค่า API endpoint')
-
-      const response = await fetch(baseUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          path: 'auth/liff',
-          userId,
-          api_key: apiKey
-        })
-      })
-
-      if (!response.ok) {
-        throw new Error('ไม่สามารถเชื่อมต่อระบบยืนยันตัวตนได้')
-      }
-
-      const result = await response.json()
-      if (!result.ok) {
-        throw new Error(result.error?.message || 'เข้าสู่ระบบไม่สำเร็จ')
-      }
-
-      persistSession(result.data?.token, result.data?.user)
-      return { ok: true }
-    } catch (error) {
-      clearSession()
-      throw error
-    } finally {
-      loading.value = false
-    }
-  }
-
-  function logout() {
-    clearSession()
-  }
-
-  function restoreSession() {
-    const savedToken = localStorage.getItem('auth_token')
-    const savedUser = parseStoredUser(localStorage.getItem('auth_user'))
-
-    if (!isSessionShapeValid({ token: savedToken, user: savedUser })) {
+    const savedToken = token.value || sessionStorage.getItem(STORAGE_KEY)
+    if (!savedToken) {
       clearSession()
       return false
     }
 
-    token.value = savedToken
-    user.value = savedUser
-    return true
+    loading.value = true
+    serverVerified.value = false
+    user.value = null
+    try {
+      const data = await apiClient().verifySession(savedToken)
+      acceptVerifiedSession(savedToken, data?.user, data?.expiresAt)
+      return true
+    } catch {
+      clearSession()
+      return false
+    } finally {
+      loading.value = false
+    }
   }
 
-  // Restore only a structurally valid persisted session.
-  // Server-side validity/expiry verification remains authoritative.
-  restoreSession()
+  async function logout() {
+    const currentToken = token.value || sessionStorage.getItem(STORAGE_KEY)
+    clearSession()
+    try {
+      if (currentToken) await apiClient().revokeSession(currentToken)
+    } catch {
+      // Local session is already cleared; server session will still expire.
+    } finally {
+      logoutLine()
+    }
+  }
 
   return {
     user,
     token,
+    expiresAt,
     loading,
+    serverVerified,
     isAuthenticated,
     roles,
     primaryRole,
     hasRole,
     hasAnyRole,
-    login,
-    loginWithLiff,
+    loginWithLine,
+    ensureServerSession,
     logout,
-    restoreSession
+    clearSession
   }
 })
