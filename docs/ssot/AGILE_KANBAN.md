@@ -168,5 +168,5 @@ Canonical process:
 ### SEC-WEB-003 Admin Capability Checkpoints
 
 - Staff Management read — DONE: backend @ 715318a CI #106; frontend @ 4b2987b Webapp CI #21
-- Role Catalog read — NEXT
-- Staff role assignment/write — PENDING protected write + audit
+- Role Catalog read — DONE: backend @ 1f8ec59 CI #108; frontend @ 3051119 Webapp CI #23
+- Staff role assignment/write — IN_PROGRESS protected write + audit
