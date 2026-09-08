@@ -17,6 +17,15 @@ Change Control: เปลี่ยนผ่าน Pull Request + Team Review เ
 5. เมื่อเอกสารและโค้ดขัดกัน ให้หยุด merge feature นั้นและเปิด discrepancy จนกว่าจะ resolve
 6. Architecture ต้องยึด TARGET_SYSTEM_ARCHITECTURE.md + Engine-first/Lego/Plug-in ตาม ADR-0002/ADR-0003
 
+## Execution Documents
+
+| เอกสาร | หน้าที่ |
+|---|---|
+| DEVELOPMENT_EXECUTION_PLAN.md | แผนดำเนินการพัฒนาจน Production Verified |
+| AGILE_KANBAN.md | Workflow/WIP/Pull policy |
+| TEST_SUITE_CATALOG.md | Test suites และ CI gates |
+| DEVELOPMENT_TEAM_HANDOFF.md | คำสั่งส่งมอบให้ทีมพัฒนา |
+
 ## 2. ลำดับอำนาจของเอกสาร
 
 | ลำดับ | เอกสาร | Authority |
