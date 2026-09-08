@@ -114,3 +114,24 @@ Weekly review:
 - update migration ledger
 - update traceability evidence
 - pull next highest-priority BACKLOG card into READY
+
+
+## Pipeline Mapping
+
+Kanban state is a quality state, not only a work-status label.
+
+| Kanban | Required Pipeline State |
+|---|---|
+| BACKLOG | requirement not ready |
+| READY | requirement + analysis + architecture + test design ready |
+| IN_PROGRESS | development + self-review |
+| REVIEW | peer/code review |
+| TEST | CI + QA + security + audit |
+| RELEASE_READY | release pipeline gates satisfied through UAT/approval as applicable |
+| DONE | merge + evidence + SSOT sync complete |
+| BLOCKED | pipeline stopped with explicit reason/owner |
+
+Canonical process:
+- `process/TEAM_DEVELOPMENT_PIPELINE.md`
+- `process/CI_PIPELINE_STANDARD.md`
+- `process/RELEASE_DEPLOYMENT_PIPELINE.md`

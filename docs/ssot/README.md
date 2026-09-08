@@ -29,6 +29,15 @@ Includes:
 - Canonical Use Case Diagram
 - Sequence Diagrams
 
+## Mandatory Process Standards
+
+Authoritative process package:
+- `process/TEAM_DEVELOPMENT_PIPELINE.md`
+- `process/CI_PIPELINE_STANDARD.md`
+- `process/RELEASE_DEPLOYMENT_PIPELINE.md`
+
+These are mandatory best-practice standards for project delivery.
+
 ## Current Handoff
 
 - DEVELOPMENT_HANDOFF_CHECKPOINT-2026-09-08.md — current authorized development handoff
