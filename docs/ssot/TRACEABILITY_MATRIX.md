@@ -12,15 +12,15 @@
 | REQ-DATA-001 | Data schema มี SSOT | API_DATA_CONTRACT | MTLineCoopBot/app/DataDict.js | data/repository tests declared | CODE_PRESENT / TEST_IMPLEMENTED |
 | REQ-CORE-001 | Business rule ไม่ duplicate ข้าม UI | ADR-0002 | Core/LoanCalculator.js + UI calculator duplicate | backend loan tests declared | BLOCKED |
 | REQ-ARCH-001 | Business capability ต้องอยู่ใน headless engine | ADR-0002 | app/Core/* present | Core tests declared | PARTIAL |
-| REQ-ARCH-002 | Infrastructure เปลี่ยนผ่าน ports/adapters | ADR-0002 | MemberRepository + SheetsMemberRepository | testMemberRepository declared | PARTIAL |
+| REQ-ARCH-002 | Infrastructure เปลี่ยนผ่าน ports/adapters | ADR-0002 | MTLineCoopBot Ports.MemberRepositoryPort + Sheets adapter @ f06dfb5 | reusable contract test + CI run #41 PASS | PARTIAL / VERIFIED FIRST PORT |
 | REQ-ARCH-003 | UI ไม่เป็นเจ้าของ business rule | ADR-0002 | LINE calls API in some flows; EventHandler still broad | Bot/API tests declared | PARTIAL |
-| REQ-ARCH-004 | Dependency wiring explicit/testable | ENGINE_ARCHITECTURE_STANDARD | global factory/config still used | some DI seams only | BLOCKED |
-| REQ-ARCH-005 | Composition root แยก production/test wiring | ADR-0002 | none canonical | none | NOT_IMPLEMENTED |
-| REQ-ARCH-006 | Repository port ต้อง persistence-only | ADR-0002 | port includes isActiveMember/hasRole | repository tests exist | BLOCKED |
+| REQ-ARCH-004 | Dependency wiring explicit/testable | ENGINE_ARCHITECTURE_STANDARD | Composition.SystemFactory @ f06dfb5; legacy globals remain | architecture test + CI run #41 PASS | PARTIAL / FIRST COMPOSITION SEAM VERIFIED |
+| REQ-ARCH-005 | Composition root แยก production/test wiring | ADR-0002 | Composition.SystemFactory @ f06dfb5 | system-factory architecture test + CI run #41 PASS | PARTIAL / CODE_PRESENT |
+| REQ-ARCH-006 | Repository port ต้อง persistence-only | ADR-0002 | MemberRepositoryPort excludes isActiveMember/hasRole @ f06dfb5 | contract test checks policy exclusion; CI #41 PASS | VERIFIED CONTRACT; legacy adapter still exposes extras |
 | REQ-TEST-001 | Critical backend rules automated | TEST_STRATEGY | Test.js + ci-test.js | 34 tests declared | TEST_IMPLEMENTED; RUN_EVIDENCE_MISSING |
 | REQ-TEST-002 | Web critical behavior automated | TEST_STRATEGY | no test scripts in web package | none | BLOCKED |
 | REQ-TEST-003 | Engine tests ไม่พึ่ง UI/network/production | TEST_STRATEGY | Node VM/fake Apps Script harness present | multiple headless tests | PARTIAL / STRONG BASE |
-| REQ-TEST-004 | Adapter ใหม่ผ่าน reusable contract tests | TEST_STRATEGY | repository assert contract exists | no reusable multi-adapter suite yet | PARTIAL |
+| REQ-TEST-004 | Adapter ใหม่ผ่าน reusable contract tests | TEST_STRATEGY | tests/contracts/member-repository.contract.test.js @ f06dfb5 | CI run #41 PASS | PARTIAL / REUSABLE REPOSITORY CONTRACT VERIFIED |
 | REQ-DOC-001 | SSOT change ผ่าน team review | ADR-0001 | docs/ssot + review record | PR #1 | ACCEPTED ON BRANCH |
 | REQ-REL-001 | Release ผ่าน gates ก่อน production | RELEASE_GATES | documented | release evidence TBD | DOCUMENTED |
 
