@@ -17,6 +17,18 @@ Change Control: เปลี่ยนผ่าน Pull Request + Team Review เ
 5. เมื่อเอกสารและโค้ดขัดกัน ให้หยุด merge feature นั้นและเปิด discrepancy จนกว่าจะ resolve
 6. Architecture ต้องยึด TARGET_SYSTEM_ARCHITECTURE.md + Engine-first/Lego/Plug-in ตาม ADR-0002/ADR-0003
 
+## Analysis & Interaction Model
+
+Authoritative analysis package: `docs/ssot/analysis/`
+
+Includes:
+- Actor Catalog
+- Actor → Use Case Matrix
+- Use Case Catalog / Template
+- Business/System Workflows
+- Canonical Use Case Diagram
+- Sequence Diagrams
+
 ## Execution Documents
 
 | เอกสาร | หน้าที่ |
