@@ -31,6 +31,8 @@ export function createWebAdminClient({ baseUrl, fetchImpl = fetch } = {}) {
     getSettings: sessionToken =>
       post('/api/web/admin/settings', { sessionToken }),
     getAuditLog: (sessionToken, options = {}) =>
-      post('/api/web/admin/audit-log', { sessionToken, ...options })
+      post('/api/web/admin/audit-log', { sessionToken, ...options }),
+    getStaffAccounts: sessionToken =>
+      post('/api/web/admin/staff', { sessionToken })
   })
 }
