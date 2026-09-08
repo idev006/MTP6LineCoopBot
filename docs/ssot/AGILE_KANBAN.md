@@ -88,6 +88,7 @@ Weekly review:
 
 ### BACKLOG
 
+- `UI-DEPS-001` — MTP6LineCoopBot #26 — controlled latest-stable Vue/Router/Pinia/Tailwind/daisyUI/Vite refresh
 - `APP-MEMBER-002` — MTLineCoopBot #11 — RenewMember use case
 - `ARCH-PORTS-002` — MTLineCoopBot #12 — AuditPort + ConfigPort
 - `APP-SCHEDULED-001` — MTLineCoopBot #13 — expiry/notice/reminder engines
