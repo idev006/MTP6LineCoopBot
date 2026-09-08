@@ -2,8 +2,8 @@
 
 Status: ACCEPTED
 
-| Use Case | Member | Staff | Admin | Auditor | System |
-|---|---:|---:|---:|---:|---:|
+| Use Case | Member | Staff | Manager | Admin | Auditor | System |
+|---|---:|---:|---:|---:|---:|---:|
 | UC-MEM-001 Activate membership | ✅ | support only | support only | - | - |
 | UC-MEM-002 Renew membership | ✅ | ✅ | ✅ | - | - |
 | UC-MEM-003 View own profile | ✅ | - | - | - | - |

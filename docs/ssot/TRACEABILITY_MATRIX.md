@@ -83,3 +83,6 @@
 
 
 | REQ-SEC-WEB-003D | Staff member renewal write ต้องใช้ Web session + staff/manager/admin RBAC + server calculation + audit | SEC-WEB-003 / ADR-0003 | RenewMemberByStaffUseCase + POST /api/web/members/renew @ 5fd6d28; MemberDetail client @ 3d6f04e | backend CI #98 + Webapp CI #19 PASS | VERIFIED |
+
+
+| REQ-SEC-ROLE-001 | Canonical persisted member roles ต้องสอดคล้องกันทุก identity/member/Web path | ADR-0003 / API_DATA_CONTRACT | MemberAccessEngine + self-renew manager consistency @ a8beda3 | backend CI #100 PASS; manager known-role/profile/self-renew regression tests PASS | VERIFIED |

@@ -324,3 +324,21 @@ Server behavior:
 Client behavior:
 - no optimistic expiry mutation
 - reload member detail from server after success
+
+
+## Canonical Role Vocabulary
+
+Persisted member-role values recognized by the current system are:
+
+- `member` — member self-service identity
+- `staff` — operational member-service role
+- `manager` — elevated operational role; valid for member self-service and staff-level Web capabilities where explicitly listed
+- `admin` — privileged administration role
+
+Rules:
+1. Unknown persisted roles fail the member known-role gate.
+2. `manager` is a first-class canonical role and must not be treated as an unknown role.
+3. A role appearing in a browser is never authority by itself; protected capabilities must authorize a server-verified Principal.
+4. Client-side route/menu role checks are presentation-only.
+5. `Auditor` is currently a conceptual actor/permission profile in analysis documents, not a canonical persisted `mem_role` unless a future controlled change adds it.
+6. Adding/removing/renaming a canonical role requires SSOT + authorization + migration + test updates in the same controlled change.
