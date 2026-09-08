@@ -10,7 +10,7 @@ Authority: ADR-0003 + TARGET_SYSTEM_ARCHITECTURE.md
 | Capability | Legacy source | Target | Current state | Evidence | Legacy retirement gate |
 |---|---|---|---|---|---|
 | Member validity | Core.MemberRules + repo policy helpers | MemberAccessEngine | MIGRATED primary API/LINE paths | backend 9a589db, CI #46 | no remaining production consumer of repo policy helpers |
-| Repository contract | Data.MemberRepository mixed contract/factory | MemberRepositoryPort + composition | PARTIAL | f06dfb5, CI #41 | all adapters pass reusable contract suite |
+| Repository contract | Data.MemberRepository mixed contract/factory | MemberRepositoryPort + composition | PARTIAL | f06dfb5, CI #41; InMemoryMemberRepository @ 255d862, CI #60 PASS | production/test adapters pass reusable contract suite; continue legacy factory extraction |
 | Clock/time | new Date() in multiple flows | ClockPort | PARTIAL | de7fc1f, CI #43 | all time-sensitive engines inject clock |
 | Identity | client lineUserId/API key context | Principal + IdentityPort | FOUNDATION | a2253eb, CI #48 | protected delivery paths use verified identity adapter |
 | Authorization | distributed role/member checks | AuthorizationEngine | FOUNDATION | a2253eb, CI #48 | protected use cases own policy; UI/adapter checks non-authoritative |
