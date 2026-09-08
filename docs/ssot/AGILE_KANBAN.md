@@ -87,7 +87,8 @@ Weekly review:
 1. `SEC-WEB-004` — MTP6LineCoopBot #46  
    Design secure activation and LINE identity binding
 
-2. `SEC-LEGACY-001` — remaining legacy client identity/API-key retirement audit
+2. `SEC-LEGACY-001` — MTP6LineCoopBot #56  
+   Remaining legacy client identity/API-key retirement audit — PARTIAL; member read/validity routes retired @ 95d4f66 CI #115
 
 3. `UI-DEPS-001` — MTP6LineCoopBot #26  
    Controlled latest-stable frontend dependency refresh
@@ -173,3 +174,11 @@ Canonical process:
 - Staff Management read — DONE: backend @ 715318a CI #106; frontend @ 4b2987b Webapp CI #21
 - Role Catalog read — DONE: backend @ 1f8ec59 CI #108; frontend @ 3051119 Webapp CI #23
 - Staff role assignment/write — DONE: backend @ 841b37a CI #110; frontend @ 96e77a5 Webapp CI #25
+
+
+### SEC-LEGACY-001 Checkpoints
+
+- Production Web/LIFF caller audit — DONE for legacy member reads
+- Internal LINE EventHandler caller migration — DONE @ 95d4f66
+- Legacy GET profile/savings/loans/dividends/validity retirement — DONE @ 95d4f66 CI #115
+- Legacy activate/renew identity-binding compatibility — BLOCKED BY SEC-WEB-004

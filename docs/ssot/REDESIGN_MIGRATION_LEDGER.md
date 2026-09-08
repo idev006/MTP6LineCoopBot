@@ -21,7 +21,7 @@ Authority: ADR-0003 + TARGET_SYSTEM_ARCHITECTURE.md
 | Notice | NoticeService orchestration | NoticeBroadcastUseCase + MessagingPort | MIGRATED PRIMARY RUNTIME | foundation b0194b5 CI #70; runtime switch 5489622 CI #72 | retire legacy opts compatibility path after reference audit |
 | Loan reminder | LoanReminderService orchestration | LoanReminderUseCase + MessagingPort + AuditPort | MIGRATED PRIMARY RUNTIME | foundation b0194b5 CI #70; runtime switch 5489622 CI #72 | retire legacy opts compatibility path after reference audit |
 | Loan calculation | duplicated backend/frontend static formulas | Core.LoanCalculator + CalculateLoanUseCase + public API | MIGRATED / CANONICAL | backend 45582b4 CI #74; frontend 0de0c0e UI CI #1; legacy backend UI retired daffda7 CI #76 | retain architecture guards; remove legacy equal_total alias after compatibility window |
-| LIFF identity | client lineUserId | Line ID Token Identity Adapter | MIGRATED (member self-service) | backend verifier @ 865569b + LIFF switch @ d3deac7; LIFF CI #5 PASS | retire remaining legacy protected lineUserId paths after reference audit |
+| LIFF identity | client lineUserId | Line ID Token Identity Adapter | MIGRATED (member self-service) | backend verifier @ 865569b + LIFF switch @ d3deac7; LIFF CI #5 PASS; legacy profile/savings/loans/dividends/validity retired @ 95d4f66 CI #115 | activation/renew identity-binding compatibility remains under SEC-WEB-004 |
 | Web auth | fail-open/client-only session | Web Session Identity Adapter + opaque server session | MIGRATED AUTH BOUNDARY | backend 1406a00f CI #81; LINE exchange fe332fde CI #85; Web client 97dc634e CI #8 | protected writes/admin operations remain under SEC-WEB-003 |
 | Web frontend | direct fetches + client API key/mock fallbacks | shared session-authorized API clients + presentation-only UI | PARTIAL / MEMBER + SETTINGS + AUDIT + REPORT READS MIGRATED | member d78a1bc/07ca08e; settings 3ea0171/60b4d35; audit 82cf8ee/481b175; reports 820bd14/dbb1df2 with CI PASS | migrate protected writes/admin capabilities; remove remaining legacy client trust |
 | Audit logging | mixed direct logs/sheets | AuditPort + adapter | PARTIAL | AuditPort + repository/in-memory adapters @ 58ee3d9, CI #67 PASS; activation/renewal migrated | migrate scheduled/admin critical writes through AuditPort |
@@ -62,3 +62,6 @@ Legacy implementation จะถูกลบเมื่อ:
 
 
 | Web admin staff role assignment | placeholder/no protected role write | AssignStaffRoleUseCase + StaffAdminRepositoryPort + privileged audit store | MIGRATED | backend 841b37a CI #110; frontend 96e77a5 Webapp CI #25 | activation/identity binding remains separate under SEC-WEB-004; audit remaining legacy role callers before retirement |
+
+
+| Legacy member read routes | client/API-key lineUserId GET profile/savings/loans/dividends/validity | verified Principal + application use cases | RETIRED | frontend caller audit + EventHandler migration; backend 95d4f66 CI #115 PASS; CI #112 failure exposed hidden internal dependency | keep retirement guard; activate/renew remain separate identity-binding compatibility |
