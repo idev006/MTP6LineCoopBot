@@ -50,21 +50,18 @@ Optional:
 ## Current Priority
 
 P0:
-1. LIFF protected data migration to raw ID token
-2. verified Principal across member self-service
-3. remove legacy client identity trust
-4. Web server-session boundary
+1. Web server-session Principal boundary
+2. server-side Web RBAC / session expiry / revocation
+3. remaining legacy client identity-trust retirement audit
 
 P1:
-5. ActivateMember use case
-6. RenewMember use case
-7. InMemoryMemberRepository
-8. AuditPort/ConfigPort
+4. Web admin completion
+5. controlled frontend dependency refresh
+6. remaining legacy compatibility retirement
 
 P2:
-9. Scheduled engines
-10. Web admin completion
-11. Loan calculation canonicalization
+7. Staging/UAT/release hardening
+8. operational monitoring and production verification
 
 ## Cadence
 
@@ -87,24 +84,21 @@ Weekly review:
 
 ### READY
 
-1. `CORE-FIN-001` — MTLineCoopBot #14  
-   Make LoanCalculationEngine the canonical formula authority
-
-2. `SEC-WEB-002` — MTP6LineCoopBot #16  
+1. `SEC-WEB-002` — MTP6LineCoopBot #16  
    Server-verified Web Session Principal boundary
 
-3. `UI-DEPS-001` — MTP6LineCoopBot #26  
+2. `UI-DEPS-001` — MTP6LineCoopBot #26  
    Controlled latest-stable frontend dependency refresh
 
 ### BACKLOG
 
 - Web admin completion / RBAC workflows
 - remaining legacy lineUserId retirement audit
-- scheduled runtime adapter migration after APP-SCHEDULED-001 foundation CI
 - release/staging/UAT hardening
 
 ### DONE
 
+- `CORE-FIN-001` — MTLineCoopBot #14 — DONE; backend authority @ 45582b4 CI #74, frontend @ 0de0c0e UI CI #1, duplicate retirement @ daffda7 CI #76 PASS
 - `APP-SCHEDULED-001` — MTLineCoopBot #13 — DONE @ 5489622; foundation CI #70 + runtime CI #72 PASS
 
 - `SEC-LIFF-001` — MTP6LineCoopBot #15 — DONE @ d3deac7; LIFF CI #5 PASS
