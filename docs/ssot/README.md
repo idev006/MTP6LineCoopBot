@@ -15,6 +15,7 @@ Change Control: เปลี่ยนผ่าน Pull Request + Team Review เ
 3. ห้ามถือว่า feature "เสร็จ" จากข้อความในเอกสารเพียงอย่างเดียว ต้องมี Evidence
 4. เอกสารเก่าที่อยู่นอก `docs/ssot/` เป็น Reference จนกว่าจะ migrate/retire
 5. เมื่อเอกสารและโค้ดขัดกัน ให้หยุด merge feature นั้นและเปิด discrepancy จนกว่าจะ resolve
+6. Architecture ต้องยึด Engine-first + Lego/Plug-in Concept ตาม ENGINE_ARCHITECTURE_STANDARD.md
 
 ## 2. ลำดับอำนาจของเอกสาร
 
@@ -23,7 +24,7 @@ Change Control: เปลี่ยนผ่าน Pull Request + Team Review เ
 | 1 | PROJECT_CHARTER.md | เป้าหมาย ขอบเขต หลักการตัดสินใจ |
 | 2 | CHANGE_CONTROL.md + ADR | การเปลี่ยนข้อกำหนด/สถาปัตยกรรม |
 | 3 | SYSTEM_BASELINE.md | สถานะระบบที่ยืนยันแล้ว |
-| 4 | ARCHITECTURE_CONTRACT.md | ขอบเขต component และ dependency |
+| 4 | ARCHITECTURE_CONTRACT.md + ENGINE_ARCHITECTURE_STANDARD.md | ขอบเขต component, engine, port, adapter, wiring |
 | 5 | API_DATA_CONTRACT.md | API/Data contracts |
 | 6 | TEST_STRATEGY.md | วิธีพิสูจน์ความถูกต้อง |
 | 7 | AUDIT_PLAN.md | วิธีตรวจ compliance/evidence |
@@ -62,6 +63,8 @@ Change Control: เปลี่ยนผ่าน Pull Request + Team Review เ
 3. Acceptance Criteria ต้องชัด
 4. Test Mapping ต้องมี
 5. ถ้ามีการเปลี่ยน design สำคัญ ต้องมี ADR ที่ Accepted
+6. ระบุว่า logic อยู่ engine ใด, ports อะไร, adapters อะไร และ wiring อยู่ที่ใด
+7. ระบุวิธีทดสอบแบบ headless/fake/in-memory
 
 หลังเขียนโค้ด:
 1. Test ผ่าน
@@ -69,10 +72,12 @@ Change Control: เปลี่ยนผ่าน Pull Request + Team Review เ
 3. Audit evidence อ้างได้
 4. เอกสารยังตรงกับ implementation
 5. PR ผ่าน review
+6. Engine ไม่ผูกกับ UI/infrastructure โดยไม่จำเป็น
+7. Adapter สามารถถูกถอด/เปลี่ยนผ่าน contract ได้ตามที่กำหนด
 
 ## 6. Audit Rule
 
 ผู้ Audit ต้องสามารถเริ่มจาก Requirement ID แล้วตามไปถึง:
-`Requirement → Design/ADR → Source → Test → CI → Deployment → Verification`
+`Requirement → Design/ADR → Engine/Port/Adapter → Source → Test → CI → Deployment → Verification`
 
 ถ้าตามไม่ได้ ให้ถือว่า **ยังไม่มีหลักฐานเพียงพอ** แม้ feature จะดูเหมือนทำงานได้
