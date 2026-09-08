@@ -54,3 +54,6 @@
 
 
 | REQ-APP-ACT-001 | Membership activation business logic must be headless and outside UI/delivery | UC-MEM-001 / SEQ-MEMBER-ACTIVATE / ADR-0003 | MemberActivationEngine + ActivateMemberUseCase @ 91bd7cb | backend CI #63 PASS + legacy regression PASS | VERIFIED |
+
+
+| REQ-APP-REN-001 | Self-renewal must use verified Principal and server-side business policy | UC-MEM-002 / SEQ-MEMBER-RENEW / ADR-0003 | RenewMemberUseCase + /api/member/me/renew @ 4dd0391 | backend CI #65 PASS | VERIFIED PRIMARY SELF-SERVICE PATH |
