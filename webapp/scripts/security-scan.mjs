@@ -10,6 +10,7 @@ const files = [
   new URL('../src/views/app/admin/SettingsView.vue', import.meta.url),
   new URL('../src/views/app/admin/AuditLogView.vue', import.meta.url),
   new URL('../src/views/app/admin/StaffManageView.vue', import.meta.url),
+  new URL('../src/views/app/admin/RoleManageView.vue', import.meta.url),
   new URL('../src/adapters/api/webAdminApi.js', import.meta.url),
   new URL('../src/views/app/ReportView.vue', import.meta.url),
   new URL('../src/adapters/api/webReportApi.js', import.meta.url)
@@ -34,6 +35,7 @@ const forbidden = [
   /path:\s*['"]admin\/settings['"]/,
   /path:\s*['"]admin\/audit-log['"]/,
   /path:\s*['"]admin\/staff['"]/,
+  /path:\s*['"]admin\/roles['"]/,
   /path:\s*['"]user\/reports['"]/,
   /api_key\s*:/
 ]
@@ -113,6 +115,20 @@ if (!adminApiSrc.includes('/api/web/admin/audit-log')) {
 }
 if (!adminApiSrc.includes('/api/web/admin/staff')) {
   console.error('FAIL security-scan: protected admin staff endpoint missing from admin API client')
+  failed = true
+}
+if (!adminApiSrc.includes('/api/web/admin/roles')) {
+  console.error('FAIL security-scan: protected admin role catalog endpoint missing from admin API client')
+  failed = true
+}
+
+const roleSrc = fs.readFileSync(new URL('../src/views/app/admin/RoleManageView.vue', import.meta.url), 'utf8')
+if (!/createWebAdminClient/.test(roleSrc) || !/auth\.token/.test(roleSrc)) {
+  console.error('FAIL security-scan: role management must use session-authorized role catalog API')
+  failed = true
+}
+if (/Sprint 2/.test(roleSrc) || /VITE_API_KEY/.test(roleSrc) || /mock data/i.test(roleSrc)) {
+  console.error('FAIL security-scan: role management must not use placeholder, client API key or mock fallback')
   failed = true
 }
 
