@@ -59,3 +59,6 @@ Legacy implementation จะถูกลบเมื่อ:
 
 
 | Web admin role catalog | placeholder/hardcoded UI taxonomy | Security.RoleCatalog + admin-only role catalog API | ROLE CATALOG MIGRATED | backend 1f8ec59 CI #108; frontend 3051119 Webapp CI #23 | protected role assignment write + audit remain |
+
+
+| Web admin staff role assignment | placeholder/no protected role write | AssignStaffRoleUseCase + StaffAdminRepositoryPort + privileged audit store | MIGRATED | backend 841b37a CI #110; frontend 96e77a5 Webapp CI #25 | activation/identity binding remains separate under SEC-WEB-004; audit remaining legacy role callers before retirement |
