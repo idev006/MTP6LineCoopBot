@@ -151,3 +151,10 @@ Canonical process:
 - Audit Log read — DONE: backend @ 82cf8ee CI #94; frontend @ 481b175 Webapp CI #15
 - Reports read — DONE: backend @ 820bd14 CI #96; frontend @ dbb1df2 Webapp CI #17
 - Protected Web writes/admin operations — IN_PROGRESS
+
+
+### SEC-WEB-003 Protected Write Checkpoints
+
+- Protected Web renewal write — DONE: backend @ 5fd6d28 CI #98; frontend @ 3d6f04e Webapp CI #19
+- Activation / identity binding — SPLIT TO CONTROLLED FOLLOW-UP
+- Staff/Role admin capabilities — PENDING
