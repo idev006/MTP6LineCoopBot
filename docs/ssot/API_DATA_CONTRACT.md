@@ -96,3 +96,41 @@ Required automated tests:
 - verified user not linked to member
 - verified linked member
 - client-supplied ID mismatch does not alter Principal
+
+
+## Protected Self-Renew Contract
+
+### POST /api/member/me/renew
+
+Request:
+```json
+{"idToken":"<raw LINE ID token>"}
+```
+
+Identity:
+- raw ID token verified server-side
+- member identity derived from verified Principal
+- client must not supply authoritative memberCode/lineUserId/expiry/status
+
+Flow:
+verified Principal → RenewMemberUseCase → server clock → Core.MemberRules.computeRenewal → MemberRepositoryPort.saveRenewal
+
+Success:
+```json
+{
+  "ok": true,
+  "data": {
+    "mem_code": "...",
+    "mem_exp_dt": "yyyy-mm-dd",
+    "mem_status": "active",
+    "renewed_from": "yyyy-mm-dd"
+  }
+}
+```
+
+Fail closed:
+- missing/invalid ID token → UNAUTHENTICATED
+- Principal not member-bound → MEMBER_NOT_LINKED/FORBIDDEN
+- member not found → MEMBER_NOT_FOUND
+
+Legacy `/api/member/renew` remains transitional and is not the canonical protected self-renew contract.
