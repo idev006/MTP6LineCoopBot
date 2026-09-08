@@ -1,7 +1,8 @@
 /**
  * LIFF API Client
  *
- * Fail-closed transport/envelope handling.
+ * Protected member data uses raw LINE ID tokens and POST-only self-service routes.
+ * Client-visible API keys and client-provided lineUserId are not authentication proof.
  */
 
 const API = {
@@ -26,41 +27,47 @@ const API = {
     return result.data;
   },
 
-  async get(path, params = {}) {
-    const queryParams = new URLSearchParams({
-      path,
-      api_key: CONFIG.API_KEY,
-      ...params
-    });
-
-    const response = await fetch(`${CONFIG.API_BASE_URL}?${queryParams}`);
-    return this.parseResponse(response);
+  buildApiUrl(path) {
+    const base = String(CONFIG.API_BASE_URL || '').replace(/\/+$/, '');
+    const normalized = String(path || '').replace(/^\/+/, '');
+    return `${base}/api/${normalized}`;
   },
 
-  async post(path, data = {}) {
-    const response = await fetch(CONFIG.API_BASE_URL, {
+  async postProtected(path, idToken, data = {}) {
+    if (!idToken || typeof idToken !== 'string') {
+      const error = new Error('ไม่พบข้อมูลยืนยันตัวตนจาก LINE');
+      error.code = 'UNAUTHENTICATED';
+      throw error;
+    }
+
+    const response = await fetch(this.buildApiUrl(path), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        path,
-        api_key: CONFIG.API_KEY,
+        idToken,
         ...data
       })
     });
+
     return this.parseResponse(response);
   },
 
-  async getMemberProfile(lineUserId) {
-    return this.get('member/profile', { lineUserId });
+  async getCurrentMemberProfile(idToken) {
+    return this.postProtected('member/me/profile', idToken);
   },
 
-  async getSavings(lineUserId) {
-    const data = await this.get('member/savings', { lineUserId });
+  async getCurrentSavings(idToken) {
+    const data = await this.postProtected('member/me/savings', idToken);
     return data?.savings || [];
   },
 
-  async getLoans(lineUserId) {
-    const data = await this.get('member/loans', { lineUserId });
+  async getCurrentLoans(idToken) {
+    const data = await this.postProtected('member/me/loans', idToken);
     return data?.loans || [];
+  },
+
+  async getCurrentDividends(idToken) {
+    const data = await this.postProtected('member/me/dividends', idToken);
+    return data?.dividends || [];
   }
 };
