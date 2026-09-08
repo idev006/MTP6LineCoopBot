@@ -1,6 +1,6 @@
 # ADR-0001 — Project SSOT and Change-Control Model
 
-Status: PROPOSED  
+Status: ACCEPTED  
 Date: 2026-09-08
 
 ## Context
@@ -9,7 +9,6 @@ Date: 2026-09-08
 
 ## Decision
 
-เสนอให้:
 1. ใช้ `MTP6LineCoopBot/docs/ssot/` เป็น Project Governance SSOT
 2. `MTLineCoopBot` เป็น authoritative backend implementation repository
 3. `MTP6LineCoopBot` เป็น authoritative Web/LIFF implementation repository
@@ -43,10 +42,11 @@ Date: 2026-09-08
 
 ## Rollback
 
-ยกเลิก ADR และกลับไป governance เดิมได้ก่อน ACCEPTED; ไม่มี runtime impact
+หลัง ACCEPTED การยกเลิก/เปลี่ยน decision ต้องมี superseding ADR
 
 ## Approval
 
-- Product/Project: PENDING
-- Engineering: PENDING
-- Test/Audit: PENDING
+- Product/Project: APPROVED 2026-09-08
+- Engineering: APPROVED 2026-09-08
+- Test/Audit: APPROVED 2026-09-08
+- Evidence: GOVERNANCE_REVIEW_RECORD-2026-09-08.md
