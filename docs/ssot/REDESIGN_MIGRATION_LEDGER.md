@@ -50,3 +50,6 @@ Legacy implementation จะถูกลบเมื่อ:
 7. PR review ผ่าน
 
 ห้ามลบ legacy เพียงเพราะ target code ถูกสร้างแล้ว
+
+
+| Web staff renewal | legacy/disabled client renewal path | RenewMemberByStaffUseCase + protected Web session write | MIGRATED | backend 5fd6d28 CI #98; frontend 3d6f04e CI #19 | keep activation/binding separate; retire legacy web renewal callers after reference audit |
