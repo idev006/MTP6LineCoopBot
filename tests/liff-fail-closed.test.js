@@ -47,6 +47,29 @@ async function run(fetchImpl, expression) {
   if ('api_key' in body) throw new Error('protected request must not send client API key');
   if ('lineUserId' in body) throw new Error('protected request must not send client lineUserId');
 
+  let activationCaptured = null;
+  const activation = await run(
+    async (url, options) => {
+      activationCaptured = { url, options };
+      return {
+        ok: true,
+        json: async () => ({ ok: true, data: { mem_code: 'M1', changed: true } })
+      };
+    },
+    'API.activateCurrentMember("raw-id-token", "ACT-001")'
+  );
+  if (!activation.changed) throw new Error('secure activation success not returned');
+  if (!activationCaptured.url.endsWith('/api/member/me/activate')) {
+    throw new Error('secure activation must use /api/member/me/activate');
+  }
+  const activationBody = JSON.parse(activationCaptured.options.body);
+  if (activationBody.idToken !== 'raw-id-token' || activationBody.activateCode !== 'ACT-001') {
+    throw new Error('secure activation request contract mismatch');
+  }
+  if ('lineUserId' in activationBody || 'api_key' in activationBody) {
+    throw new Error('secure activation must not send lineUserId or API key');
+  }
+
   let missingFailed = false;
   try {
     await run(async () => ({ ok: true, json: async () => ({ ok: true, data: {} }) }),
@@ -78,7 +101,7 @@ async function run(fetchImpl, expression) {
   }
   if (!transportFailed) throw new Error('HTTP failure must throw');
 
-  for (const method of ['getCurrentMemberProfile', 'getCurrentSavings', 'getCurrentLoans', 'getCurrentDividends']) {
+  for (const method of ['getCurrentMemberProfile', 'activateCurrentMember', 'getCurrentSavings', 'getCurrentLoans', 'getCurrentDividends']) {
     if (!apiSrc.includes(method)) throw new Error('missing protected API method: ' + method);
   }
 
@@ -112,12 +135,16 @@ async function run(fetchImpl, expression) {
   if (!/liff\.getIDToken\s*\(\)/.test(appSrc)) {
     throw new Error('LIFF app must obtain raw ID token');
   }
+  if (!/MEMBER_NOT_LINKED/.test(appSrc) || !/API\.activateCurrentMember\(idToken, activateCode\)/.test(appSrc)) {
+    throw new Error('LIFF app must hand unlinked verified identity to secure activation');
+  }
 
   console.log('PASS  protected LIFF API uses POST self-service endpoints');
   console.log('PASS  raw ID token is body-only; no API key/lineUserId identity proof');
   console.log('PASS  missing/invalid/API failure paths fail closed');
   console.log('PASS  LIFF app uses getIDToken and no legacy getProfile identity path');
-  console.log('=== LIFF SECURITY TESTS PASS (4/4) ===');
+  console.log('PASS  LIFF secure activation sends verified ID token + entitlement code only');
+  console.log('=== LIFF SECURITY TESTS PASS (5/5) ===');
 })().catch(err => {
   console.error(err);
   process.exit(1);

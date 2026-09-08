@@ -40,6 +40,44 @@
     </div>
   </div>
 
+  <!-- Secure Activation -->
+  <div id="activation" class="hidden">
+    <div class="hero min-h-screen">
+      <div class="hero-content w-full max-w-md">
+        <div class="card bg-base-100 shadow-xl w-full">
+          <div class="card-body">
+            <h1 class="card-title text-2xl">เปิดสิทธิ์สมาชิก</h1>
+            <p class="text-base-content/70">
+              กรุณากรอกรหัส activate ที่ได้รับจากสหกรณ์ ระบบจะผูกบัญชีสมาชิกกับ LINE ที่ยืนยันตัวตนแล้วเท่านั้น
+            </p>
+
+            <form id="activation-form" class="space-y-4 mt-2">
+              <label class="form-control">
+                <span class="label-text">รหัส Activate</span>
+                <input
+                  id="activation-code"
+                  class="input input-bordered"
+                  type="text"
+                  autocomplete="off"
+                  maxlength="64"
+                  required
+                />
+              </label>
+
+              <div id="activation-error" class="alert alert-error hidden">
+                <span id="activation-error-message"></span>
+              </div>
+
+              <button id="activation-submit" type="submit" class="btn btn-primary w-full">
+                ยืนยันเปิดสิทธิ์
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Main App -->
   <div id="app" class="hidden">
     <!-- Header -->
