@@ -65,3 +65,13 @@ Authority: PROJECT_CHARTER + ADR-0002 + ADR-0003 + TEST_STRATEGY + RELEASE_GATES
 Requirement → Acceptance Criteria → Architecture impact → Code → Test → CI → Evidence → SSOT update
 
 ห้ามปิด card หากไม่มี automated evidence เว้นแต่เป็น manual/UAT item ที่ระบุชัด
+
+
+## Mandatory Pipeline Standards
+
+All workstreams must follow:
+- `process/TEAM_DEVELOPMENT_PIPELINE.md`
+- `process/CI_PIPELINE_STANDARD.md`
+- `process/RELEASE_DEPLOYMENT_PIPELINE.md`
+
+The Development Execution Plan defines **what** to deliver; these pipeline standards define **how work must flow and pass quality/release gates**.
