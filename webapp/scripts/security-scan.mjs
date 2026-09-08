@@ -11,7 +11,6 @@ const forbidden = [
   /mock-token/i,
   /mock-liff-token/i,
   /Using mock data/i,
-  /roles:\s*\[\s*['"]admin['"]/i,
   /VITE_API_KEY/,
   /auth\/login/,
   /auth\/liff/,
@@ -31,6 +30,10 @@ for (const url of files) {
 }
 
 const authSrc = fs.readFileSync(new URL('../src/stores/auth.js', import.meta.url), 'utf8')
+if (/roles:\s*\[\s*['"]admin['"]/i.test(authSrc)) {
+  console.error('FAIL security-scan: hardcoded admin auth fallback found in auth store')
+  failed = true
+}
 if (!/serverVerified\.value\s*&&/.test(authSrc)) {
   console.error('FAIL security-scan: isAuthenticated must require serverVerified')
   failed = true
