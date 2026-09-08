@@ -121,6 +121,10 @@ if (!adminApiSrc.includes('/api/web/admin/roles')) {
   console.error('FAIL security-scan: protected admin role catalog endpoint missing from admin API client')
   failed = true
 }
+if (!adminApiSrc.includes('/api/web/admin/staff/role')) {
+  console.error('FAIL security-scan: protected staff role assignment endpoint missing from admin API client')
+  failed = true
+}
 
 const roleSrc = fs.readFileSync(new URL('../src/views/app/admin/RoleManageView.vue', import.meta.url), 'utf8')
 if (!/createWebAdminClient/.test(roleSrc) || !/auth\.token/.test(roleSrc)) {
@@ -139,6 +143,14 @@ if (!/createWebAdminClient/.test(staffSrc) || !/auth\.token/.test(staffSrc)) {
 }
 if (/VITE_API_KEY/.test(staffSrc) || /Sprint 2/.test(staffSrc) || /mock data/i.test(staffSrc)) {
   console.error('FAIL security-scan: staff management must not use client API key or placeholder/mock fallback')
+  failed = true
+}
+if (!/assignStaffRole\(auth\.token, account\.memberCode, newRole\)/.test(staffSrc)) {
+  console.error('FAIL security-scan: staff role changes must use protected session-authorized write API')
+  failed = true
+}
+if (!/isSelf\(account\)/.test(staffSrc)) {
+  console.error('FAIL security-scan: staff role UI must preserve self-change protection')
   failed = true
 }
 
