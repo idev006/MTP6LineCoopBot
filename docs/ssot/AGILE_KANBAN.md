@@ -163,3 +163,10 @@ Canonical process:
 ### Authorization Consistency
 
 - Role vocabulary consistency — DONE: canonical `member|staff|manager|admin`; backend @ a8beda3 CI #100 PASS
+
+
+### SEC-WEB-003 Admin Capability Checkpoints
+
+- Staff Management read — DONE: backend @ 715318a CI #106; frontend @ 4b2987b Webapp CI #21
+- Role Catalog read — NEXT
+- Staff role assignment/write — PENDING protected write + audit
