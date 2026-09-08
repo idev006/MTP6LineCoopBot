@@ -77,3 +77,40 @@ Weekly review:
 - CI health
 - security findings
 - migration ledger
+
+
+## Live Execution Board — 2026-09-08
+
+### READY — WIP intake (3)
+
+1. `SEC-LIFF-001` — MTP6LineCoopBot #15  
+   Switch LIFF member data to raw ID-token protected endpoints
+
+2. `ARCH-DATA-001` — MTLineCoopBot #9  
+   Add InMemoryMemberRepository plug-compatible adapter
+
+3. `APP-MEMBER-001` — MTLineCoopBot #10  
+   Extract ActivateMember application use case
+
+### BACKLOG
+
+- `APP-MEMBER-002` — MTLineCoopBot #11 — RenewMember use case
+- `ARCH-PORTS-002` — MTLineCoopBot #12 — AuditPort + ConfigPort
+- `APP-SCHEDULED-001` — MTLineCoopBot #13 — expiry/notice/reminder engines
+- `CORE-FIN-001` — MTLineCoopBot #14 — canonical LoanCalculationEngine
+- `SEC-WEB-002` — MTP6LineCoopBot #16 — server-verified Web Session Principal
+
+## Pull Rule for Live Board
+
+ทีมดึงงานจาก READY เข้า IN_PROGRESS ได้เมื่อ:
+- WIP รวมไม่เกิน 3
+- dependency พร้อม
+- issue มี acceptance criteria/test gate
+- branch ตั้งชื่อตาม work item
+- commit/push เป็น checkpoints สั้น ๆ
+
+เมื่อ card DONE:
+- close issue
+- update migration ledger
+- update traceability evidence
+- pull next highest-priority BACKLOG card into READY
