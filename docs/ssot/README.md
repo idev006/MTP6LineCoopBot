@@ -29,8 +29,9 @@ Change Control: เปลี่ยนผ่าน Pull Request + Team Review เ
 | 6 | TEST_STRATEGY.md | วิธีพิสูจน์ความถูกต้อง |
 | 7 | AUDIT_PLAN.md | วิธีตรวจ compliance/evidence |
 | 8 | TRACEABILITY_MATRIX.md | Requirement → Code → Test → Evidence |
-| 9 | RELEASE_GATES.md | เกณฑ์อนุญาต release |
-| 10 | เอกสารเดิม | Reference only เว้นแต่ถูกอ้างจาก SSOT โดยตรง |
+| 9 | REDESIGN_MIGRATION_LEDGER.md | Legacy → target migration state/evidence |
+| 10 | RELEASE_GATES.md | เกณฑ์อนุญาต release |
+| 11 | เอกสารเดิม | Reference only เว้นแต่ถูกอ้างจาก SSOT โดยตรง |
 
 ## 3. สถานะมาตรฐาน
 
