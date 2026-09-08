@@ -149,5 +149,5 @@ Canonical process:
 
 - Admin Settings read — DONE: backend @ 3ea0171 CI #92; frontend @ 60b4d35 Webapp CI #13
 - Audit Log read — DONE: backend @ 82cf8ee CI #94; frontend @ 481b175 Webapp CI #15
-- Reports read — IN_PROGRESS
-- Protected Web writes/admin operations — PENDING
+- Reports read — DONE: backend @ 820bd14 CI #96; frontend @ dbb1df2 Webapp CI #17
+- Protected Web writes/admin operations — IN_PROGRESS
