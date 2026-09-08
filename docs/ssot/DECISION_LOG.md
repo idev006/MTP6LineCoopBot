@@ -6,6 +6,7 @@
 |---|---|---|---|---|
 | ADR-0001 | Project SSOT and change-control model | ACCEPTED | 2026-09-08 | - |
 | ADR-0002 | Engine-first Lego/Plug-in architecture | ACCEPTED | 2026-09-08 | - |
+| ADR-0003 | Canonical target architecture + Principal security boundary | ACCEPTED | 2026-09-08 | - |
 
 ## Rule
 

@@ -15,7 +15,7 @@ Change Control: เปลี่ยนผ่าน Pull Request + Team Review เ
 3. ห้ามถือว่า feature "เสร็จ" จากข้อความในเอกสารเพียงอย่างเดียว ต้องมี Evidence
 4. เอกสารเก่าที่อยู่นอก `docs/ssot/` เป็น Reference จนกว่าจะ migrate/retire
 5. เมื่อเอกสารและโค้ดขัดกัน ให้หยุด merge feature นั้นและเปิด discrepancy จนกว่าจะ resolve
-6. Architecture ต้องยึด Engine-first + Lego/Plug-in Concept ตาม ENGINE_ARCHITECTURE_STANDARD.md
+6. Architecture ต้องยึด TARGET_SYSTEM_ARCHITECTURE.md + Engine-first/Lego/Plug-in ตาม ADR-0002/ADR-0003
 
 ## 2. ลำดับอำนาจของเอกสาร
 
@@ -24,7 +24,7 @@ Change Control: เปลี่ยนผ่าน Pull Request + Team Review เ
 | 1 | PROJECT_CHARTER.md | เป้าหมาย ขอบเขต หลักการตัดสินใจ |
 | 2 | CHANGE_CONTROL.md + ADR | การเปลี่ยนข้อกำหนด/สถาปัตยกรรม |
 | 3 | SYSTEM_BASELINE.md | สถานะระบบที่ยืนยันแล้ว |
-| 4 | ARCHITECTURE_CONTRACT.md + ENGINE_ARCHITECTURE_STANDARD.md | ขอบเขต component, engine, port, adapter, wiring |
+| 4 | TARGET_SYSTEM_ARCHITECTURE.md + ARCHITECTURE_CONTRACT.md + ENGINE_ARCHITECTURE_STANDARD.md | Canonical target architecture, engine/port/adapter/wiring |
 | 5 | API_DATA_CONTRACT.md | API/Data contracts |
 | 6 | TEST_STRATEGY.md | วิธีพิสูจน์ความถูกต้อง |
 | 7 | AUDIT_PLAN.md | วิธีตรวจ compliance/evidence |

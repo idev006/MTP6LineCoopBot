@@ -1,6 +1,6 @@
 # ENGINE_ARCHITECTURE_STANDARD
 
-สถานะ: PROPOSED
+สถานะ: ACCEPTED — governed by ADR-0002/ADR-0003
 
 ## 1. Purpose
 
