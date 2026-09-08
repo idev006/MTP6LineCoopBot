@@ -77,8 +77,17 @@ export const useMemberStore = defineStore('member', () => {
     throw new Error('การ Activate ผ่าน Web ยังไม่เปิดใช้งานจนกว่า protected write endpoint จะพร้อม')
   }
 
-  async function renewMember() {
-    throw new Error('การต่ออายุผ่าน Web ยังไม่เปิดใช้งานจนกว่า protected write endpoint จะพร้อม')
+  async function renewMember(memberCode) {
+    loading.value = true
+    error.value = null
+    try {
+      return await client().renewMember(requireSessionToken(), memberCode)
+    } catch (e) {
+      error.value = e.message || 'ไม่สามารถต่ออายุสมาชิกได้'
+      throw e
+    } finally {
+      loading.value = false
+    }
   }
 
   function clearCurrentMember() {

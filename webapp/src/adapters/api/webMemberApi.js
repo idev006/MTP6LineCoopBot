@@ -26,6 +26,8 @@ export function createWebMemberClient({ baseUrl, fetchImpl = fetch } = {}) {
     listMembers: (sessionToken, params = {}) =>
       post('/api/web/members/list', { sessionToken, ...params }),
     getMemberDetail: (sessionToken, memberCode) =>
-      post('/api/web/members/detail', { sessionToken, memberCode })
+      post('/api/web/members/detail', { sessionToken, memberCode }),
+    renewMember: (sessionToken, memberCode) =>
+      post('/api/web/members/renew', { sessionToken, memberCode })
   })
 }
