@@ -29,6 +29,15 @@ Includes:
 - Canonical Use Case Diagram
 - Sequence Diagrams
 
+## Mandatory Frontend Standard
+
+- `ui/FRONTEND_ENGINEERING_STANDARD.md`
+  - never trust client
+  - no business logic in UI
+  - Vue + Vue Router + Pinia
+  - Tailwind CSS + daisyUI-first
+  - Chakra Petch typography
+
 ## Mandatory Process Standards
 
 Authoritative process package:
