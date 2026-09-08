@@ -143,3 +143,11 @@ Canonical process:
 - `process/TEAM_DEVELOPMENT_PIPELINE.md`
 - `process/CI_PIPELINE_STANDARD.md`
 - `process/RELEASE_DEPLOYMENT_PIPELINE.md`
+
+
+### SEC-WEB-003 Checkpoints
+
+- Admin Settings read — DONE: backend @ 3ea0171 CI #92; frontend @ 60b4d35 Webapp CI #13
+- Audit Log read — NEXT
+- Reports read — NEXT
+- Protected Web writes/admin operations — PENDING
