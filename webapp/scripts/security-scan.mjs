@@ -58,10 +58,6 @@ if (!/await auth\.ensureServerSession\(\)/.test(routerSrc)) {
   failed = true
 }
 
-if (failed) process.exit(1)
-console.log('PASS security-scan: Web auth requires server session authority and no client API-key trust')
-
-
 const memberSrc = fs.readFileSync(new URL('../src/stores/member.js', import.meta.url), 'utf8')
 if (!/createWebMemberClient/.test(memberSrc) || !/requireSessionToken/.test(memberSrc)) {
   console.error('FAIL security-scan: web member store must use session-authorized API')
@@ -79,3 +75,7 @@ for (const path of ['/api/web/members/list', '/api/web/members/detail']) {
     failed = true
   }
 }
+
+
+if (failed) process.exit(1)
+console.log('PASS security-scan: Web auth/member data require server session authority with no client API-key/mock trust')
