@@ -6,7 +6,9 @@ const files = [
   new URL('../src/adapters/api/webMemberApi.js', import.meta.url),
   new URL('../src/adapters/api/webSessionApi.js', import.meta.url),
   new URL('../src/adapters/line/liffAuth.js', import.meta.url),
-  new URL('../src/router/index.js', import.meta.url)
+  new URL('../src/router/index.js', import.meta.url),
+  new URL('../src/views/app/admin/SettingsView.vue', import.meta.url),
+  new URL('../src/adapters/api/webAdminApi.js', import.meta.url)
 ]
 
 const forbidden = [
@@ -24,7 +26,9 @@ const forbidden = [
   /admin\/member-renew/,
   /Mock data for development/i,
   /MEM001/,
-  /U1234567890/
+  /U1234567890/,
+  /path:\s*['"]admin\/settings['"]/,
+  /api_key\s*:/
 ]
 
 let failed = false
@@ -76,6 +80,22 @@ for (const path of ['/api/web/members/list', '/api/web/members/detail']) {
   }
 }
 
+
+const settingsSrc = fs.readFileSync(new URL('../src/views/app/admin/SettingsView.vue', import.meta.url), 'utf8')
+if (!/createWebAdminClient/.test(settingsSrc) || !/auth\.token/.test(settingsSrc)) {
+  console.error('FAIL security-scan: admin settings must use session-authorized API')
+  failed = true
+}
+if (/VITE_API_KEY/.test(settingsSrc) || /Using mock data/i.test(settingsSrc) || /Mock data/i.test(settingsSrc)) {
+  console.error('FAIL security-scan: admin settings must not use client API key or synthetic fallback')
+  failed = true
+}
+
+const adminApiSrc = fs.readFileSync(new URL('../src/adapters/api/webAdminApi.js', import.meta.url), 'utf8')
+if (!adminApiSrc.includes('/api/web/admin/settings')) {
+  console.error('FAIL security-scan: protected admin settings endpoint missing from admin API client')
+  failed = true
+}
 
 if (failed) process.exit(1)
 console.log('PASS security-scan: Web auth/member data require server session authority with no client API-key/mock trust')
