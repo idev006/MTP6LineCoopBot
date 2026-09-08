@@ -1,0 +1,31 @@
+name: LIFF CI — Security Contract
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'liff/**'
+      - 'tests/liff-fail-closed.test.js'
+      - '.github/workflows/liff-ci.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'liff/**'
+      - 'tests/liff-fail-closed.test.js'
+      - '.github/workflows/liff-ci.yml'
+  workflow_dispatch:
+
+jobs:
+  liff-security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Syntax check
+        run: |
+          node --check liff/js/api.js
+          node --check liff/js/app.js
+      - name: Fail-closed security tests
+        run: node tests/liff-fail-closed.test.js
