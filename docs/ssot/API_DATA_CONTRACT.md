@@ -202,3 +202,51 @@ Required automated evidence:
 - stable local calendar dates
 - API delivery contract
 - UI no-formula architecture guard
+
+
+## Server-Verified Web Session Contract
+
+Authority: ADR-0003
+
+### POST /api/web/session/line
+Request:
+```json
+{"idToken":"<raw LINE ID token>"}
+```
+Server verifies LINE identity, requires role `staff|manager|admin`, creates a `channel:web` Principal, and returns an opaque Web session token.
+
+### POST /api/web/session/verify
+Request:
+```json
+{"sessionToken":"<opaque token>"}
+```
+Returns only server-verified user/roles and expiry. Browser-persisted roles are never authoritative.
+
+### POST /api/web/session/revoke
+Revokes the server session immediately.
+
+Session rules:
+- raw session token is never persisted server-side
+- server stores one-way token hash only
+- expiry and revocation fail closed
+- browser stores session token in sessionStorage; protected navigation re-verifies server-side
+
+## Protected Web Member Read Contract
+
+### POST /api/web/members/list
+Request includes `sessionToken`, optional `search`, `status`, `page`, `limit`.
+
+### POST /api/web/members/detail
+Request includes `sessionToken` and `memberCode`.
+
+Authorization:
+- `staff|manager|admin` only
+- server resolves Web Principal from session and applies AuthorizationEngine
+- client role checks are presentation-only
+
+Data minimization:
+- member list/detail do not expose `activate_code`
+- do not expose raw `line_user_id`; use boolean `line_linked`
+- do not expose persistence metadata such as `_rowIndex`
+
+Web member reads must not use browser-visible API keys or mock fallback data.

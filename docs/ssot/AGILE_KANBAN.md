@@ -50,9 +50,9 @@ Optional:
 ## Current Priority
 
 P0:
-1. Web server-session Principal boundary
-2. server-side Web RBAC / session expiry / revocation
-3. remaining legacy client identity-trust retirement audit
+1. Protected Web write/admin operations (SEC-WEB-003)
+2. remaining legacy client identity/API-key trust retirement audit
+3. server-side RBAC for reports/settings/audit/admin capabilities
 
 P1:
 4. Web admin completion
@@ -84,8 +84,8 @@ Weekly review:
 
 ### READY
 
-1. `SEC-WEB-002` — MTP6LineCoopBot #16  
-   Server-verified Web Session Principal boundary
+1. `SEC-WEB-003` — MTP6LineCoopBot #37  
+   Protect Web write and admin operations
 
 2. `UI-DEPS-001` — MTP6LineCoopBot #26  
    Controlled latest-stable frontend dependency refresh
@@ -98,6 +98,7 @@ Weekly review:
 
 ### DONE
 
+- `SEC-WEB-002` — MTP6LineCoopBot #16 — DONE; server session 1406a00f CI #81, LINE exchange fe332fde CI #85, Web client auth 97dc634e CI #8, member RBAC d78a1bc CI #87, client member migration 07ca08e CI #11 PASS
 - `CORE-FIN-001` — MTLineCoopBot #14 — DONE; backend authority @ 45582b4 CI #74, frontend @ 0de0c0e UI CI #1, duplicate retirement @ daffda7 CI #76 PASS
 - `APP-SCHEDULED-001` — MTLineCoopBot #13 — DONE @ 5489622; foundation CI #70 + runtime CI #72 PASS
 

@@ -94,9 +94,13 @@ LIFF เดิมแสดง mock profile/savings/loans เมื่อ backend
 หมายเหตุ: การยืนยัน identity ของ LIFF ยังอยู่ใน BL-SEC-003/REQ-SEC-002 และยังไม่ถือว่าปลอดภัยครบ
 
 ### BL-SEC-003 — Client API key / unverified identity
-Web/LIFF ใส่ API key ใน client และ backend API accepts lineUserId from request context
+เดิม Web/LIFF ใช้ client API key และ client-provided identity ในหลาย path
 
-สถานะ: OPEN / HIGH
+สถานะ: PARTIALLY CLOSED / HIGH REMAINDER
+- LIFF self-service identity migrated to verified raw ID token
+- Web authentication/session migrated to opaque server session + verified Principal
+- Web member list/detail migrated to server-side RBAC and no client API key/mock fallback
+- remaining legacy Web write/admin and legacy lineUserId/API-key routes are still open under follow-up migration
 
 ### BL-DOC-001 — Duplicate documentation
 เอกสารสำเนาระหว่างสอง repo มีโอกาส drift
@@ -104,9 +108,12 @@ Web/LIFF ใส่ API key ใน client และ backend API accepts lineUserI
 สถานะ: OPEN
 
 ### BL-TEST-001 — Web automated tests
-webapp package scripts ยังไม่มี unit/e2e/lint gates
+เดิม webapp ไม่มี automated auth/security/build gates
 
-สถานะ: OPEN
+สถานะ: PARTIALLY CLOSED
+- headless engine tests + security scan + production build run in Webapp CI
+- auth/session/member API regressions are covered
+- broader component/E2E coverage remains pending
 
 ### BL-TEST-002 — CI run evidence not verified
 พบ workflow/test code แต่ยังไม่มี run/status evidence จาก connector สำหรับ backend baseline commit
