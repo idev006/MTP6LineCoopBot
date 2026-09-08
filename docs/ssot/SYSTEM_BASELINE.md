@@ -6,14 +6,14 @@ Baseline date: 2026-09-08
 ## Repositories
 
 ### MTP6LineCoopBot
-หน้าที่ปัจจุบัน: Web/LIFF/UI + เอกสารสำเนาบางส่วน  
+หน้าที่ปัจจุบัน: Web/LIFF/UI + Project Governance SSOT  
 Default branch: main  
 Baseline commit ที่ตรวจ: `effa30f3674b80351c95c3efe4e5fb13e471f1fa`
 
 ### MTLineCoopBot
 หน้าที่ปัจจุบัน: Apps Script backend + LINE Bot + Core/Data/API + tests/CI  
 Default branch: main  
-Baseline tree/commit ที่ตรวจพบล่าสุด: `955a753cdcafe282527c0ad8d82400c4a9c89ae8`
+Baseline commit: `955a753cdcafe282527c0ad8d82400c4a9c89ae8`
 
 ## Verified Present — Backend Repo
 
@@ -30,6 +30,30 @@ Baseline tree/commit ที่ตรวจพบล่าสุด: `955a753cdca
 - .github/workflows/ci.yml
 - .gitleaks.toml
 
+### Backend test implementation evidence
+
+`scripts/ci-test.js` มี Node headless harness และประกาศ test 34 รายการ รวม:
+- menu/caption contracts
+- webhook signature/secret
+- member validity
+- repository/data layer
+- finance/content
+- date conversion
+- expiry
+- API layer/mount
+- activation/renewal
+- notice/reminder
+- Core member/loan rules
+- Flex components/cards
+
+CI workflow มี:
+- node syntax check
+- contract test runner
+- secret scan
+- gitleaks
+
+**Evidence distinction:** ตรวจพบ test/CI implementation แต่ connector ไม่พบ workflow-run/combined-status evidence สำหรับ backend commit `955a753...` ณ รอบ audit นี้ จึงยังไม่ถือว่า CI_VERIFIED
+
 ## Verified Present — Web Repo
 
 พบ:
@@ -40,6 +64,18 @@ Baseline tree/commit ที่ตรวจพบล่าสุด: `955a753cdca
 - LIFF static app
 - loan calculator
 - project docs copy
+
+## Engine/Plug-in Baseline
+
+ดู `ENGINE_AUDIT_BASELINE.md`
+
+สรุป:
+- Core engines: มีฐานดีบางส่วน
+- Repository port/adapter: มีจริง แต่ port + factory ยัง coupled
+- Headless Node harness: มีจริงและเป็นฐานต่อยอด
+- Explicit composition root: ยังไม่มี
+- Identity/Clock/Messaging/Audit ports: ยังไม่เป็น first-class contracts
+- LINE/Event/API layers ยังมี hidden/global wiring บางส่วน
 
 ## Known Baseline Risks / Gaps
 
@@ -53,10 +89,10 @@ LIFF แสดง mock profile/savings/loans เมื่อ backend error บ�
 
 สถานะ: OPEN / HIGH
 
-### BL-SEC-003 — Client API key
-Web/LIFF ใส่ API key ใน client configuration จึงห้ามถือเป็น secret/authentication หลัก
+### BL-SEC-003 — Client API key / unverified identity
+Web/LIFF ใส่ API key ใน client และ backend API accepts lineUserId from request context
 
-สถานะ: OPEN
+สถานะ: OPEN / HIGH
 
 ### BL-DOC-001 — Duplicate documentation
 เอกสารสำเนาระหว่างสอง repo มีโอกาส drift
@@ -68,8 +104,23 @@ webapp package scripts ยังไม่มี unit/e2e/lint gates
 
 สถานะ: OPEN
 
+### BL-TEST-002 — CI run evidence not verified
+พบ workflow/test code แต่ยังไม่มี run/status evidence จาก connector สำหรับ backend baseline commit
+
+สถานะ: OPEN / EVIDENCE GAP
+
 ### BL-ARCH-001 — Loan formula duplication
 loan calculator UI มีสูตรของตัวเอง ขณะที่ backend มี Core/LoanCalculator.js
+
+สถานะ: OPEN
+
+### BL-ARCH-002 — Hidden dependency wiring
+repository/config/time/services ถูก resolve ผ่าน globals/factories หลายจุด
+
+สถานะ: OPEN
+
+### BL-ARCH-003 — Policy in repository contract
+`isActiveMember` และ `hasRole` ยังอยู่ใน persistence contract
 
 สถานะ: OPEN
 
