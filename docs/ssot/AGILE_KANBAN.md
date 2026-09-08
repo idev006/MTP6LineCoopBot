@@ -157,4 +157,9 @@ Canonical process:
 
 - Protected Web renewal write — DONE: backend @ 5fd6d28 CI #98; frontend @ 3d6f04e Webapp CI #19
 - Activation / identity binding — SPLIT TO CONTROLLED FOLLOW-UP
-- Staff/Role admin capabilities — PENDING
+- Staff/Role admin capabilities — IN_PROGRESS
+
+
+### Authorization Consistency
+
+- Role vocabulary consistency — DONE: canonical `member|staff|manager|admin`; backend @ a8beda3 CI #100 PASS
