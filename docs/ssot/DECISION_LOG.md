@@ -5,6 +5,7 @@
 | ADR | เรื่อง | Status | Date | Supersedes |
 |---|---|---|---|---|
 | ADR-0001 | Project SSOT and change-control model | PROPOSED | 2026-09-08 | - |
+| ADR-0002 | Engine-first Lego/Plug-in architecture | PROPOSED | 2026-09-08 | - |
 
 ## Rule
 
