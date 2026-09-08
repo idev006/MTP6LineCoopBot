@@ -6,8 +6,10 @@ import { createWebAdminClient } from '@/adapters/api/webAdminApi'
 const auth = useAuthStore()
 const loading = ref(true)
 const error = ref('')
+const success = ref('')
 const accounts = ref([])
 const roles = ref([])
+const savingMemberCode = ref('')
 
 function client() {
   return createWebAdminClient({ baseUrl: import.meta.env.VITE_API_BASE_URL })
@@ -48,6 +50,38 @@ function roleLabel(role) {
   if (role === 'admin') return 'Admin'
   return role || '-'
 }
+
+function isSelf(account) {
+  return Boolean(auth.user?.memberCode && auth.user.memberCode === account.memberCode)
+}
+
+async function handleRoleChange(account, event) {
+  const newRole = event.target.value
+  if (!newRole || newRole === account.role) return
+
+  const previousRole = account.role
+  error.value = ''
+  success.value = ''
+  savingMemberCode.value = account.memberCode
+  event.target.value = previousRole
+
+  try {
+    if (!auth.isAuthenticated || !auth.token) {
+      throw new Error('Web session ไม่พร้อมใช้งาน')
+    }
+    if (isSelf(account)) {
+      throw new Error('ไม่อนุญาตให้เปลี่ยน Role ของบัญชีตนเอง')
+    }
+
+    const result = await client().assignStaffRole(auth.token, account.memberCode, newRole)
+    account.role = result?.newRole || newRole
+    success.value = `อัปเดต Role ของ ${account.memberCode} เป็น ${roleLabel(account.role)} แล้ว`
+  } catch (e) {
+    error.value = e?.message || 'ไม่สามารถเปลี่ยน Role ได้'
+  } finally {
+    savingMemberCode.value = ''
+  }
+}
 </script>
 
 <template>
@@ -55,15 +89,18 @@ function roleLabel(role) {
     <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
       <div>
         <h1 class="text-3xl font-bold">จัดการเจ้าหน้าที่</h1>
-        <p class="text-sm text-base-content/70 mt-1">ข้อมูลจากระบบกลาง · สิทธิ์ Admin เท่านั้น</p>
+        <p class="text-sm text-base-content/70 mt-1">ข้อมูลและ Role จากระบบกลาง · สิทธิ์ Admin เท่านั้น</p>
       </div>
-      <button class="btn btn-primary" disabled title="รอ protected write endpoint">
+      <button class="btn btn-primary" disabled title="การเพิ่มเจ้าหน้าที่ใหม่จะใช้ workflow แยก">
         + เพิ่มเจ้าหน้าที่
       </button>
     </div>
 
-    <div v-if="error" class="alert alert-error mb-6">
+    <div v-if="error" class="alert alert-error mb-4">
       <span>{{ error }}</span>
+    </div>
+    <div v-if="success" class="alert alert-success mb-4">
+      <span>{{ success }}</span>
     </div>
 
     <div v-if="loading" class="flex justify-center py-8">
@@ -97,9 +134,24 @@ function roleLabel(role) {
               </thead>
               <tbody>
                 <tr v-for="account in accounts" :key="account.memberCode">
-                  <td class="font-mono">{{ account.memberCode }}</td>
+                  <td class="font-mono">
+                    {{ account.memberCode }}
+                    <span v-if="isSelf(account)" class="badge badge-ghost badge-sm ml-1">บัญชีคุณ</span>
+                  </td>
                   <td>{{ account.displayName || '-' }}</td>
-                  <td><span class="badge badge-outline">{{ roleLabel(account.role) }}</span></td>
+                  <td>
+                    <select
+                      class="select select-bordered select-sm"
+                      :value="account.role"
+                      :disabled="isSelf(account) || savingMemberCode === account.memberCode"
+                      @change="handleRoleChange(account, $event)"
+                    >
+                      <option v-for="role in roles" :key="role" :value="role">
+                        {{ roleLabel(role) }}
+                      </option>
+                    </select>
+                    <span v-if="savingMemberCode === account.memberCode" class="loading loading-spinner loading-xs ml-2"></span>
+                  </td>
                   <td>
                     <span class="badge" :class="account.status === 'active' ? 'badge-success' : 'badge-ghost'">
                       {{ account.status || '-' }}
@@ -118,7 +170,10 @@ function roleLabel(role) {
       </div>
 
       <div class="alert mt-6">
-        <span>การเพิ่ม/แก้ไข Role ยังไม่เปิดใช้งานจนกว่า protected write workflow และ audit trail จะพร้อม</span>
+        <span>
+          การเปลี่ยน Role ใช้ protected server workflow และมี audit trail ทุกครั้ง
+          ระบบไม่อนุญาตให้ผู้ดูแลเปลี่ยน Role ของบัญชีตนเอง
+        </span>
       </div>
     </template>
   </div>
