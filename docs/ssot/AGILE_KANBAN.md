@@ -83,9 +83,7 @@ Weekly review:
 
 ### IN_PROGRESS / TEST
 
-1. `APP-SCHEDULED-001` — MTLineCoopBot #13  
-   PR #22 — headless expiry/notice/reminder capabilities  
-   Current gate: CI #69
+- none
 
 ### READY
 
@@ -106,6 +104,8 @@ Weekly review:
 - release/staging/UAT hardening
 
 ### DONE
+
+- `APP-SCHEDULED-001` — MTLineCoopBot #13 — DONE @ 5489622; foundation CI #70 + runtime CI #72 PASS
 
 - `SEC-LIFF-001` — MTP6LineCoopBot #15 — DONE @ d3deac7; LIFF CI #5 PASS
 - `ARCH-DATA-001` — MTLineCoopBot #9 — DONE @ 255d862; backend CI #60 PASS
