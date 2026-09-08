@@ -13,7 +13,8 @@ Status: ACCEPTED
 | UC-MEM-007 Use loan calculator | ✅ | ✅ | ✅ | - | - |
 | UC-STAFF-001 Search member | - | ✅ | ✅ | read-only if approved | - |
 | UC-STAFF-002 View member detail | - | ✅ | ✅ | read-only if approved | - |
-| UC-STAFF-003 Activate/renew member on behalf | - | ✅ | ✅ | - | - |
+| UC-STAFF-003 Renew member on behalf | - | ✅ | ✅ | ✅ | - | - |
+| UC-STAFF-004 Assist activation handoff (no direct binding) | - | support only | support only | support only | - | - |
 | UC-ADMIN-001 Manage staff | - | - | ✅ | - | - |
 | UC-ADMIN-002 Manage roles/permissions | - | - | ✅ | read-only | - |
 | UC-ADMIN-003 Manage settings | - | - | ✅ | - | - |
