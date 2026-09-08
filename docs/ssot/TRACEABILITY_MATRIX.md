@@ -86,3 +86,6 @@
 
 
 | REQ-SEC-ROLE-001 | Canonical persisted member roles ต้องสอดคล้องกันทุก identity/member/Web path | ADR-0003 / API_DATA_CONTRACT | MemberAccessEngine + self-renew manager consistency @ a8beda3 | backend CI #100 PASS; manager known-role/profile/self-renew regression tests PASS | VERIFIED |
+
+
+| REQ-SEC-LEGACY-001A | Legacy lineUserId read/validity routes ต้อง retire หลัง caller migration | SEC-LEGACY-001 / ADR-0003 | EventHandler profile/finance migrated to application use cases; legacy GET profile/savings/loans/dividends/validity retired @ 95d4f66 | CI #112 exposed internal dependency; corrected scope/migration; CI #115 PASS | VERIFIED / ACTIVATE+RENEW COMPATIBILITY REMAINS |
