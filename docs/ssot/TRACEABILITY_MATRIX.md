@@ -74,3 +74,6 @@
 
 
 | REQ-SEC-WEB-003A | Admin settings read ต้องใช้ Web session + admin RBAC และห้ามเปิดเผย secrets | SEC-WEB-003 / ADR-0003 | GetAdminSettingsUseCase + POST /api/web/admin/settings @ 3ea0171; SettingsView session client @ 60b4d35 | backend CI #92 + Webapp CI #13 PASS | VERIFIED |
+
+
+| REQ-SEC-WEB-003B | Audit Log read ต้องใช้ Web session + admin RBAC + data minimization | SEC-WEB-003 / ADR-0003 | AuditQueryPort + GetAuditLogUseCase + protected route @ 82cf8ee; AuditLogView migration @ 481b175 | backend CI #94 + Webapp CI #15 PASS | VERIFIED |

@@ -268,3 +268,19 @@ Response is a sanitized, read-only projection:
 - feature/configured booleans only
 
 The endpoint must never expose API keys, LINE channel tokens/secrets, webhook secret values, or other credential material.
+
+
+### POST /api/web/admin/audit-log
+
+Authorization:
+- opaque Web session required
+- server resolves verified Web Principal
+- `admin` role required server-side
+
+Request:
+```json
+{"sessionToken":"<opaque token>","type":"all|activation|expiry|reminder","limit":50}
+```
+
+Response uses a sanitized read projection. It must not expose raw `line_user_id`, `activate_code`, or persistence metadata.
+Audit write responsibilities remain in `AuditPort`; read/query responsibilities are isolated in `AuditQueryPort`.
