@@ -234,4 +234,21 @@ function formatDate(dateStr) {
                 <tbody>
                   <tr v-for="d in dividends" :key="d.year">
                     <td>{{ d.year }}</td>
-    
+                    <td class="text-right">{{ formatCurrency(d.dividend_amount || d.dividend) }}</td>
+                    <td class="text-right">{{ formatCurrency(d.share_amount || d.share_capital) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p v-else class="text-base-content/70">ไม่มีข้อมูลเงินปันผล</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Not found / load returned no member -->
+    <div v-else class="alert alert-warning">
+      <span>ไม่พบข้อมูลสมาชิก</span>
+    </div>
+  </div>
+</template>
