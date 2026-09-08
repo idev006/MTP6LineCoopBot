@@ -1,26 +1,35 @@
 # TRACEABILITY_MATRIX
 
-สถานะ: INITIAL
+สถานะ: M0 INITIAL AUDIT
 
-> ตารางนี้เป็นหัวใจของการ Audit: Requirement → Design → Code → Test → Evidence
+> Requirement → Design/ADR → Engine/Port/Adapter → Source → Test → Evidence
 
-| Req ID | Requirement | Design/ADR | Code | Test | Current Status |
+| Req ID | Requirement | Design/ADR | Code Evidence | Test Evidence | Current Status |
 |---|---|---|---|---|---|
-| REQ-SEC-001 | Authentication ต้อง fail-closed | ARCHITECTURE_CONTRACT | webapp/src/stores/auth.js | TBD | BLOCKED — current code violates |
-| REQ-SEC-002 | LIFF identity ต้อง verify server-side | API_DATA_CONTRACT | TBD reconcile backend | TBD | NOT_VERIFIED |
-| REQ-SEC-003 | Authorization ต้อง server-side | ARCHITECTURE_CONTRACT | backend audit required | backend tests audit required | NOT_VERIFIED |
-| REQ-DATA-001 | Data schema มี SSOT | API_DATA_CONTRACT | MTLineCoopBot/app/DataDict.js | backend contract tests | CODE_PRESENT |
-| REQ-CORE-001 | Business rule ไม่ duplicate ข้าม UI | ADR-0002 / ENGINE_ARCHITECTURE_STANDARD | Core/LoanCalculator.js + UI calculator | TBD | BLOCKED — duplication found |
-| REQ-ARCH-001 | Business capability ต้องอยู่ใน headless engine | ADR-0002 | backend architecture audit required | engine unit tests | DOCUMENTED |
-| REQ-ARCH-002 | Infrastructure ต้องเปลี่ยนได้ผ่าน ports/adapters | ADR-0002 | repository pattern presentบางส่วน | shared contract tests required | PARTIAL / NOT_VERIFIED |
-| REQ-ARCH-003 | UI เป็น adapter ไม่เป็นเจ้าของ business rule | ADR-0002 | Web/LIFF/LINE audit required | architecture + unit tests | NOT_VERIFIED |
-| REQ-ARCH-004 | Dependency wiring ต้อง explicit และ testable | ENGINE_ARCHITECTURE_STANDARD | composition roots TBD audit | wiring tests | NOT_VERIFIED |
-| REQ-TEST-001 | Critical backend rules automated | TEST_STRATEGY | MTLineCoopBot/app/Test.js + scripts/ci-test.js | CI | CODE_PRESENT |
-| REQ-TEST-002 | Web critical behavior automated | TEST_STRATEGY | MTP6LineCoopBot/webapp | TBD | BLOCKED |
-| REQ-TEST-003 | Engine tests ต้องไม่พึ่ง UI/network/production dependencies | TEST_STRATEGY / ADR-0002 | audit required | headless suite | DOCUMENTED |
-| REQ-TEST-004 | Adapter implementation ใหม่ต้องผ่าน reusable contract tests | TEST_STRATEGY / ADR-0002 | TBD | shared contract suite | DOCUMENTED |
-| REQ-DOC-001 | SSOT change ผ่าน team review | CHANGE_CONTROL | docs/ssot | PR review | DOCUMENTED |
-| REQ-REL-001 | Release ผ่าน gates ก่อน production | RELEASE_GATES | TBD | release evidence | DOCUMENTED |
+| REQ-SEC-001 | Authentication ต้อง fail-closed | ARCHITECTURE_CONTRACT | webapp/src/stores/auth.js violates | TBD | BLOCKED / HIGH |
+| REQ-SEC-002 | LIFF identity ต้อง verify server-side | API_DATA_CONTRACT | backend currently accepts request lineUserId | TBD | BLOCKED / HIGH |
+| REQ-SEC-003 | Authorization ต้อง server-side | ARCHITECTURE_CONTRACT | member gate exists, trusted principal boundary incomplete | Test.js partial | PARTIAL |
+| REQ-DATA-001 | Data schema มี SSOT | API_DATA_CONTRACT | MTLineCoopBot/app/DataDict.js | data/repository tests declared | CODE_PRESENT / TEST_IMPLEMENTED |
+| REQ-CORE-001 | Business rule ไม่ duplicate ข้าม UI | ADR-0002 | Core/LoanCalculator.js + UI calculator duplicate | backend loan tests declared | BLOCKED |
+| REQ-ARCH-001 | Business capability ต้องอยู่ใน headless engine | ADR-0002 | app/Core/* present | Core tests declared | PARTIAL |
+| REQ-ARCH-002 | Infrastructure เปลี่ยนผ่าน ports/adapters | ADR-0002 | MemberRepository + SheetsMemberRepository | testMemberRepository declared | PARTIAL |
+| REQ-ARCH-003 | UI ไม่เป็นเจ้าของ business rule | ADR-0002 | LINE calls API in some flows; EventHandler still broad | Bot/API tests declared | PARTIAL |
+| REQ-ARCH-004 | Dependency wiring explicit/testable | ENGINE_ARCHITECTURE_STANDARD | global factory/config still used | some DI seams only | BLOCKED |
+| REQ-ARCH-005 | Composition root แยก production/test wiring | ADR-0002 | none canonical | none | NOT_IMPLEMENTED |
+| REQ-ARCH-006 | Repository port ต้อง persistence-only | ADR-0002 | port includes isActiveMember/hasRole | repository tests exist | BLOCKED |
+| REQ-TEST-001 | Critical backend rules automated | TEST_STRATEGY | Test.js + ci-test.js | 34 tests declared | TEST_IMPLEMENTED; RUN_EVIDENCE_MISSING |
+| REQ-TEST-002 | Web critical behavior automated | TEST_STRATEGY | no test scripts in web package | none | BLOCKED |
+| REQ-TEST-003 | Engine tests ไม่พึ่ง UI/network/production | TEST_STRATEGY | Node VM/fake Apps Script harness present | multiple headless tests | PARTIAL / STRONG BASE |
+| REQ-TEST-004 | Adapter ใหม่ผ่าน reusable contract tests | TEST_STRATEGY | repository assert contract exists | no reusable multi-adapter suite yet | PARTIAL |
+| REQ-DOC-001 | SSOT change ผ่าน team review | ADR-0001 | docs/ssot + review record | PR #1 | ACCEPTED ON BRANCH |
+| REQ-REL-001 | Release ผ่าน gates ก่อน production | RELEASE_GATES | documented | release evidence TBD | DOCUMENTED |
+
+## Evidence Rule
+
+- CODE_PRESENT ≠ TESTED
+- TEST_IMPLEMENTED ≠ CI_VERIFIED
+- CI_VERIFIED ≠ PRODUCTION_VERIFIED
+- สถานะจะเพิ่มระดับได้เมื่อมี evidence ที่ตรวจย้อนกลับได้
 
 ## Update Rule
 
