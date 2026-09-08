@@ -95,12 +95,8 @@ function formatDate(dateStr) {
               <p class="font-medium">{{ formatDate(member.mem_exp_dt) }}</p>
             </div>
             <div>
-              <p class="text-sm text-base-content/70">LINE User ID</p>
-              <p class="font-medium text-xs">{{ member.line_user_id || '-' }}</p>
-            </div>
-            <div>
-              <p class="text-sm text-base-content/70">รหัส Activate</p>
-              <p class="font-medium">{{ member.activate_code || '-' }}</p>
+              <p class="text-sm text-base-content/70">สถานะ LINE</p>
+              <p class="font-medium">{{ member.line_linked ? 'เชื่อมบัญชีแล้ว' : 'ยังไม่เชื่อมบัญชี' }}</p>
             </div>
           </div>
 

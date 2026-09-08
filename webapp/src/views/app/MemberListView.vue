@@ -111,7 +111,7 @@ function formatDate(dateStr) {
             </td>
             <td>{{ formatDate(member.mem_eff_dt) }}</td>
             <td>{{ formatDate(member.mem_exp_dt) }}</td>
-            <td>{{ member.line_user_id }}</td>
+            <td>{{ member.line_linked ? 'เชื่อมแล้ว' : 'ยังไม่เชื่อม' }}</td>
             <td>
               <router-link 
                 :to="`/app/members/${member.mem_code}`"
