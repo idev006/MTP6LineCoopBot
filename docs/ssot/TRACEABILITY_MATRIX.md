@@ -71,3 +71,6 @@
 
 | REQ-SEC-WEB-001 | Web session ต้อง server-authoritative พร้อม expiry/revocation | ADR-0003 / SEQ-WEB-STAFF-LOGIN | SessionStorePort + SessionTokenPort + WebSessionEngine + WebSessionIdentityAdapter @ 1406a00f; LINE exchange @ fe332fde; Web client verify/revoke @ 97dc634e | backend CI #81/#85 + Webapp CI #8 PASS | VERIFIED |
 | REQ-SEC-WEB-002 | Web member reads ต้องใช้ server session + RBAC + data minimization | UC-STAFF-001/002 / ADR-0003 | ListMembersUseCase/GetMemberDetailUseCase + protected routes @ d78a1bc; client migration @ 07ca08e | backend CI #87 + Webapp CI #11 PASS | VERIFIED |
+
+
+| REQ-SEC-WEB-003A | Admin settings read ต้องใช้ Web session + admin RBAC และห้ามเปิดเผย secrets | SEC-WEB-003 / ADR-0003 | GetAdminSettingsUseCase + POST /api/web/admin/settings @ 3ea0171; SettingsView session client @ 60b4d35 | backend CI #92 + Webapp CI #13 PASS | VERIFIED |
