@@ -42,3 +42,6 @@
 ## Update Rule
 
 ทุก feature/change ใหม่ต้องเพิ่มหรืออัปเดตแถวนี้ก่อนปิดงาน
+
+
+| REQ-TEST-005 | Test composition ต้องใช้ persistence adapter แบบ in-memory ได้ | ADR-0002 / TEST_SUITE_CATALOG | InMemoryMemberRepository @ 255d862 | backend CI #60 PASS | VERIFIED |
