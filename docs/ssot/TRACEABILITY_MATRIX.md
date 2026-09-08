@@ -80,3 +80,6 @@
 
 
 | REQ-SEC-WEB-003C | Summary reports ต้องใช้ Web session + staff/manager/admin RBAC และ aggregate ที่ backend | SEC-WEB-003 / ADR-0003 | ReportQueryPort + GetSummaryReportUseCase + protected route @ 820bd14; ReportView migration @ dbb1df2 | backend CI #96 + Webapp CI #17 PASS | VERIFIED |
+
+
+| REQ-SEC-WEB-003D | Staff member renewal write ต้องใช้ Web session + staff/manager/admin RBAC + server calculation + audit | SEC-WEB-003 / ADR-0003 | RenewMemberByStaffUseCase + POST /api/web/members/renew @ 5fd6d28; MemberDetail client @ 3d6f04e | backend CI #98 + Webapp CI #19 PASS | VERIFIED |
