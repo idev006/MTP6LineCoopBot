@@ -250,3 +250,21 @@ Data minimization:
 - do not expose persistence metadata such as `_rowIndex`
 
 Web member reads must not use browser-visible API keys or mock fallback data.
+
+
+### POST /api/web/admin/settings
+
+Authorization:
+- opaque Web session required
+- server resolves verified Web Principal
+- `admin` role required server-side
+
+Response is a sanitized, read-only projection:
+- appName
+- dbType
+- expiryWarningDays
+- paymentReminderDays
+- webSessionTtlSeconds
+- feature/configured booleans only
+
+The endpoint must never expose API keys, LINE channel tokens/secrets, webhook secret values, or other credential material.
