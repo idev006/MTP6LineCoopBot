@@ -76,9 +76,13 @@ if (/VITE_API_KEY/.test(memberSrc) || /mock data/i.test(memberSrc)) {
   console.error('FAIL security-scan: member store must not use client API key or mock fallback')
   failed = true
 }
+if (!/renewMember\(requireSessionToken\(\), memberCode\)/.test(memberSrc)) {
+  console.error('FAIL security-scan: member renewal must use protected session API')
+  failed = true
+}
 
 const memberApiSrc = fs.readFileSync(new URL('../src/adapters/api/webMemberApi.js', import.meta.url), 'utf8')
-for (const path of ['/api/web/members/list', '/api/web/members/detail']) {
+for (const path of ['/api/web/members/list', '/api/web/members/detail', '/api/web/members/renew']) {
   if (!memberApiSrc.includes(path)) {
     console.error('FAIL security-scan: missing protected member endpoint ' + path)
     failed = true
