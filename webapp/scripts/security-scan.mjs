@@ -8,6 +8,7 @@ const files = [
   new URL('../src/adapters/line/liffAuth.js', import.meta.url),
   new URL('../src/router/index.js', import.meta.url),
   new URL('../src/views/app/admin/SettingsView.vue', import.meta.url),
+  new URL('../src/views/app/admin/AuditLogView.vue', import.meta.url),
   new URL('../src/adapters/api/webAdminApi.js', import.meta.url)
 ]
 
@@ -28,6 +29,7 @@ const forbidden = [
   /MEM001/,
   /U1234567890/,
   /path:\s*['"]admin\/settings['"]/,
+  /path:\s*['"]admin\/audit-log['"]/,
   /api_key\s*:/
 ]
 
@@ -94,6 +96,20 @@ if (/VITE_API_KEY/.test(settingsSrc) || /Using mock data/i.test(settingsSrc) || 
 const adminApiSrc = fs.readFileSync(new URL('../src/adapters/api/webAdminApi.js', import.meta.url), 'utf8')
 if (!adminApiSrc.includes('/api/web/admin/settings')) {
   console.error('FAIL security-scan: protected admin settings endpoint missing from admin API client')
+  failed = true
+}
+if (!adminApiSrc.includes('/api/web/admin/audit-log')) {
+  console.error('FAIL security-scan: protected admin audit endpoint missing from admin API client')
+  failed = true
+}
+
+const auditSrc = fs.readFileSync(new URL('../src/views/app/admin/AuditLogView.vue', import.meta.url), 'utf8')
+if (!/createWebAdminClient/.test(auditSrc) || !/auth\.token/.test(auditSrc)) {
+  console.error('FAIL security-scan: admin audit log must use session-authorized API')
+  failed = true
+}
+if (/VITE_API_KEY/.test(auditSrc) || /Using mock data/i.test(auditSrc) || /Mock data/i.test(auditSrc) || /activateCode/.test(auditSrc)) {
+  console.error('FAIL security-scan: admin audit log must not use client API key, synthetic fallback or activation secrets')
   failed = true
 }
 
