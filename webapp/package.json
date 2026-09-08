@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:engine": "node --test tests/*.test.mjs",
+    "security:scan": "node scripts/security-scan.mjs",
+    "check": "npm run test:engine && npm run security:scan && npm run build"
   },
   "dependencies": {
     "daisyui": "^5.7.19",
