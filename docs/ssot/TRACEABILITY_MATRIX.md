@@ -22,11 +22,11 @@
 | REQ-TEST-003 | Engine tests ไม่พึ่ง UI/network/production | TEST_STRATEGY | MemberAccessEngine + ClockPort @ de7fc1f | deterministic headless test; CI #43 PASS | VERIFIED FOR MEMBER ACCESS ENGINE |
 | REQ-TEST-004 | Adapter ใหม่ผ่าน reusable contract tests | TEST_STRATEGY | tests/contracts/member-repository.contract.test.js @ f06dfb5 | CI run #41 PASS | PARTIAL / REUSABLE REPOSITORY CONTRACT VERIFIED |
 | REQ-DOC-001 | SSOT change ผ่าน team review | ADR-0001 | docs/ssot + review record | PR #1 | ACCEPTED ON BRANCH |
-| REQ-SEC-004 | Protected use case ต้องรับ verified Principal | ADR-0003 / TARGET_SYSTEM_ARCHITECTURE | TBD | identity/application tests | DOCUMENTED / NEXT |
-| REQ-SEC-005 | Authentication แยกจาก Authorization | ADR-0003 | TBD | authn/authz engine tests | DOCUMENTED / NEXT |
+| REQ-SEC-004 | Protected use case ต้องรับ verified Principal | ADR-0003 / TARGET_SYSTEM_ARCHITECTURE | Security.Principal + IdentityPort @ a2253eb | identity/authz headless tests; CI #48 PASS | PARTIAL / FOUNDATION VERIFIED |
+| REQ-SEC-005 | Authentication แยกจาก Authorization | ADR-0003 | IdentityPort + AuthorizationEngine @ a2253eb | identity/authz engine tests; CI #48 PASS | VERIFIED FOUNDATION |
 | REQ-ARCH-007 | Delivery → Application → Domain → Ports → Adapters | ADR-0003 | migration in progress | architecture fitness tests | DOCUMENTED / MIGRATING |
 | REQ-ARCH-008 | Application use cases ต้อง headless | ADR-0003 | TBD | use-case tests | DOCUMENTED / NEXT |
-| REQ-ARCH-009 | Production/Test composition roots ใช้ contracts เดียวกัน | ADR-0003 | SystemFactory partial | architecture tests | PARTIAL |
+| REQ-ARCH-009 | Production/Test composition roots ใช้ contracts เดียวกัน | ADR-0003 | SystemFactory wires IdentityPort/Authz; DenyAll + Fake adapters @ a2253eb | architecture + security tests; CI #48 PASS | PARTIAL / SECURITY PLUG-IN VERIFIED |
 | REQ-REL-001 | Release ผ่าน gates ก่อน production | RELEASE_GATES | documented | release evidence TBD | DOCUMENTED |
 
 ## Evidence Rule
