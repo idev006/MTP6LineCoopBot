@@ -8,28 +8,58 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useMemberStore } from '@/stores/member'
+import { useNotification } from '@/composables/useNotification'
 
 const route = useRoute()
 const router = useRouter()
 const memberStore = useMemberStore()
+const notification = useNotification()
 
 const member = ref(null)
 const savings = ref([])
 const loans = ref([])
 const dividends = ref([])
 const loading = ref(true)
+const renewing = ref(false)
+const actionError = ref('')
+
+async function loadDetail() {
+  const data = await memberStore.fetchMemberDetail(route.params.code)
+  member.value = memberStore.currentMember
+  savings.value = data.savings || []
+  loans.value = data.loans || []
+  dividends.value = data.dividends || []
+}
 
 onMounted(async () => {
   try {
-    const data = await memberStore.fetchMemberDetail(route.params.code)
-    member.value = memberStore.currentMember
-    savings.value = data.savings || []
-    loans.value = data.loans || []
-    dividends.value = data.dividends || []
+    await loadDetail()
   } finally {
     loading.value = false
   }
 })
+
+async function handleRenew() {
+  if (!member.value?.mem_code || renewing.value) return
+  actionError.value = ''
+
+  const confirmed = globalThis.confirm
+    ? globalThis.confirm(`ยืนยันการต่ออายุสมาชิก ${member.value.mem_code} อีก 1 ปี?`)
+    : true
+  if (!confirmed) return
+
+  renewing.value = true
+  try {
+    await memberStore.renewMember(member.value.mem_code)
+    await loadDetail()
+    notification.success('ต่ออายุสมาชิกสำเร็จ')
+  } catch (e) {
+    actionError.value = e?.message || 'ไม่สามารถต่ออายุสมาชิกได้'
+    notification.error(actionError.value)
+  } finally {
+    renewing.value = false
+  }
+}
 
 function handleBack() {
   router.push('/app/members')
@@ -53,6 +83,10 @@ function formatDate(dateStr) {
         ← กลับ
       </button>
       <h1 class="text-3xl font-bold">รายละเอียดสมาชิก</h1>
+    </div>
+
+    <div v-if="actionError" class="alert alert-error mb-6">
+      <span>{{ actionError }}</span>
     </div>
 
     <!-- Loading -->
@@ -102,7 +136,14 @@ function formatDate(dateStr) {
 
           <div class="card-actions justify-end mt-4">
             <button class="btn btn-primary">แก้ไข</button>
-            <button class="btn btn-warning">ต่ออายุ</button>
+            <button
+              class="btn btn-warning"
+              :disabled="renewing"
+              @click="handleRenew"
+            >
+              <span v-if="renewing" class="loading loading-spinner loading-sm"></span>
+              ต่ออายุ
+            </button>
           </div>
         </div>
       </div>
