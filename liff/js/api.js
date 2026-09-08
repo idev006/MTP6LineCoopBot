@@ -1,16 +1,31 @@
 /**
  * LIFF API Client
- * 
- * เรียก Apps Script API สำหรับ LIFF
+ *
+ * Fail-closed transport/envelope handling.
  */
 
 const API = {
-  /**
-   * เรียก API
-   * @param {string} path - API path
-   * @param {Object} params - Query parameters
-   * @returns {Promise<Object>}
-   */
+  async parseResponse(response) {
+    if (!response || !response.ok) {
+      throw new Error('ไม่สามารถเชื่อมต่อระบบบริการข้อมูลได้');
+    }
+
+    let result;
+    try {
+      result = await response.json();
+    } catch {
+      throw new Error('รูปแบบข้อมูลตอบกลับจากระบบไม่ถูกต้อง');
+    }
+
+    if (!result || result.ok !== true) {
+      const error = new Error(result?.error?.message || 'ระบบไม่สามารถให้บริการข้อมูลได้');
+      error.code = result?.error?.code || 'API_ERROR';
+      throw error;
+    }
+
+    return result.data;
+  },
+
   async get(path, params = {}) {
     const queryParams = new URLSearchParams({
       path,
@@ -19,15 +34,9 @@ const API = {
     });
 
     const response = await fetch(`${CONFIG.API_BASE_URL}?${queryParams}`);
-    return response.json();
+    return this.parseResponse(response);
   },
 
-  /**
-   * POST API
-   * @param {string} path - API path
-   * @param {Object} data - Request body
-   * @returns {Promise<Object>}
-   */
   async post(path, data = {}) {
     const response = await fetch(CONFIG.API_BASE_URL, {
       method: 'POST',
@@ -38,36 +47,20 @@ const API = {
         ...data
       })
     });
-    return response.json();
+    return this.parseResponse(response);
   },
 
-  /**
-   * ดึงข้อมูลโปรไฟล์สมาชิก
-   * @param {string} lineUserId
-   * @returns {Promise<Object>}
-   */
   async getMemberProfile(lineUserId) {
-    const result = await this.get('member/profile', { lineUserId });
-    return result.ok ? result.data : null;
+    return this.get('member/profile', { lineUserId });
   },
 
-  /**
-   * ดึงข้อมูลเงินฝาก
-   * @param {string} lineUserId
-   * @returns {Promise<Array>}
-   */
   async getSavings(lineUserId) {
-    const result = await this.get('member/savings', { lineUserId });
-    return result.ok ? (result.data.savings || []) : [];
+    const data = await this.get('member/savings', { lineUserId });
+    return data?.savings || [];
   },
 
-  /**
-   * ดึงข้อมูลเงินกู้
-   * @param {string} lineUserId
-   * @returns {Promise<Array>}
-   */
   async getLoans(lineUserId) {
-    const result = await this.get('member/loans', { lineUserId });
-    return result.ok ? (result.data.loans || []) : [];
+    const data = await this.get('member/loans', { lineUserId });
+    return data?.loans || [];
   }
 };
