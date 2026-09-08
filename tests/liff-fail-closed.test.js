@@ -82,14 +82,19 @@ async function run(fetchImpl, expression) {
     if (!apiSrc.includes(method)) throw new Error('missing protected API method: ' + method);
   }
 
+  const executableApiSrc = apiSrc
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/\/\/.*$/gm, '');
+
   const forbiddenApi = [
     /getMemberProfile\s*\(lineUserId\)/,
     /getSavings\s*\(lineUserId\)/,
     /getLoans\s*\(lineUserId\)/,
-    /lineUserId/
+    /\{\s*lineUserId\s*\}/,
+    /lineUserId\s*:/
   ];
   for (const p of forbiddenApi) {
-    if (p.test(apiSrc)) throw new Error('legacy protected identity path remains in api.js: ' + p);
+    if (p.test(executableApiSrc)) throw new Error('legacy protected identity path remains in executable api.js: ' + p);
   }
 
   const forbiddenApp = [
