@@ -153,6 +153,10 @@ export const useAuthStore = defineStore('auth', () => {
     return true
   }
 
+  // Restore only a structurally valid persisted session.
+  // Server-side validity/expiry verification remains authoritative.
+  restoreSession()
+
   return {
     user,
     token,
