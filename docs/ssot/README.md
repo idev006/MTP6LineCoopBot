@@ -125,3 +125,13 @@ These are mandatory best-practice standards for project delivery.
 `Requirement → Design/ADR → Engine/Port/Adapter → Source → Test → CI → Deployment → Verification`
 
 ถ้าตามไม่ได้ ให้ถือว่า **ยังไม่มีหลักฐานเพียงพอ** แม้ feature จะดูเหมือนทำงานได้
+
+
+## Latest Development Handoff
+
+For a new development chat/session, start with:
+- `DEVELOPMENT_HANDOFF_CHECKPOINT-2026-09-09.md`
+- `DEVELOPMENT_TEAM_HANDOFF.md`
+- `AGILE_KANBAN.md`
+
+Always fetch the current `main` of both repositories before trusting any recorded commit anchor.
