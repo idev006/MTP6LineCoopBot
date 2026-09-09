@@ -140,7 +140,10 @@ Initial baseline lacked workflow-run evidence.
 ### BL-ARCH-002 — Hidden dependency wiring
 repository/config/time/services ถูก resolve ผ่าน globals/factories หลายจุด
 
-สถานะ: OPEN
+สถานะ: OPEN / SCHEDULED DELIVERY SUBSCOPE CLOSED
+- Expiry / Notice / Loan Reminder production runtime delegated to Application use cases @ 5489622; CI #72 PASS
+- duplicate scheduled `opts` orchestration and direct repository/domain/messaging shells retired @ dc1a04e; backend CI #148 PASS
+- remaining hidden/global wiring outside scheduled delivery remains open
 
 ### BL-ARCH-003 — Policy in repository contract
 `isActiveMember` และ `hasRole` ยังอยู่ใน persistence contract
