@@ -144,7 +144,7 @@ Initial baseline lacked workflow-run evidence.
 ### BL-ARCH-002 — Hidden dependency wiring
 repository/config/time/services ถูก resolve ผ่าน globals/factories หลายจุด
 
-สถานะ: OPEN / SCHEDULED DELIVERY SUBSCOPE CLOSED
+สถานะ: CLOSED / VERIFIED
 - Expiry / Notice / Loan Reminder production runtime delegated to Application use cases @ 5489622; CI #72 PASS
 - duplicate scheduled `opts` orchestration and direct repository/domain/messaging shells retired @ dc1a04e; backend CI #148 PASS
 - member repository adapter selection moved into Composition.SystemFactory and legacy Data.MemberRepository factory retired @ 582b73c; backend CI #154 PASS
@@ -160,7 +160,8 @@ repository/config/time/services ถูก resolve ผ่าน globals/factories
 - durable audit IDs now originate from explicit `IdPort` authority: `AppsScriptIdAdapter` generates opaque UUID-based IDs, dedicated audit stores apply prefixes, and `SheetService` requires caller-supplied `logId` before Spreadsheet access; repository-wide guard forbids `Date.now()` in backend app tree @ 9b5e7bb; backend CI #192 PASS
 - member audit persistence is no longer part of `MemberRepositoryPort`; `MemberAuditStorePort` + `SheetsMemberAuditStore` now back canonical `DurableAuditAdapter`, while admin audit remains behind `AdminAuditStorePort`; transitional `MemberRepositoryAuditAdapter` retired @ ebeb59f; backend CI #188 PASS
 - repository-wide durable audit caller guard now proves `SheetService` activation/expiry/reminder/admin audit writers are callable only through `SheetsMemberAuditStore` / `SheetsAdminAuditStore`; no hidden bypass found @ 314ec41; backend CI #190 PASS
-- remaining hidden/global wiring outside repository-wide ConfigPort/ClockPort plus verified scheduled/repository/policy/audit seams remains open
+- repository-wide runtime-global layer guard proves Apps Script globals are absent from Core/Application/Engine/Ports/Composition/Data/Security and remain confined to imperative-shell/infrastructure/tooling boundaries @ a38d997; backend CI #194 PASS
+- BL-ARCH-002 closure does not prohibit framework globals inside explicit delivery/infrastructure adapters; it prohibits hidden runtime dependencies from leaking into business/composition layers
 
 ### BL-ARCH-003 — Policy in repository contract
 Legacy `isActiveMember` / `hasRole` policy wrappers have been removed from `SheetsMemberRepository` and `SheetService`. The persistence port was already policy-free; `MemberAccessEngine` + `Core.MemberRules` + `ClockPort` remain the canonical policy authority.
