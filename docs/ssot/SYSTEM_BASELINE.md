@@ -96,13 +96,16 @@ LIFF เดิมแสดง mock profile/savings/loans เมื่อ backend
 ### BL-SEC-003 — Client API key / unverified identity
 เดิม Web/LIFF ใช้ client API key และ client-provided identity ในหลาย path
 
-สถานะ: CLOSED FOR MIGRATED MEMBER IDENTITY PATHS
+สถานะ: CLOSED / VERIFIED FOR REGISTERED API MOUNT
 - LIFF self-service uses verified raw ID token
 - Web uses opaque server session + verified Principal
 - Web member/admin reads/writes use server-side RBAC
 - legacy reads/validity retired @ 95d4f66
 - legacy activation retired @ cc70d58b
 - legacy renewal retired @ 787c79a8
+- Apps Script Web API mount browser `api_key` fallback and `Config.API_KEY` retired @ dec540ef; backend CI #146 PASS
+- only `auth: none` routes are public; protected routes use `line-id-token` or `web-session`
+- unknown/unregistered API paths fail closed as `NOT_FOUND`; arbitrary legacy API-key input cannot authorize them
 
 ### BL-DOC-001 — Duplicate documentation
 เอกสารสำเนาระหว่างสอง repo มีโอกาส drift
