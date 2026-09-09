@@ -218,3 +218,24 @@ test('gateway secrets must be independent values', () => {
     }
   )
 })
+
+
+test('webhook release workflows use the reviewed native Node 24 action generation', () => {
+  const ci=fs.readFileSync(workflowPath,'utf8')
+  const image=fs.readFileSync(imageWorkflowPath,'utf8')
+
+  const checkout='actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1'
+  const setupNode='actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0'
+
+  assert.ok(ci.includes(checkout),'Webhook Ingress CI must use reviewed checkout v7.0.1 commit')
+  assert.ok(image.includes(checkout),'Image publish must use reviewed checkout v7.0.1 commit')
+  assert.ok(ci.includes(setupNode),'Webhook Ingress CI must use reviewed setup-node v7.0.0 commit')
+
+  for (const legacy of [
+    '11d5960a326750d5838078e36cf38b85af677262',
+    '49933ea5288caeca8642d1e84afbd3f7d6820020'
+  ]) {
+    assert.equal(ci.includes(legacy),false,'old Node 20-targeting action commit must not return to CI')
+    assert.equal(image.includes(legacy),false,'old Node 20-targeting action commit must not return to image workflow')
+  }
+})
