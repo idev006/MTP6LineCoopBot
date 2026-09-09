@@ -133,7 +133,7 @@ Fail closed:
 - Principal not member-bound → MEMBER_NOT_LINKED/FORBIDDEN
 - member not found → MEMBER_NOT_FOUND
 
-Legacy `/api/member/renew` remains transitional and is not the canonical protected self-renew contract.
+Legacy `/api/member/renew` is RETIRED. Canonical self-renewal is only `POST /api/member/me/renew` with a verified raw LINE ID token.
 
 
 ## Public Loan Calculation Contract
@@ -431,3 +431,12 @@ Migration status:
 - chat activation hands off to verified LIFF activation
 - secure LIFF caller uses raw verified ID token + activation code only
 - legacy `renew:CODE` remains a separate compatibility/identity-binding retirement concern
+
+
+### Legacy renewal retirement status
+
+- `POST /api/member/renew` — RETIRED
+- `LineBot.RenewalService` direct mutation path — RETIRED / fail-closed
+- chat `renew`, `renew:CODE`, and old `confirm_renew` postbacks — secure LIFF handoff only
+- renewal code and webhook/source `lineUserId` are not renewal identity proof
+- canonical self-renew uses verified LINE subject → Principal → `RenewMemberUseCase`
