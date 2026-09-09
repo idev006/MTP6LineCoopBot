@@ -301,3 +301,18 @@ Next gate: establish the real production cutover date through the release pipeli
 - CI #164 PASS across syntax, Test.js contracts, architecture, repository/port contracts, engines, application, scheduled/security/protected-delivery gates, and gitleaks
 - BL-ARCH-002 remains OPEN for hidden/global wiring outside verified sub-scopes
 - API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
+
+
+### ARCH-LEGACY-007 Checkpoint
+
+- activation audit `occurredAt` now propagates through `MemberRepositoryAuditAdapter` into durable `activated_dt`
+- self-renewal and staff-renewal audit events now use the same `ClockPort` instant as renewal policy evaluation
+- expiry/reminder/admin flows retain their existing Application-owned timestamps
+- `SheetService.logActivation()` no longer calls `new Date()` for audit time
+- expiry/reminder/admin durable writers no longer fall back to `new Date()`
+- all durable audit writers reject missing timestamps before Spreadsheet access
+- log-ID `Date.now()` generation remains explicitly out of scope for this checkpoint
+- CI #166 and #168 exposed test-only cross-realm/JSON-clone Date comparison defects; assertions were corrected by epoch parsing without weakening timestamp authority checks
+- CI #169 PASS across syntax, Test.js contracts, architecture, ports, engines, application, scheduled/security/protected-delivery gates, and gitleaks
+- BL-ARCH-002 remains OPEN for hidden/global wiring outside verified sub-scopes
+- API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
