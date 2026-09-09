@@ -145,7 +145,8 @@ repository/config/time/services ถูก resolve ผ่าน globals/factories
 - duplicate scheduled `opts` orchestration and direct repository/domain/messaging shells retired @ dc1a04e; backend CI #148 PASS
 - member repository adapter selection moved into Composition.SystemFactory and legacy Data.MemberRepository factory retired @ 582b73c; backend CI #154 PASS
 - WebApp webhook config and API health time now resolve through narrow SystemFactory ConfigPort/ClockPort seams @ d338068; backend CI #158 PASS
-- remaining hidden/global wiring outside scheduled delivery/repository selection/delivery config-time remains open
+- RichMenu deployment/test connection validated config now resolves through ConfigPort adapter + narrow SystemFactory seam @ b5a8d36; backend CI #160 PASS
+- remaining hidden/global wiring outside scheduled delivery/repository selection/delivery config-time/RichMenu config remains open
 
 ### BL-ARCH-003 — Policy in repository contract
 Legacy `isActiveMember` / `hasRole` policy wrappers have been removed from `SheetsMemberRepository` and `SheetService`. The persistence port was already policy-free; `MemberAccessEngine` + `Core.MemberRules` + `ClockPort` remain the canonical policy authority.
