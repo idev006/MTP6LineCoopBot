@@ -107,3 +107,6 @@
 
 
 | REQ-SEC-LEGACY-003 | Scheduled delivery adapters must not retain duplicate opts/repository/domain/messaging orchestration after Application migration | SEC-LEGACY-003 / ADR-0003 | ExpiryService + NoticeService + LoanReminderService reduced to thin Application adapters @ dc1a04e | backend CI #148 PASS; scheduled compatibility retirement + runtime delegation + canonical Application tests PASS | VERIFIED / LEGACY SCHEDULED SHELLS RETIRED |
+
+
+| REQ-API-COMPAT-001 | Public loan API legacy `paymentType=equal_total` alias must follow an explicit controlled deprecation policy before retirement | API-COMPAT-001 / ADR-0006 / API_DATA_CONTRACT | policy documented; alias remains accepted and normalizes to canonical `equal_installment` | repository audit found no known first-party caller; production retirement evidence intentionally pending | POLICY VERIFIED / RETIREMENT CLOCK NOT STARTED |

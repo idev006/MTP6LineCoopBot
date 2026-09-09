@@ -174,3 +174,18 @@ Remaining release blocker:
 - production smoke/monitoring evidence
 
 Tracked by: REL-WEBHOOK-001 (#68)
+
+
+### BL-API-001 — Public loan legacy input alias
+
+`POST /api/loan/calculate` has a canonical `paymentType` vocabulary of `equal_principal|equal_installment`, while legacy `equal_total` remains accepted as a temporary input alias and normalizes to `equal_installment`.
+
+Status: CONTROLLED DEPRECATION / NOT YET RETIRED
+- ADR-0006 defines a 60-calendar-day deprecation window
+- the clock begins only at the first production-verified cutover that includes ADR-0006
+- current code/CI evidence does not establish that production start date
+- new first-party UI/code must not emit the alias
+- retirement requires a fresh caller audit plus production release evidence
+- no sensitive loan payload telemetry is permitted
+
+Tracked by: API-COMPAT-001 (#81).

@@ -209,3 +209,21 @@ Canonical process:
 - Deployment/config runbook — DOCUMENTED
 - Staging deployment + negative/positive signature verification — MOVED TO REL-WEBHOOK-001 #68
 - LINE Developers production cutover — MOVED TO REL-WEBHOOK-001 #68
+
+
+## API-COMPAT-001 — Loan `equal_total` deprecation policy
+
+Status: POLICY_ACCEPTED / RETIREMENT_PENDING
+
+- Governance issue: #81
+- Decision: ADR-0006
+- Canonical payment types remain `equal_principal|equal_installment`.
+- Legacy `equal_total` remains accepted temporarily and normalizes to `equal_installment`.
+- New first-party UI/code must not emit the alias.
+- Deprecation clock starts only at the first production-verified cutover that includes ADR-0006.
+- Target retirement is 60 calendar days after that verified cutover.
+- Before retirement: re-audit repository callers and satisfy production release evidence.
+- No sensitive loan payload/amount/member/PII/raw-body telemetry is permitted.
+- Current code/CI evidence does not claim staging or production verification.
+
+Next gate: establish the real production cutover date through the release pipeline, then compute the retirement date from that evidence.
