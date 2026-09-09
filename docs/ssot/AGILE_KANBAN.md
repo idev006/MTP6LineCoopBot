@@ -56,8 +56,8 @@ P0:
 
 P1:
 4. Web admin completion
-5. controlled frontend dependency refresh
-6. remaining legacy compatibility retirement
+5. remaining legacy compatibility retirement
+6. frontend dependency maintenance after verified baseline
 
 P2:
 7. Staging/UAT/release hardening
@@ -84,8 +84,7 @@ Weekly review:
 
 ### READY
 
-1. `UI-DEPS-001` — MTP6LineCoopBot #26  
-   Controlled latest-stable frontend dependency refresh
+- none
 
 ### BACKLOG
 
@@ -95,6 +94,7 @@ Weekly review:
 
 ### DONE
 
+- `UI-DEPS-001` — MTP6LineCoopBot #26 — DONE @ 49e656fc; Webapp CI #27 PASS; router/store smoke gate added
 - `SEC-LEGACY-001` — MTP6LineCoopBot #56 — DONE; reads @ 95d4f66 CI #115, activation @ cc70d58b CI #126, LIFF renew @ aade6512 CI #11, chat renewal @ 4979d9b0 CI #129, legacy renewal retirement @ 787c79a8 CI #131
 - `SEC-WEB-004` — MTP6LineCoopBot #46 — DONE; secure backend @ 3f052961, LIFF caller @ e174e625, chat handoff @ 09dbfc88, legacy activation retirement @ cc70d58b CI #126 PASS
 - `SEC-WEB-003` — MTP6LineCoopBot #37 — DONE; settings 3ea0171/60b4d35, audit 82cf8ee/481b175, reports 820bd14/dbb1df2, renewal 5fd6d28/3d6f04e, staff read 715318a/4b2987b, role catalog 1f8ec59/3051119, audited role assignment 841b37a/96e77a5 — all recorded CI PASS

@@ -1,6 +1,6 @@
 # DEPENDENCY_REFRESH_RECORD — 2026-09-09
 
-Status: IN REVIEW  
+Status: VERIFIED / MERGED  
 Work Item: UI-DEPS-001  
 Scope: `webapp/`
 
@@ -54,15 +54,17 @@ This refresh must not change:
 5. client-authoritative auth persistence does not return
 6. Vue app still installs Pinia and Router
 
-## Required Merge Evidence
+## Merge Evidence
 
-- `npm ci`
-- headless frontend tests
-- router/store smoke
-- security scan
-- production build
-- synchronized package.json/package-lock.json
-- PR review + CI PASS
+- merged commit: `49e656fca2ac5d7490984645469603474ed267fb`
+- Webapp CI #27: PASS
+- `npm ci`: PASS
+- headless frontend tests: PASS
+- router/store smoke: PASS
+- security scan: PASS
+- production build: PASS
+- package.json/package-lock.json synchronized: VERIFIED
+- one-time lock refresh workflow removed before merge
 
 ## Rollback
 

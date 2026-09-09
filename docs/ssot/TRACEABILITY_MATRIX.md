@@ -95,3 +95,6 @@
 
 
 | REQ-SEC-LEGACY-001B | Legacy renewal ต้องไม่ใช้ webhook/client lineUserId หรือ renewal code เป็น identity authority | SEC-LEGACY-001 / ADR-0003 | LIFF self-renew @ aade6512; chat handoff @ 4979d9b0; /api/member/renew + RenewalService retired @ 787c79a8 | LIFF CI #11 + backend CI #129/#131 PASS | VERIFIED / RETIRED |
+
+
+| REQ-UI-DEPS-001 | Frontend dependencies ต้อง refresh แบบ controlled latest-stable พร้อม synchronized lock และ security/build gates | UI-DEPS-001 / FRONTEND_ENGINEERING_STANDARD / CI_PIPELINE_STANDARD | Vue 3.5.42, Router 5.3.1, Pinia 4.0.3, daisyUI 5.7.32, Tailwind 4.3.3, Vite 8.2.2, plugin-vue 6.0.8 @ 49e656fc | Webapp CI #27: npm ci + headless + router/store smoke + security scan + production build PASS | VERIFIED |
