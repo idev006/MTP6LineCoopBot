@@ -440,3 +440,22 @@ Migration status:
 - chat `renew`, `renew:CODE`, and old `confirm_renew` postbacks — secure LIFF handoff only
 - renewal code and webhook/source `lineUserId` are not renewal identity proof
 - canonical self-renew uses verified LINE subject → Principal → `RenewMemberUseCase`
+
+
+## API Mount Authentication Contract — Browser API-Key Retired
+
+Authority: ADR-0003 / SEC-LEGACY-002
+
+Rules:
+- browser-visible/shared API keys are not an authentication mechanism for the Apps Script API mount
+- the mount must not parse or accept `api_key` from query parameters or request bodies
+- `Config.API_KEY` is retired and must not be reintroduced as a protected-route credential
+- routes declared `auth: none` in `ApiRegistry` are the only explicitly public routes
+- protected LIFF/member routes declare `auth: line-id-token`; the raw LINE ID token is verified server-side and converted to a Principal
+- protected Web routes declare `auth: web-session`; `sessionToken` is verified server-side and converted to a Principal
+- route/role checks performed in the browser are presentation-only and never authorization proof
+- an unregistered path must fail closed as `NOT_FOUND`; supplying any arbitrary legacy/shared-secret field must not authorize it
+
+Retirement evidence:
+- backend: `MTLineCoopBot@dec540ef`
+- backend CI #146 PASS, including Web API-key retirement, protected-delivery, and gitleaks gates

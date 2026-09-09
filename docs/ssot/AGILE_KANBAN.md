@@ -90,11 +90,12 @@ Weekly review:
 ### BACKLOG
 
 - Web admin completion / RBAC workflows
-- remaining legacy lineUserId retirement audit
+- remaining legacy compatibility/security retirement audit
 - release/staging/UAT hardening
 
 ### DONE
 
+- `SEC-LEGACY-002` — MTP6LineCoopBot #77 — DONE (backend code/CI complete; SSOT sync in this checkpoint); browser API-key mount/config retired @ dec540ef; backend CI #146 PASS
 - `SEC-WEBHOOK-001` — MTP6LineCoopBot #65 — DONE (code scope); gateway @ 110de3e CI #1 + Apps Script privacy @ 9019873 CI #135 PASS; production cutover tracked by #68
 - `UI-DEPS-001` — MTP6LineCoopBot #26 — DONE @ 49e656fc; Webapp CI #27 PASS; router/store smoke gate added
 - `SEC-LEGACY-001` — MTP6LineCoopBot #56 — DONE; reads @ 95d4f66 CI #115, activation @ cc70d58b CI #126, LIFF renew @ aade6512 CI #11, chat renewal @ 4979d9b0 CI #129, legacy renewal retirement @ 787c79a8 CI #131
@@ -152,14 +153,16 @@ Canonical process:
 - Admin Settings read — DONE: backend @ 3ea0171 CI #92; frontend @ 60b4d35 Webapp CI #13
 - Audit Log read — DONE: backend @ 82cf8ee CI #94; frontend @ 481b175 Webapp CI #15
 - Reports read — DONE: backend @ 820bd14 CI #96; frontend @ dbb1df2 Webapp CI #17
-- Protected Web writes/admin operations — IN_PROGRESS
+- Protected Web renewal write — DONE: backend @ 5fd6d28 CI #98; frontend @ 3d6f04e Webapp CI #19
+- Staff management / role catalog / audited role assignment — DONE: backend @ 715318a/1f8ec59/841b37a; frontend @ 4b2987b/3051119/96e77a5; recorded CI PASS
+- SEC-WEB-003 issue #37 — DONE / CLOSED; activation identity binding was separated to SEC-WEB-004 and is also DONE
 
 
 ### SEC-WEB-003 Protected Write Checkpoints
 
 - Protected Web renewal write — DONE: backend @ 5fd6d28 CI #98; frontend @ 3d6f04e Webapp CI #19
-- Activation / identity binding — SPLIT TO CONTROLLED FOLLOW-UP
-- Staff/Role admin capabilities — IN_PROGRESS
+- Activation / identity binding — SPLIT TO SEC-WEB-004; DONE there
+- Staff/Role admin capabilities — DONE
 
 
 ### Authorization Consistency
@@ -173,6 +176,13 @@ Canonical process:
 - Role Catalog read — DONE: backend @ 1f8ec59 CI #108; frontend @ 3051119 Webapp CI #23
 - Staff role assignment/write — DONE: backend @ 841b37a CI #110; frontend @ 96e77a5 Webapp CI #25
 
+
+### SEC-LEGACY-002 Checkpoint
+
+- Dead Apps Script browser API-key authentication compatibility — DONE: backend @ dec540ef; CI #146 PASS
+- `api_key` query/body parsing removed
+- `Config.API_KEY` removed
+- canonical route auth metadata + fail-closed unknown-route regression gate retained
 
 ### SEC-LEGACY-001 Checkpoints
 
