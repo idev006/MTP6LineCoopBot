@@ -420,3 +420,20 @@ Next gate: establish the real production cutover date through the release pipeli
 - Audit logging migration row is now `MIGRATED / REPOSITORY-WIDE DURABLE AUDIT AUTHORITY VERIFIED`
 - BL-ARCH-002 remains OPEN for non-audit hidden/global seams still requiring explicit evidence
 - API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
+
+
+### ARCH-LEGACY-015 Checkpoint
+
+- Webapp security scan now recursively covers every `webapp/src/**/*.js` and `webapp/src/**/*.vue`
+- browser API-key/mock trust patterns are forbidden repository-wide
+- direct `fetch()` is forbidden outside `src/adapters/api`
+- credential/session/token persistence in `localStorage` is forbidden; non-sensitive UI preferences such as theme remain allowed
+- member list/detail/renew use the shared session-authorized member API client
+- admin settings/audit/staff/roles/role assignment use the shared session-authorized admin API client
+- protected staff member renewal and staff role assignment are implemented and fail closed on server denial
+- arbitrary Web activation-on-behalf remains intentionally fail-closed; canonical activation is verified LINE self-service per API contract
+- CI #33 exposed a false positive on UI theme localStorage; guard refined to distinguish UI preference from credential persistence without weakening auth/session rules
+- frontend merge @ 4e93b2f; Webapp CI #34 PASS across headless tests, router/store smoke, security scan and production build
+- Web frontend migration row is now `MIGRATED / REPOSITORY-WIDE TRUST BOUNDARY VERIFIED`
+- BL-TEST-001 remains separate/partially closed because broader component/E2E coverage is still pending
+- API_DATA_CONTRACT unchanged: this checkpoint enforces the existing registered contract rather than changing it
