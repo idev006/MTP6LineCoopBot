@@ -703,3 +703,14 @@ Next gate: establish the real production cutover date through the release pipeli
 - candidate digest: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress@sha256:22ca6733eea5d1747bd2ecf52a5dbc060e173d1281ba5ef85f340e0d1fb99f8e`
 - REL-WEBHOOK-001 #68 remains RELEASE_READY / CUTOVER PENDING; no staging or production claim
 - API_DATA_CONTRACT unchanged; `equal_total` deprecation clock has not started
+
+
+### Apps Script Deployment Sync Gate
+
+- backend coding baseline is complete at `MTLineCoopBot@c7df357d29b37f6c74e0203cea850190087fd122`; backend CI #199 PASS
+- this does **not** prove the deployed Google Apps Script Web App is running that commit
+- backend repository has no build/bundle phase; `.clasp.json` uses `rootDir: app` and Apps Script runs V8 source directly
+- before real-environment verification, operator must checkout canonical backend `main`, verify HEAD, run `clasp push`, then create/update the Web App deployment version
+- record Apps Script deployment/version ID and deployed source commit as release evidence
+- status: **CODE COMPLETE / DEPLOYMENT SYNC REQUIRED / THEN READY FOR STAGING VERIFICATION**
+- do not spend time on LINE live testing before this sync gate passes

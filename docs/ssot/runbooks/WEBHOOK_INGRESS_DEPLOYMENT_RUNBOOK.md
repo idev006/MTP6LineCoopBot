@@ -59,6 +59,38 @@ Rules:
 - rotate downstream secret during cutover or suspected exposure
 - do not log request URLs containing downstream secret
 
+## Pre-Staging Apps Script Sync Gate
+
+Before testing the gateway against Apps Script, first prove that the target Apps Script Web App is running the canonical backend source.
+
+Canonical backend for this release:
+- repo: `idev006/MTLineCoopBot`
+- commit: `c7df357d29b37f6c74e0203cea850190087fd122`
+- clasp root: `app/`
+- runtime: Apps Script V8
+
+There is **no separate Apps Script build/bundle step** in this repository. The required deployment flow is:
+
+```bash
+git checkout main
+git pull
+git rev-parse HEAD
+clasp push
+```
+
+`git rev-parse HEAD` must match the approved backend commit before push.
+
+After `clasp push`, create or update the Apps Script Web App deployment so the deployed `/exec` endpoint uses the new source version. `clasp push` alone is not accepted as proof that the currently published Web App deployment is running the new code.
+
+Required evidence:
+- approved backend Git commit
+- successful `clasp push`
+- Apps Script deployment/version ID
+- target Web App deployment URL
+- confirmation that the deployment version was updated after the push
+
+Do not begin LINE live smoke testing until this gate passes.
+
 ## Staging Deployment
 
 1. Build the container from `gateway/webhook-ingress/Dockerfile`.
