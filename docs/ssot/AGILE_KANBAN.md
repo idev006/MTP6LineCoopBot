@@ -362,3 +362,17 @@ Next gate: establish the real production cutover date through the release pipeli
 - CI #177 PASS across syntax, Test.js contracts, architecture, ports, engines, application, scheduled/security/protected-delivery gates, and gitleaks
 - BL-ARCH-002 remains OPEN for remaining hidden/global wiring outside verified sub-scopes
 - API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
+
+
+### ARCH-LEGACY-011 Checkpoint
+
+- repository tree enumerated from current GitHub main; private code-search zero results were not trusted as closure evidence
+- new architecture guard recursively scans every production `app/**/*.js` file
+- direct `Config.get()` / `Config.validate()` is permitted only inside `Adapters/Config/AppsScriptConfigAdapter.js`
+- CI #179 exposed one remaining direct caller: operational `checkTokenHealth()` in `app/Test.js`
+- root cause fixed by routing `checkTokenHealth()` through `Composition.SystemFactory.createConfig().get()`; guard was not weakened or given a Test.js exception
+- `Config.js` remains the definition/source boundary; production callers consume it only through AppsScriptConfigAdapter + ConfigPort/SystemFactory
+- backend merge @ 694ec4f; CI #180 PASS across syntax, Test.js, architecture, ports, engines, application, scheduled/security/protected-delivery gates, and gitleaks
+- Config migration row is now `MIGRATED / REPOSITORY-WIDE CONFIGPORT AUTHORITY VERIFIED`
+- BL-ARCH-002 remains OPEN for non-Config hidden/global seams still requiring explicit evidence
+- API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
