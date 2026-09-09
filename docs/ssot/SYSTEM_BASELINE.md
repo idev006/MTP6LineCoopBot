@@ -150,7 +150,8 @@ repository/config/time/services ถูก resolve ผ่าน globals/factories
 - legacy repository `activateMember()` policy operation that computed `now + 365 days` inside persistence was retired; canonical activation remains `ActivateMemberUseCase -> MemberActivationEngine + ClockPort -> saveActivation()` @ 8a3e55a; backend CI #164 PASS
 - durable activation/renewal/expiry/reminder/admin audit timestamps now originate from Application-owned ClockPort evidence; SheetService rejects missing timestamps before Spreadsheet access and no longer synthesizes audit time with `new Date()` @ 4073c78; backend CI #169 PASS
 - log-ID `Date.now()` generation remains intentionally outside this checkpoint
-- remaining hidden/global wiring outside scheduled delivery/repository selection/delivery config-time/RichMenu config/scheduled trigger config/activation policy/audit timestamp seams remains open
+- time-sensitive `Core.MemberRules`, `Core.NoticeRules`, and `Core.LoanRules` no longer read machine time; callers must supply `now` explicitly from Engine/Application ClockPort context @ 2a1f4bb; backend CI #171 PASS
+- remaining hidden/global wiring outside scheduled delivery/repository selection/delivery config-time/RichMenu config/scheduled trigger config/activation policy/audit timestamp/Core-time seams remains open
 
 ### BL-ARCH-003 — Policy in repository contract
 Legacy `isActiveMember` / `hasRole` policy wrappers have been removed from `SheetsMemberRepository` and `SheetService`. The persistence port was already policy-free; `MemberAccessEngine` + `Core.MemberRules` + `ClockPort` remain the canonical policy authority.
