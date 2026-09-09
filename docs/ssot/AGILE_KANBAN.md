@@ -453,3 +453,16 @@ Next gate: establish the real production cutover date through the release pipeli
 - identifier generation migration is now `MIGRATED / EXPLICIT ID AUTHORITY VERIFIED`
 - BL-ARCH-002 remains OPEN pending audit of any remaining hidden/global service dependencies outside verified Config/Clock/ID/repository/audit/scheduled scopes
 - API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
+
+
+### ARCH-LEGACY-017 Checkpoint
+
+- audited every backend `app/**/*.js` path on current main for Apps Script runtime globals
+- Core/Application/Engine/Ports/Composition/Data/Security contain no direct runtime-global access
+- remaining framework globals are intentionally confined to adapters, delivery, persistence/infrastructure shells, trigger setup, RichMenu tooling, Dashboard/SeedData/Test utilities, and signature/config boundaries
+- new repository-wide architecture guard forbids runtime globals from leaking back into business/composition layers
+- `Logger` observability inside imperative shell is not treated as business authority
+- backend merge @ a38d997; CI #194 PASS across syntax, Test.js, architecture, ports, engines, application, scheduled/security/protected-delivery gates, and gitleaks
+- BL-ARCH-002 is now `CLOSED / VERIFIED`
+- closure does not prohibit framework primitives at explicit infrastructure/delivery boundaries; it prevents hidden dependency wiring in the functional core/application architecture
+- API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change

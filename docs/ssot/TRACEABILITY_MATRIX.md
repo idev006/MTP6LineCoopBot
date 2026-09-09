@@ -158,3 +158,6 @@
 
 
 | REQ-ARCH-LEGACY-016 | Durable audit identifier generation must be explicit infrastructure authority; persistence must not synthesize IDs from wall clock and must fail closed when `logId` is missing | ADR-0002 / ADR-0003 / ARCH-LEGACY-016 / BL-ARCH-002 | IdPort + AppsScriptIdAdapter added; SystemFactory injects idGenerator; dedicated audit stores generate LOG/ELOG/RLOG/ALOG IDs; SheetService requires precomputed `logId`; repository-wide backend guard forbids `Date.now()` @ 9b5e7bb | backend CI #192 PASS across syntax, Test.js, architecture, ports, engines, application, scheduled/security/protected-delivery tests and gitleaks | VERIFIED / EXPLICIT AUDIT ID AUTHORITY |
+
+
+| REQ-ARCH-LEGACY-017 | Apps Script runtime globals must be confined to imperative-shell/infrastructure/tooling boundaries and must not leak into Core/Application/Engine/Ports/Composition/Data/Security | ADR-0002 / ADR-0003 / ARCH-LEGACY-017 / BL-ARCH-002 | repository-wide `app/**/*.js` architecture guard forbids SpreadsheetApp/UrlFetchApp/PropertiesService/Utilities/ContentService/HtmlService/ScriptApp/DriveApp/MailApp/LockService/CacheService in business/composition layers @ a38d997 | backend CI #194 PASS across syntax, Test.js, architecture, ports, engines, application, scheduled/security/protected-delivery tests and gitleaks | VERIFIED / BL-ARCH-002 CLOSED |
