@@ -1,6 +1,7 @@
 import http from 'node:http'
 import { loadConfig } from './config.mjs'
 import { createWebhookHandler } from './handler.mjs'
+import { getHeaderCaseInsensitive, isLineSignatureFormatValid } from './signature.mjs'
 
 export const MAX_WEBHOOK_BODY_BYTES = 1024 * 1024
 export const REQUEST_TIMEOUT_MS = 15_000
@@ -87,6 +88,14 @@ export function createServer({ config = loadConfig(), logger = console, fetchImp
       req.resume()
       logger.info?.({ outcome:'method_not_allowed', status:405 })
       writeJson(res, 405, { ok:false, error:'method_not_allowed' })
+      return
+    }
+
+    const signature=getHeaderCaseInsensitive(req.headers,'x-line-signature')
+    if (!isLineSignatureFormatValid(signature)) {
+      req.resume()
+      logger.warn?.({ outcome:'signature_rejected_prebody', status:401 })
+      writeJson(res, 401, { ok:false, error:'invalid_signature' })
       return
     }
 

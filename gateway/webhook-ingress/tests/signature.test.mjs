@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { computeLineSignature, getHeaderCaseInsensitive, verifyLineSignature } from '../src/signature.mjs'
+import { computeLineSignature, getHeaderCaseInsensitive, verifyLineSignature, isLineSignatureFormatValid } from '../src/signature.mjs'
 
 // Official LINE documentation verification vector.
 // The example channel secret is public documentation data and intentionally split
@@ -49,4 +49,12 @@ test('header lookup is case-insensitive', () => {
     getHeaderCaseInsensitive({ 'X-Line-Signature':officialSignature }, 'x-line-signature'),
     officialSignature
   )
+})
+
+
+test('signature format validator accepts only decoded 32-byte Base64 signatures', () => {
+  assert.equal(isLineSignatureFormatValid('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA='),true)
+  assert.equal(isLineSignatureFormatValid(undefined),false)
+  assert.equal(isLineSignatureFormatValid('%%%not-base64%%%'),false)
+  assert.equal(isLineSignatureFormatValid('YWJjZA=='),false)
 })

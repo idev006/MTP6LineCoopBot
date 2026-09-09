@@ -186,9 +186,13 @@ test('HTTP boundary rejects non-POST and oversized bodies before handler/downstr
   assert.equal(methodRejected.status,405)
   assert.equal(downstreamCalls,0)
 
+  const wellFormedWrongSignature='AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA='
   const declaredBody=Buffer.alloc(1024 * 1024 + 1, 0x62)
   const declaredOversize=await rawRequest(gatewayBase, {
-    headers:{'content-length':String(declaredBody.length)},
+    headers:{
+      'x-line-signature':wellFormedWrongSignature,
+      'content-length':String(declaredBody.length)
+    },
     chunks:[declaredBody]
   })
   assert.equal(declaredOversize.status,413)
@@ -197,10 +201,47 @@ test('HTTP boundary rejects non-POST and oversized bodies before handler/downstr
 
   const chunk=Buffer.alloc(600 * 1024, 0x61)
   const streamedOversize=await rawRequest(gatewayBase, {
-    headers:{'transfer-encoding':'chunked'},
+    headers:{
+      'x-line-signature':wellFormedWrongSignature,
+      'transfer-encoding':'chunked'
+    },
     chunks:[chunk,chunk]
   })
   assert.equal(streamedOversize.status,413)
   assert.equal(JSON.parse(streamedOversize.body).error,'body_too_large')
   assert.equal(downstreamCalls,0)
+})
+
+
+test('HTTP boundary rejects missing and malformed signatures before body collection', async t => {
+  let downstreamCalls=0
+  const downstream=http.createServer((req,res)=>{
+    downstreamCalls += 1
+    res.writeHead(200)
+    res.end('ok')
+  })
+  const downstreamBase=await listen(downstream)
+  t.after(()=>close(downstream))
+
+  const gateway=createServer({
+    config:createGatewayConfig(downstreamBase),
+    logger:{info(){},warn(){},error(){}}
+  })
+  const gatewayBase=await listen(gateway)
+  t.after(()=>close(gateway))
+
+  for (const item of [
+    {name:'missing signature', headers:{}},
+    {name:'malformed Base64', headers:{'x-line-signature':'%%%not-base64%%%'}},
+    {name:'wrong decoded length', headers:{'x-line-signature':'YWJjZA=='}}
+  ]) {
+    const body=Buffer.alloc(256 * 1024,0x61)
+    const response=await rawRequest(gatewayBase,{
+      headers:{...item.headers,'content-length':String(body.length)},
+      chunks:[body]
+    })
+    assert.equal(response.status,401,item.name)
+    assert.equal(JSON.parse(response.body).error,'invalid_signature',item.name)
+    assert.equal(downstreamCalls,0,item.name)
+  }
 })
