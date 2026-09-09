@@ -21,6 +21,19 @@ Optional:
 
 Secrets must come from deployment secret management/environment. Never place real values in repo files.
 
+### Downstream transport
+
+Because the gateway transports `DOWNSTREAM_SECRET` to the Apps Script downstream request, `DOWNSTREAM_URL` must fail closed unless it is a clean HTTPS URL.
+
+Required:
+- scheme is `https:`
+- hostname is present
+- no embedded username/password
+- no URL fragment
+- redirects remain disabled/fail-closed in the forwarding adapter
+
+Plaintext `http:` downstream transport is forbidden.
+
 ## HTTP Contract
 
 Input:

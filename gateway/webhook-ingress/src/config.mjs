@@ -1,3 +1,18 @@
+function isSecureDownstreamUrl(value) {
+  try {
+    const url = new URL(value)
+    return (
+      url.protocol === 'https:' &&
+      Boolean(url.hostname) &&
+      !url.username &&
+      !url.password &&
+      !url.hash
+    )
+  } catch {
+    return false
+  }
+}
+
 export function loadConfig(env = process.env) {
   const cfg = {
     channelSecret: String(env.CHANNEL_SECRET || ''),
@@ -9,7 +24,7 @@ export function loadConfig(env = process.env) {
 
   const missing = []
   if (!cfg.channelSecret) missing.push('CHANNEL_SECRET')
-  if (!cfg.downstreamUrl) missing.push('DOWNSTREAM_URL')
+  if (!cfg.downstreamUrl || !isSecureDownstreamUrl(cfg.downstreamUrl)) missing.push('DOWNSTREAM_URL')
   if (!cfg.downstreamSecret) missing.push('DOWNSTREAM_SECRET')
   if (!Number.isInteger(cfg.port) || cfg.port < 1 || cfg.port > 65535) missing.push('PORT')
   if (!Number.isFinite(cfg.downstreamTimeoutMs) || cfg.downstreamTimeoutMs < 100) missing.push('DOWNSTREAM_TIMEOUT_MS')
