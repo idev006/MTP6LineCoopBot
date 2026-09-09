@@ -70,6 +70,7 @@ Adapter ใหม่ต้องผ่าน shared contract suite
 - session policy
 - stores
 - router/RBAC
+- router/store server-authority smoke gate
 - loading/error/empty
 - component behavior
 - production build

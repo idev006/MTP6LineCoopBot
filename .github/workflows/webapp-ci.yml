@@ -36,6 +36,9 @@ jobs:
       - name: Headless engine tests
         run: npm run test:engine
 
+      - name: Router / store smoke
+        run: node tests/router-store-smoke.test.cjs
+
       - name: Security scan
         run: npm run security:scan
 
