@@ -151,10 +151,20 @@ repository/config/time/services ถูก resolve ผ่าน globals/factories
 
 ### BL-SEC-004 — Webhook authenticity
 
-Current direct Apps Script webhook ingress validates a URL/query downstream secret but cannot verify the LINE `x-line-signature` header through the documented Apps Script Web App event contract.
+Direct Apps Script cannot verify the LINE `x-line-signature` header through the documented Web App event contract.
 
-Status: OPEN / RELEASE BLOCKER
+Status: CLOSED IN CODE / RELEASE CUTOVER PENDING
 
-Target: ADR-0005 verified webhook ingress gateway.
+Implemented:
+- verified Node 24 ingress gateway @ `110de3e`; Webhook Ingress CI #1 PASS
+- exact raw-body HMAC-SHA256 verification before JSON parse
+- official LINE signature vector + tamper/missing/malformed/downstream failure tests
+- Apps Script raw webhook body logging removed @ `9019873`; backend CI #135 PASS
+- ADR-0005 + deployment/cutover runbook
 
-Additional privacy gap: raw webhook body logging in Apps Script must be removed before release.
+Remaining release blocker:
+- staging deployment/security verification
+- LINE Developers Console production webhook cutover
+- production smoke/monitoring evidence
+
+Tracked by: REL-WEBHOOK-001 (#68)
