@@ -186,9 +186,13 @@ test('HTTP boundary rejects non-POST and oversized bodies before handler/downstr
   assert.equal(methodRejected.status,405)
   assert.equal(downstreamCalls,0)
 
+  const wellFormedWrongSignature='AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA='
   const declaredBody=Buffer.alloc(1024 * 1024 + 1, 0x62)
   const declaredOversize=await rawRequest(gatewayBase, {
-    headers:{'content-length':String(declaredBody.length)},
+    headers:{
+      'x-line-signature':wellFormedWrongSignature,
+      'content-length':String(declaredBody.length)
+    },
     chunks:[declaredBody]
   })
   assert.equal(declaredOversize.status,413)
@@ -197,7 +201,10 @@ test('HTTP boundary rejects non-POST and oversized bodies before handler/downstr
 
   const chunk=Buffer.alloc(600 * 1024, 0x61)
   const streamedOversize=await rawRequest(gatewayBase, {
-    headers:{'transfer-encoding':'chunked'},
+    headers:{
+      'x-line-signature':wellFormedWrongSignature,
+      'transfer-encoding':'chunked'
+    },
     chunks:[chunk,chunk]
   })
   assert.equal(streamedOversize.status,413)
