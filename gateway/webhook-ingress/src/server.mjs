@@ -27,8 +27,22 @@ export function createServer({ config = loadConfig(), logger = console, fetchImp
   const handleWebhook = createWebhookHandler({ config, logger, fetchImpl })
 
   return http.createServer(async (req, res) => {
+    if (req.url === '/healthz' && req.method === 'GET') {
+      res.writeHead(200, {
+        'content-type':'application/json; charset=utf-8',
+        'cache-control':'no-store',
+        'x-content-type-options':'nosniff'
+      })
+      res.end(JSON.stringify({ ok:true, service:'webhook-ingress' }))
+      return
+    }
+
     if (req.url !== '/webhook') {
-      res.writeHead(404, { 'content-type':'application/json; charset=utf-8' })
+      res.writeHead(404, {
+        'content-type':'application/json; charset=utf-8',
+        'cache-control':'no-store',
+        'x-content-type-options':'nosniff'
+      })
       res.end(JSON.stringify({ ok:false, error:'not_found' }))
       return
     }
@@ -40,12 +54,20 @@ export function createServer({ config = loadConfig(), logger = console, fetchImp
         headers:req.headers,
         rawBody
       })
-      res.writeHead(result.status, result.headers)
+      res.writeHead(result.status, {
+        ...result.headers,
+        'cache-control':'no-store',
+        'x-content-type-options':'nosniff'
+      })
       res.end(result.body)
     } catch (err) {
       const status = err?.code === 'BODY_TOO_LARGE' ? 413 : 500
       logger.error?.({ outcome:'request_error', status, code:err?.code || 'REQUEST_ERROR' })
-      res.writeHead(status, { 'content-type':'application/json; charset=utf-8' })
+      res.writeHead(status, {
+        'content-type':'application/json; charset=utf-8',
+        'cache-control':'no-store',
+        'x-content-type-options':'nosniff'
+      })
       res.end(JSON.stringify({ ok:false, error:status === 413 ? 'body_too_large' : 'internal_error' }))
     }
   })
