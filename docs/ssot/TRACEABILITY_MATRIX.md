@@ -113,3 +113,6 @@
 
 
 | REQ-ARCH-LEGACY-001 | Production member repository adapter selection must be owned by the canonical composition root; legacy Data.MemberRepository factory must remain retired | ADR-0002 / ADR-0003 / ARCH-LEGACY-001 | SystemFactory DB_TYPE selection + MemberRepositoryPort enforcement; legacy factory removed @ 582b73c | backend CI #154 PASS including Test.js contracts, architecture retirement guard, port/application/security tests, protected delivery and gitleaks | VERIFIED / LEGACY REPOSITORY FACTORY RETIRED |
+
+
+| REQ-ARCH-LEGACY-002 | Persistence adapters/services must not own member validity or role policy; policy authority remains MemberAccessEngine + Core.MemberRules + ClockPort | ADR-0002 / ADR-0003 / ARCH-LEGACY-002 / BL-ARCH-003 | repository/service policy wrappers removed @ c8491f7 | backend CI #156 PASS including deterministic Test.js engine coverage, architecture policy-retirement guard, ports, engines, application/security/protected-delivery tests and gitleaks | VERIFIED / BL-ARCH-003 CLOSED |
