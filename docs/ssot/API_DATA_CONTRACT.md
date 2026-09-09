@@ -425,7 +425,9 @@ Audit:
 - record verified actor subject, target member code, outcome and timestamp
 - do not persist raw activation code in the secure audit event
 
-Migration:
-- legacy `POST /api/member/activate` remains compatibility-only until LIFF/chat callers migrate
-- chat activation must hand off to verified LIFF activation rather than directly creating a binding
-- legacy `renew:CODE` remains under identity-binding review because it can mutate LINE binding
+Migration status:
+- legacy `POST /api/member/activate` is RETIRED
+- legacy `ActivationService` direct binding is fail-closed
+- chat activation hands off to verified LIFF activation
+- secure LIFF caller uses raw verified ID token + activation code only
+- legacy `renew:CODE` remains a separate compatibility/identity-binding retirement concern

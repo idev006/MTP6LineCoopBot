@@ -7,7 +7,7 @@
 | Req ID | Requirement | Design/ADR | Code Evidence | Test Evidence | Current Status |
 |---|---|---|---|---|---|
 | REQ-SEC-001 | Authentication ต้อง fail-closed | ARCHITECTURE_CONTRACT | Web auth fail-open removed @ e1a54aa; server Web session @ 1406a00f; Web client verified session @ 97dc634e | backend CI #81 + Webapp CI #8/#11 PASS | VERIFIED FOR WEB SESSION BOUNDARY |
-| REQ-SEC-002 | LIFF identity ต้อง verify server-side | API_DATA_CONTRACT | backend verified identity @ 865569b + LIFF raw ID-token migration @ d3deac7 | backend CI #53 + LIFF CI #5 PASS | VERIFIED FOR MEMBER SELF-SERVICE PATHS |
+| REQ-SEC-002 | LIFF identity ต้อง verify server-side | API_DATA_CONTRACT | verified identity @ 865569b + LIFF raw token migration @ d3deac7 + secure self-activation @ 3f052961/e174e625 | backend CI + LIFF CI + retirement CI #126 PASS | VERIFIED FOR MEMBER SELF-SERVICE + ACTIVATION |
 | REQ-SEC-003 | Authorization ต้อง server-side | ARCHITECTURE_CONTRACT | AuthorizationEngine + Web member list/detail RBAC @ d78a1bc | backend CI #87 PASS; Webapp CI #11 client migration PASS | VERIFIED FOR WEB MEMBER READS; WRITES/ADMIN PENDING |
 | REQ-DATA-001 | Data schema มี SSOT | API_DATA_CONTRACT | MTLineCoopBot/app/DataDict.js | data/repository tests declared | CODE_PRESENT / TEST_IMPLEMENTED |
 | REQ-CORE-001 | Business rule ไม่ duplicate ข้าม UI | ADR-0002 | Core.LoanCalculator + CalculateLoanUseCase + /api/loan/calculate @ 45582b4; frontend canonical UI @ 0de0c0e; backend duplicate retired @ daffda7 | backend CI #74 + frontend Loan Calculator CI #1 + backend CI #76 PASS | VERIFIED / SINGLE FORMULA AUTHORITY |
@@ -88,4 +88,7 @@
 | REQ-SEC-ROLE-001 | Canonical persisted member roles ต้องสอดคล้องกันทุก identity/member/Web path | ADR-0003 / API_DATA_CONTRACT | MemberAccessEngine + self-renew manager consistency @ a8beda3 | backend CI #100 PASS; manager known-role/profile/self-renew regression tests PASS | VERIFIED |
 
 
-| REQ-SEC-LEGACY-001A | Legacy lineUserId read/validity routes ต้อง retire หลัง caller migration | SEC-LEGACY-001 / ADR-0003 | EventHandler profile/finance migrated to application use cases; legacy GET profile/savings/loans/dividends/validity retired @ 95d4f66 | CI #112 exposed internal dependency; corrected scope/migration; CI #115 PASS | VERIFIED / ACTIVATE+RENEW COMPATIBILITY REMAINS |
+| REQ-SEC-LEGACY-001A | Legacy lineUserId read/validity routes ต้อง retire หลัง caller migration | SEC-LEGACY-001 / ADR-0003 | legacy reads retired @ 95d4f66; legacy activation retired @ cc70d58b | CI #115 + activation retirement CI #126 PASS | VERIFIED / LEGACY RENEW COMPATIBILITY REMAINS |
+
+
+| REQ-SEC-WEB-004 | Activation/LINE identity binding ต้อง derive subject จาก verified LINE identity และห้าม client lineUserId authority | SEC-WEB-004 / ADR-0004 / SEQ-MEMBER-ACTIVATE | secure self-activation @ 3f052961; LIFF caller @ e174e625; chat→LIFF handoff @ 09dbfc88; legacy activation retired @ cc70d58b | secure activation tests + chat handoff tests + legacy retirement CI #126 PASS | VERIFIED / LEGACY ACTIVATION RETIRED |

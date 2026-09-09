@@ -50,9 +50,9 @@ Optional:
 ## Current Priority
 
 P0:
-1. Secure activation / LINE identity binding (SEC-WEB-004)
-2. remaining legacy client identity/API-key trust retirement audit
-3. retire remaining legacy lineUserId/client API-key paths after caller evidence
+1. remaining legacy client identity/API-key trust retirement audit (SEC-LEGACY-001)
+2. retire legacy renewal compatibility after caller evidence
+3. remaining legacy compatibility/security retirement
 
 P1:
 4. Web admin completion
@@ -84,13 +84,10 @@ Weekly review:
 
 ### READY
 
-1. `SEC-WEB-004` — MTP6LineCoopBot #46  
-   Design secure activation and LINE identity binding
-
-2. `SEC-LEGACY-001` — MTP6LineCoopBot #56  
+1. `SEC-LEGACY-001` — MTP6LineCoopBot #56  
    Remaining legacy client identity/API-key retirement audit — PARTIAL; member read/validity routes retired @ 95d4f66 CI #115
 
-3. `UI-DEPS-001` — MTP6LineCoopBot #26  
+2. `UI-DEPS-001` — MTP6LineCoopBot #26  
    Controlled latest-stable frontend dependency refresh
 
 ### BACKLOG
@@ -101,6 +98,7 @@ Weekly review:
 
 ### DONE
 
+- `SEC-WEB-004` — MTP6LineCoopBot #46 — DONE; secure backend @ 3f052961, LIFF caller @ e174e625, chat handoff @ 09dbfc88, legacy activation retirement @ cc70d58b CI #126 PASS
 - `SEC-WEB-003` — MTP6LineCoopBot #37 — DONE; settings 3ea0171/60b4d35, audit 82cf8ee/481b175, reports 820bd14/dbb1df2, renewal 5fd6d28/3d6f04e, staff read 715318a/4b2987b, role catalog 1f8ec59/3051119, audited role assignment 841b37a/96e77a5 — all recorded CI PASS
 - `SEC-WEB-002` — MTP6LineCoopBot #16 — DONE; server session 1406a00f CI #81, LINE exchange fe332fde CI #85, Web client auth 97dc634e CI #8, member RBAC d78a1bc CI #87, client member migration 07ca08e CI #11 PASS
 - `CORE-FIN-001` — MTLineCoopBot #14 — DONE; backend authority @ 45582b4 CI #74, frontend @ 0de0c0e UI CI #1, duplicate retirement @ daffda7 CI #76 PASS
@@ -181,4 +179,5 @@ Canonical process:
 - Production Web/LIFF caller audit — DONE for legacy member reads
 - Internal LINE EventHandler caller migration — DONE @ 95d4f66
 - Legacy GET profile/savings/loans/dividends/validity retirement — DONE @ 95d4f66 CI #115
-- Legacy activate/renew identity-binding compatibility — BLOCKED BY SEC-WEB-004
+- Legacy activation compatibility — DONE / RETIRED @ cc70d58b CI #126
+- Legacy renewal compatibility — NEXT retirement target
