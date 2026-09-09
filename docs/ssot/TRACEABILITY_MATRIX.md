@@ -101,3 +101,6 @@
 
 
 | REQ-SEC-WEBHOOK-001 | LINE webhook ต้อง verify x-line-signature จาก exact raw body ก่อน parse/process | ADR-0005 / WEBHOOK_INGRESS_SECURITY_STANDARD | Node 24 verified ingress @ 110de3e; Apps Script raw-body log hardening @ 9019873 | Webhook Ingress CI #1 PASS; backend CI #135 PASS | CODE_VERIFIED / PRODUCTION CUTOVER PENDING |
+
+
+| REQ-SEC-LEGACY-002 | Browser-visible/shared API key must not authenticate Web/LIFF protected routes; unregistered routes fail closed | SEC-LEGACY-002 / ADR-0003 / API_DATA_CONTRACT | Apps Script Web API-key fallback + Config.API_KEY retired @ dec540ef | backend CI #146 PASS; web-api-key-retirement + protected delivery + gitleaks PASS | VERIFIED / BROWSER API-KEY AUTH SURFACE RETIRED |
