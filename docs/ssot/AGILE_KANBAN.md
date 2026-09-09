@@ -391,3 +391,19 @@ Next gate: establish the real production cutover date through the release pipeli
 - Clock/time migration row is now `MIGRATED / REPOSITORY-WIDE WALL-CLOCK AUTHORITY VERIFIED`
 - BL-ARCH-002 remains OPEN for non-Clock hidden/global seams, including audit identifier generation if it is to be migrated
 - API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
+
+
+### ARCH-LEGACY-013 Checkpoint
+
+- added `MemberAuditStorePort` for durable activation/expiry/reminder audit persistence
+- added `SheetsMemberAuditStore`
+- added canonical `DurableAuditAdapter` backed by `MemberAuditStorePort + AdminAuditStorePort`
+- removed `logActivation/logExpiry/logReminder` from `MemberRepositoryPort`, `SheetsMemberRepository`, and `InMemoryMemberRepository`
+- retired transitional `MemberRepositoryAuditAdapter`
+- SystemFactory now composes `memberAuditStore` separately from `memberRepository`
+- runtime load order and contract/architecture tests updated
+- CI #186 exposed stale test reference to deleted transitional adapter; root cause fixed
+- CI #187 exposed formatting-sensitive timestamp assertion; assertion made whitespace-tolerant without weakening semantic mapping
+- backend merge @ ebeb59f; CI #188 PASS across syntax, Test.js, architecture, ports, engines, application, scheduled/security/protected-delivery gates, and gitleaks
+- Audit logging remains PARTIAL until a repository-wide caller guard proves durable SheetService audit writers are reachable only through dedicated audit-store adapters
+- API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
