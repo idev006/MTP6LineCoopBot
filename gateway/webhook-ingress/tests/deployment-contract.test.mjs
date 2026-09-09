@@ -10,6 +10,7 @@ const root=path.resolve(here,'../../..')
 const securityPath=path.join(root,'docs/ssot/security/WEBHOOK_INGRESS_SECURITY_STANDARD.md')
 const readmePath=path.join(root,'gateway/webhook-ingress/README.md')
 const workflowPath=path.join(root,'.github/workflows/webhook-ingress-ci.yml')
+const imageWorkflowPath=path.join(root,'.github/workflows/webhook-ingress-image.yml')
 const dockerfilePath=path.join(root,'gateway/webhook-ingress/Dockerfile')
 
 test('canonical deployment environment names are the only accepted runtime contract', () => {
@@ -108,5 +109,33 @@ test('container base image is pinned by immutable sha256 digest', () => {
     firstLine,
     /^FROM node:24-alpine@sha256:[a-f0-9]{64}$/,
     'Dockerfile base image must retain tag + immutable sha256 digest pin'
+  )
+})
+
+
+test('webhook release workflows pin external GitHub Actions by immutable commit SHA', () => {
+  const workflows=[
+    fs.readFileSync(workflowPath,'utf8'),
+    fs.readFileSync(imageWorkflowPath,'utf8')
+  ]
+
+  for (const workflow of workflows) {
+    const uses=[...workflow.matchAll(/^\s*-\s+uses:\s+([^\s#]+)(?:\s+#.*)?$/gm)].map(match=>match[1])
+    assert.ok(uses.length > 0,'webhook workflow must contain at least one external action')
+
+    for (const ref of uses) {
+      assert.match(
+        ref,
+        /^[^@\s]+@[a-f0-9]{40}$/,
+        `external action must be pinned to immutable 40-hex commit SHA: ${ref}`
+      )
+    }
+  }
+
+  const ci=workflows[0]
+  const watched="'"+".github/workflows/webhook-ingress-image.yml"+"'"
+  assert.ok(
+    ci.split(watched).length >= 3,
+    'image publish workflow changes must trigger both push and pull_request webhook CI'
   )
 })

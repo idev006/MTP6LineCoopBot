@@ -96,3 +96,14 @@ The production gateway base image must be reproducible from source review eviden
 - do not use an unpinned mutable base tag for a release candidate
 - base-image upgrades require a controlled source change, CI pass and a newly published immutable gateway image
 - image publication evidence must record the gateway image digest separately from the base-image digest
+
+
+## GitHub Actions Supply-Chain Rule
+
+Webhook release workflows are part of the production release trust boundary.
+
+- every external `uses:` dependency in `webhook-ingress-ci.yml` and `webhook-ingress-image.yml` must be pinned to an immutable 40-hex commit SHA
+- keep a human-readable major-version comment beside each pin for operator review
+- mutable tags such as `@v4`, branches, and floating refs are forbidden as executable action references
+- action upgrades require an explicit source diff, review, passing Webhook Ingress CI, and new immutable image evidence when the publish workflow or gateway release candidate changes
+- changes to the image-publish workflow must trigger Webhook Ingress CI on both pull requests and `main`
