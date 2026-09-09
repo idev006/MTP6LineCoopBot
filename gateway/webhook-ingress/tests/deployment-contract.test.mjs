@@ -4,6 +4,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { fileURLToPath } from 'node:url'
 import { loadConfig } from '../src/config.mjs'
+import { createServer, REQUEST_TIMEOUT_MS, HEADERS_TIMEOUT_MS, CONNECTIONS_CHECKING_INTERVAL_MS, KEEP_ALIVE_TIMEOUT_MS } from '../src/server.mjs'
 
 const here=path.dirname(fileURLToPath(import.meta.url))
 const root=path.resolve(here,'../../..')
@@ -138,4 +139,31 @@ test('webhook release workflows pin external GitHub Actions by immutable commit 
     ci.split(watched).length >= 3,
     'image publish workflow changes must trigger both push and pull_request webhook CI'
   )
+})
+
+
+test('HTTP server explicitly bounds slow-client ingress timeouts', () => {
+  assert.equal(REQUEST_TIMEOUT_MS,15_000)
+  assert.equal(HEADERS_TIMEOUT_MS,10_000)
+  assert.equal(CONNECTIONS_CHECKING_INTERVAL_MS,1_000)
+  assert.equal(KEEP_ALIVE_TIMEOUT_MS,5_000)
+
+  const server=createServer({
+    config:{
+      channelSecret:'test-channel-secret',
+      downstreamUrl:'https://example.com/exec',
+      downstreamSecret:'test-downstream-secret',
+      downstreamTimeoutMs:8000,
+      port:8080
+    },
+    logger:{info(){},warn(){},error(){}},
+    fetchImpl:async () => {
+      throw new Error('not expected')
+    }
+  })
+
+  assert.equal(server.requestTimeout,REQUEST_TIMEOUT_MS)
+  assert.equal(server.headersTimeout,HEADERS_TIMEOUT_MS)
+  assert.equal(server.keepAliveTimeout,KEEP_ALIVE_TIMEOUT_MS)
+  server.close()
 })

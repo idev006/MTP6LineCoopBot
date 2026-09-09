@@ -3,6 +3,10 @@ import { loadConfig } from './config.mjs'
 import { createWebhookHandler } from './handler.mjs'
 
 export const MAX_WEBHOOK_BODY_BYTES = 1024 * 1024
+export const REQUEST_TIMEOUT_MS = 15_000
+export const HEADERS_TIMEOUT_MS = 10_000
+export const CONNECTIONS_CHECKING_INTERVAL_MS = 1_000
+export const KEEP_ALIVE_TIMEOUT_MS = 5_000
 
 function responseHeaders() {
   return {
@@ -63,7 +67,12 @@ function declaredBodyTooLarge(req, maxBytes = MAX_WEBHOOK_BODY_BYTES) {
 export function createServer({ config = loadConfig(), logger = console, fetchImpl = fetch } = {}) {
   const handleWebhook = createWebhookHandler({ config, logger, fetchImpl })
 
-  return http.createServer(async (req, res) => {
+  return http.createServer({
+    requestTimeout:REQUEST_TIMEOUT_MS,
+    headersTimeout:HEADERS_TIMEOUT_MS,
+    connectionsCheckingInterval:CONNECTIONS_CHECKING_INTERVAL_MS,
+    keepAliveTimeout:KEEP_ALIVE_TIMEOUT_MS
+  }, async (req, res) => {
     if (req.url === '/healthz' && req.method === 'GET') {
       writeJson(res, 200, { ok:true, service:'webhook-ingress' })
       return
