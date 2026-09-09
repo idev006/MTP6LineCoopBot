@@ -494,3 +494,17 @@ Next gate: establish the real production cutover date through the release pipeli
 - BL-TEST-001 is now `CLOSED / VERIFIED FOR ACTIVE WEB BASELINE`
 - production browser/deployment smoke remains a Release Pipeline concern rather than a development-baseline blocker
 - API_DATA_CONTRACT unchanged: test-coverage checkpoint only
+
+
+### REL-WEBHOOK-002 Checkpoint
+
+- issue #123 — DONE (code/release-readiness scope only)
+- deployed-gateway verifier aligned with mandatory signature-negative cases @ `74d8a447`
+- full HTTP integration proves missing/malformed/wrong/tampered signature cases fail closed before downstream
+- PR #124 merged; Webhook Ingress CI #9 PASS
+- main Webhook Ingress CI #10 PASS
+- Publish Webhook Ingress Image #3 PASS
+- current immutable CODE_VERIFIED candidate: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress:sha-74d8a4470905`
+- digest: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress@sha256:c30c1e56e6c59b74ade44b6b0a72c65d1a9849ac2e3b3a5021d693cd4e3f8c16`
+- REL-WEBHOOK-001 #68 remains RELEASE_READY / external-gate pending; no staging, LINE Console cutover or production claim is made
+- API_DATA_CONTRACT unchanged; `equal_total` deprecation clock has not started

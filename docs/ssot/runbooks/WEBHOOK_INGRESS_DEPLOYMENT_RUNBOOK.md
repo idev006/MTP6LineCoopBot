@@ -72,6 +72,17 @@ Rules:
 
 ## Staging Security Verification
 
+Repeatable gateway check:
+
+```bash
+cd gateway/webhook-ingress
+GATEWAY_URL="https://<staging-gateway>" \
+CHANNEL_SECRET="<staging LINE channel secret>" \
+npm run verify:deployment
+```
+
+The verifier checks health plus missing-signature, malformed-Base64, wrong-signature, tampered-body rejection and one valid signed empty webhook. A PASS from this command is gateway-side evidence only. The staging operator must separately confirm from downstream/Apps Script evidence that every invalid case produced zero Apps Script requests and that the valid case passed the downstream secret gate and reached EventHandler.
+
 Required evidence:
 
 ### Invalid / Missing Signature
