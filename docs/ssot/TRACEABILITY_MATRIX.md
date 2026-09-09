@@ -119,3 +119,6 @@
 
 
 | REQ-ARCH-LEGACY-003 | Delivery entrypoints must resolve config/time through canonical composition seams rather than direct global Config/wall-clock access | ADR-0002 / ADR-0003 / ARCH-LEGACY-003 / BL-ARCH-002 | WebApp uses SystemFactory.createConfig(); API health uses SystemFactory.createClock(); narrow seams enforce ConfigPort/ClockPort @ d338068 | backend CI #158 PASS including Test.js contracts, architecture delivery-wiring guard, ports, engines, application/security/protected-delivery tests and gitleaks | VERIFIED / DELIVERY CONFIG-TIME GLOBALS RETIRED |
+
+
+| REQ-ARCH-LEGACY-004 | RichMenu operational entrypoints must obtain validated configuration through the canonical config adapter/composition seam while preserving existing Config.validate() fail-closed semantics | ADR-0002 / ADR-0003 / ARCH-LEGACY-004 / BL-ARCH-002 | ConfigPort validatable capability + AppsScriptConfigAdapter.validate() + SystemFactory.createValidatedConfig(); RichMenu direct Config.validate() removed @ b5a8d36 | backend CI #160 PASS including config contract validation, RichMenu architecture guard, ports, engines, application/security/protected-delivery tests and gitleaks | VERIFIED / RICHMENU CONFIG GLOBAL RETIRED |
