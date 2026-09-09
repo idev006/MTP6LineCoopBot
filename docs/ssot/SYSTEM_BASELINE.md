@@ -155,7 +155,8 @@ repository/config/time/services ถูก resolve ผ่าน globals/factories
 - log-ID `Date.now()` generation remains intentionally outside this checkpoint
 - time-sensitive `Core.MemberRules`, `Core.NoticeRules`, and `Core.LoanRules` no longer read machine time; callers must supply `now` explicitly from Engine/Application ClockPort context @ 2a1f4bb; backend CI #171 PASS
 - legacy repository `renewMember()` operation that forced `memStatus='active'` and could mutate `line_user_id` was retired; canonical renewal remains `RenewMemberUseCase/RenewMemberByStaffUseCase -> Core.MemberRules + ClockPort -> saveRenewal()` @ 7cf0583; backend CI #177 PASS
-- remaining hidden/global wiring outside scheduled delivery/repository selection/delivery config-time/RichMenu config/scheduled trigger config/activation-renewal policy/audit timestamp/Core-time seams remains open
+- repository-wide ConfigPort invariant now scans every `app/**/*.js`; the remaining manual `checkTokenHealth()` direct `Config.get()` caller was migrated through `SystemFactory.createConfig()` and no direct Config global caller remains outside `AppsScriptConfigAdapter` @ 694ec4f; backend CI #180 PASS
+- remaining hidden/global wiring outside repository-wide ConfigPort plus verified scheduled/repository/time/policy seams remains open
 
 ### BL-ARCH-003 — Policy in repository contract
 Legacy `isActiveMember` / `hasRole` policy wrappers have been removed from `SheetsMemberRepository` and `SheetService`. The persistence port was already policy-free; `MemberAccessEngine` + `Core.MemberRules` + `ClockPort` remain the canonical policy authority.
