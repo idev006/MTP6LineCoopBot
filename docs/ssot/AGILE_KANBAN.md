@@ -184,3 +184,13 @@ Canonical process:
 - Legacy GET profile/savings/loans/dividends/validity retirement — DONE @ 95d4f66 CI #115
 - Legacy activation compatibility — DONE / RETIRED @ cc70d58b CI #126
 - Legacy renewal compatibility — DONE / RETIRED @ 787c79a8 CI #131
+
+
+### SEC-WEBHOOK-001 Checkpoints
+
+- ADR/security standard — DONE
+- Verified Node 24 ingress gateway — CODE VERIFIED @ 110de3e; Webhook Ingress CI #1 PASS
+- Apps Script raw-body log hardening — IN TEST
+- Deployment/config runbook — DOCUMENTED
+- Staging deployment + negative/positive signature verification — PENDING
+- LINE Developers production cutover — PENDING
