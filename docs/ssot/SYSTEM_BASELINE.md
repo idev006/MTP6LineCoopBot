@@ -96,12 +96,13 @@ LIFF เดิมแสดง mock profile/savings/loans เมื่อ backend
 ### BL-SEC-003 — Client API key / unverified identity
 เดิม Web/LIFF ใช้ client API key และ client-provided identity ในหลาย path
 
-สถานะ: PARTIALLY CLOSED / CONTROLLED REMAINDER
-- LIFF self-service identity migrated to verified raw ID token
-- Web authentication/session migrated to opaque server session + verified Principal
-- Web member/admin protected reads/writes migrated to server-side RBAC
-- legacy lineUserId GET profile/savings/loans/dividends/validity routes retired @ 95d4f66
-- remaining client-trust compatibility is concentrated in activate/renew identity-binding flows and is governed by SEC-WEB-004
+สถานะ: CLOSED FOR MIGRATED MEMBER IDENTITY PATHS
+- LIFF self-service uses verified raw ID token
+- Web uses opaque server session + verified Principal
+- Web member/admin reads/writes use server-side RBAC
+- legacy reads/validity retired @ 95d4f66
+- legacy activation retired @ cc70d58b
+- legacy renewal retired @ 787c79a8
 
 ### BL-DOC-001 — Duplicate documentation
 เอกสารสำเนาระหว่างสอง repo มีโอกาส drift
@@ -117,9 +118,12 @@ LIFF เดิมแสดง mock profile/savings/loans เมื่อ backend
 - broader component/E2E coverage remains pending
 
 ### BL-TEST-002 — CI run evidence not verified
-พบ workflow/test code แต่ยังไม่มี run/status evidence จาก connector สำหรับ backend baseline commit
+Initial baseline lacked workflow-run evidence.
 
-สถานะ: OPEN / EVIDENCE GAP
+สถานะ: CLOSED FOR ACTIVE DEVELOPMENT BASELINE
+- repeated backend CI evidence is recorded in TRACEABILITY_MATRIX
+- recent security retirement CI #126/#129/#131 PASS
+- recent Webapp dependency CI #27 PASS
 
 ### BL-ARCH-001 — Loan formula duplication
 เดิม loan calculator UI หลายจุดมีสูตร Actual/365/PMT ของตัวเอง ขณะที่ backend มี Core/LoanCalculator.js
@@ -143,3 +147,14 @@ repository/config/time/services ถูก resolve ผ่าน globals/factories
 ## Baseline Rule
 
 รายการในเอกสารเก่าที่ระบุ ✅ แต่ยังไม่มี evidence ใน TRACEABILITY_MATRIX จะไม่ถูกยกระดับเป็น VERIFIED โดยอัตโนมัติ
+
+
+### BL-SEC-004 — Webhook authenticity
+
+Current direct Apps Script webhook ingress validates a URL/query downstream secret but cannot verify the LINE `x-line-signature` header through the documented Apps Script Web App event contract.
+
+Status: OPEN / RELEASE BLOCKER
+
+Target: ADR-0005 verified webhook ingress gateway.
+
+Additional privacy gap: raw webhook body logging in Apps Script must be removed before release.

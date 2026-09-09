@@ -25,3 +25,10 @@ Decision:
 - raw activation code is excluded from new secure audit records
 
 Status: ACCEPTED under SEC-WEB-004.
+
+
+## 2026-09-09 — ADR-0005 Verified LINE Webhook Ingress
+
+Decision: ACCEPTED
+
+LINE webhook production ingress must verify `x-line-signature` against the exact raw body before Apps Script/event processing. Because the Apps Script Web App event contract does not expose the needed request header, use a provider-neutral verification gateway in front of Apps Script. The existing downstream shared secret is defense-in-depth, not LINE-origin authentication.

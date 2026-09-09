@@ -82,6 +82,11 @@ Weekly review:
 
 - none
 
+### IN_PROGRESS / TEST
+
+1. `SEC-WEBHOOK-001` — MTP6LineCoopBot #65  
+   Verified LINE webhook ingress gateway
+
 ### READY
 
 - none
