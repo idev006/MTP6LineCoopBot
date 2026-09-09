@@ -631,3 +631,22 @@ Next gate: establish the real production cutover date through the release pipeli
 - pinned container base remains: `node:24-alpine@sha256:e67514e5d0f6c46656005e1b693b2ec9d52e80b641307de684d4a015ba7a4eaf`
 - REL-WEBHOOK-001 #68 remains RELEASE_READY / CUTOVER PENDING; no staging or production claim
 - API_DATA_CONTRACT unchanged; `equal_total` deprecation clock has not started
+
+
+### REL-WEBHOOK-010 Checkpoint
+
+- issue #147 — DONE (pre-body signature hardening)
+- missing, malformed Base64 and wrong decoded-length `x-line-signature` values now reject with `401` before request-body collection @ `6dcb1b40`
+- well-formed signatures are syntax-only candidates and still undergo body-dependent HMAC-SHA256 verification with `CHANNEL_SECRET`
+- handler full verification remains in place as defense-in-depth
+- rejected pre-body cases never reach downstream
+- body-size `413` tests now use a well-formed but incorrect signature so they continue to exercise the body-limit boundary independently
+- CI #27 failed because the new validator was not imported in its unit test; test wiring was corrected without weakening assertions
+- PR #148 merged after Webhook Ingress CI #28 PASS
+- main Webhook Ingress CI #29 PASS
+- Publish Webhook Ingress Image #11 PASS
+- current immutable CODE_VERIFIED candidate: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress:sha-6dcb1b405c70`
+- candidate digest: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress@sha256:82757d01edc1f68911475321d0069fe38acb07eea9f72d9963ada1a6c24263c1`
+- pinned container base remains: `node:24-alpine@sha256:e67514e5d0f6c46656005e1b693b2ec9d52e80b641307de684d4a015ba7a4eaf`
+- REL-WEBHOOK-001 #68 remains RELEASE_READY / CUTOVER PENDING; no staging or production claim
+- API_DATA_CONTRACT unchanged; `equal_total` deprecation clock has not started

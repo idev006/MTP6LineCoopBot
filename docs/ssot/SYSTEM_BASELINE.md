@@ -197,8 +197,8 @@ Implemented:
 - Apps Script raw webhook body logging removed @ `9019873`; backend CI #135 PASS
 - deployment verifier parity @ `74d8a447`: missing signature, malformed Base64, wrong signature and tampered-body cases are exercised against a deployed gateway; full HTTP integration proves these negative cases do not reach the downstream adapter in code
 - Webhook Ingress CI #9 (PR) and #10 (main) PASS; immutable image publish #3 PASS
-- current CODE_VERIFIED release candidate: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress:sha-51075b6c3ee4`
-- current candidate digest: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress@sha256:66939f32431c8f0825ba5a2b2599feba9bc93926d1715a23e873abbb9087ddb4`
+- current CODE_VERIFIED release candidate: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress:sha-6dcb1b405c70`
+- current candidate digest: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress@sha256:82757d01edc1f68911475321d0069fe38acb07eea9f72d9963ada1a6c24263c1`
 - this evidence does not establish STAGING_VERIFIED or PRODUCTION_VERIFIED; staging observation must still prove invalid requests do not reach Apps Script and valid traffic reaches EventHandler
 - deployment contract drift guard @ `b1de92da`: canonical security standard now matches runtime `CHANNEL_SECRET` / `DOWNSTREAM_URL` / `DOWNSTREAM_SECRET` / `POST /webhook`; Webhook Ingress CI #11 (PR) and #12 (main) PASS
 - container supply-chain reproducibility @ `94839c90`: Dockerfile pins `node:24-alpine` to base digest `sha256:e67514e5d0f6c46656005e1b693b2ec9d52e80b641307de684d4a015ba7a4eaf`; regression test forbids removal of the digest pin; Webhook Ingress CI #13 (PR) and #14 (main) PASS; immutable image publish #5 PASS
@@ -207,6 +207,7 @@ Implemented:
 - deterministic HTTP body-limit boundary @ `3e655d51`: 1 MiB buffer cap retained; non-POST `/webhook` rejects before body collection; declared oversize rejects before buffering; streamed overflow stops retaining bytes, drains safely and returns `413`; PR CI #19/#20 exposed protocol/test defects that were fixed before CI #21 PASS; main CI #22 PASS; immutable image publish #8 PASS
 - GitHub Actions supply-chain reproducibility @ `c80417f4`: webhook CI/image workflows pin `actions/checkout` to `11d5960a326750d5838078e36cf38b85af677262` and `actions/setup-node` to `49933ea5288caeca8642d1e84afbd3f7d6820020`; regression guard requires every external `uses:` ref in those workflows to be a 40-hex commit SHA and image-workflow changes now trigger PR/main webhook CI; Webhook Ingress CI #23 (PR) and #24 (main) PASS; immutable image publish #9 PASS
 - bounded slow-client ingress availability @ `51075b6c`: explicit Node HTTP request timeout 15s, headers timeout 10s, incomplete-request check interval 1s and keep-alive timeout 5s; runtime regression asserts server properties; downstream timeout semantics unchanged; Webhook Ingress CI #25 (PR) and #26 (main) PASS; immutable image publish #10 PASS
+- pre-body signature rejection @ `6dcb1b40`: missing/malformed/wrong-length `x-line-signature` is rejected with `401` at the HTTP boundary before body collection; well-formed signatures still require exact raw-body HMAC verification in the handler; body-limit coverage preserved with a well-formed incorrect-signature fixture; PR CI #27 failed on a missing test import and was fixed before CI #28 PASS; main CI #29 PASS; immutable image publish #11 PASS
 - ADR-0005 + deployment/cutover runbook
 
 Remaining release blocker:
