@@ -49,3 +49,21 @@
 - unresolved findings accepted or closed
 - runbooks/handover complete
 - SSOT reflects production truth
+
+
+## Webhook Security Release Gate — SEC-WEBHOOK-001
+
+Production LINE webhook cutover is blocked until:
+- verified ingress gateway code CI PASS
+- Apps Script raw-body logging removal CI PASS
+- staging gateway deployment completed
+- invalid/missing signatures proven unable to reach Apps Script
+- valid signed request proven end-to-end
+- LINE Developers Console Verify succeeds against gateway
+- production rollback revision recorded
+- channel secret/downstream secret stored outside source
+
+Direct LINE → Apps Script delivery is not production-approved because the Apps Script Web App event contract does not expose the LINE signature header required by ADR-0005.
+
+Operational procedure:
+- `runbooks/WEBHOOK_INGRESS_DEPLOYMENT_RUNBOOK.md`
