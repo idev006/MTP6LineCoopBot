@@ -63,7 +63,7 @@
 | REQ-ARCH-011 | Application audit dependencies must be behind AuditPort | ADR-0002 / ENGINE_ARCHITECTURE_STANDARD | AuditPort + MemberRepositoryAuditAdapter + InMemoryAuditAdapter @ 58ee3d9 | port/application/architecture tests + CI #67 PASS | VERIFIED FOR ACTIVATION/RENEWAL |
 
 
-| REQ-APP-SCHED-001 | Expiry/Notice/Reminder scheduled capabilities must execute through headless Application Layer | UC-SYS-001/002/003 + SEQ-EXPIRY-SCAN/SEQ-NOTICE-BROADCAST/SEQ-LOAN-REMINDER + ADR-0003 | MessagingPort + MemberMenuPort + ExpiryScanUseCase + NoticeBroadcastUseCase + LoanReminderUseCase @ b0194b5; production trigger delegation @ 5489622 | backend CI #70 foundation PASS + CI #72 runtime delegation PASS | VERIFIED PRIMARY SCHEDULED RUNTIME |
+| REQ-APP-SCHED-001 | Expiry/Notice/Reminder scheduled capabilities must execute through headless Application Layer | UC-SYS-001/002/003 + SEQ-EXPIRY-SCAN/SEQ-NOTICE-BROADCAST/SEQ-LOAN-REMINDER + ADR-0003 | MessagingPort + MemberMenuPort + ExpiryScanUseCase + NoticeBroadcastUseCase + LoanReminderUseCase @ b0194b5; production trigger delegation @ 5489622; legacy opts orchestration retired @ dc1a04e | backend CI #70 foundation PASS + CI #72 runtime delegation PASS + CI #148 retirement PASS | VERIFIED / SCHEDULED APPLICATION AUTHORITY ONLY |
 
 
 | REQ-FIN-001 | Loan calculation must use canonical Actual/365 engine with deterministic contract | UC-MEM-007 / ADR-0002 / API_DATA_CONTRACT | Core.LoanCalculator + CalculateLoanUseCase + POST /api/loan/calculate @ 45582b4 | property/boundary + application + delivery tests; CI #74 PASS | VERIFIED |
@@ -104,3 +104,6 @@
 
 
 | REQ-SEC-LEGACY-002 | Browser-visible/shared API key must not authenticate Web/LIFF protected routes; unregistered routes fail closed | SEC-LEGACY-002 / ADR-0003 / API_DATA_CONTRACT | Apps Script Web API-key fallback + Config.API_KEY retired @ dec540ef | backend CI #146 PASS; web-api-key-retirement + protected delivery + gitleaks PASS | VERIFIED / BROWSER API-KEY AUTH SURFACE RETIRED |
+
+
+| REQ-SEC-LEGACY-003 | Scheduled delivery adapters must not retain duplicate opts/repository/domain/messaging orchestration after Application migration | SEC-LEGACY-003 / ADR-0003 | ExpiryService + NoticeService + LoanReminderService reduced to thin Application adapters @ dc1a04e | backend CI #148 PASS; scheduled compatibility retirement + runtime delegation + canonical Application tests PASS | VERIFIED / LEGACY SCHEDULED SHELLS RETIRED |
