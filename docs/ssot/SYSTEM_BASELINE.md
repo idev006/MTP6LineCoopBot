@@ -214,6 +214,8 @@ Implemented:
 - ADR-0005 + deployment/cutover runbook
 
 Remaining release blocker:
+- sync the current canonical backend `MTLineCoopBot/main` to the target Google Apps Script project with `clasp push`, then create/update the Web App deployment so `/exec` executes that source; record the exact deployment-time Git commit; there is no separate backend build/bundle step
+- record Apps Script deployment/version evidence before staging verification
 - staging deployment/security verification
 - LINE Developers Console production webhook cutover
 - production smoke/monitoring evidence
