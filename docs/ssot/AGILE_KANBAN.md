@@ -554,3 +554,20 @@ Next gate: establish the real production cutover date through the release pipeli
 - pinned base remains: `node:24-alpine@sha256:e67514e5d0f6c46656005e1b693b2ec9d52e80b641307de684d4a015ba7a4eaf`
 - REL-WEBHOOK-001 #68 remains RELEASE_READY / CUTOVER PENDING; no staging or production claim
 - API_DATA_CONTRACT unchanged; `equal_total` deprecation clock has not started
+
+
+### REL-WEBHOOK-006 Checkpoint
+
+- issue #135 — DONE (public response boundary hardening)
+- downstream/Apps Script response bodies no longer cross public `/webhook` @ `74188a7a`
+- downstream bodies are cancelled/not buffered for public response construction
+- successful downstream 2xx returns stable gateway-owned `{"ok":true}`
+- downstream non-2xx remains fail-closed
+- PR #136 merged; Webhook Ingress CI #17 PASS
+- main Webhook Ingress CI #18 PASS
+- Publish Webhook Ingress Image #7 PASS
+- current immutable CODE_VERIFIED candidate: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress:sha-74188a7aa6cf`
+- candidate digest: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress@sha256:5c59e308f4faa59b05f15ac84d987bb7eb0a2c3314ce42af571160009c87aa70`
+- pinned base remains: `node:24-alpine@sha256:e67514e5d0f6c46656005e1b693b2ec9d52e80b641307de684d4a015ba7a4eaf`
+- REL-WEBHOOK-001 #68 remains RELEASE_READY / CUTOVER PENDING; no staging or production claim
+- API_DATA_CONTRACT unchanged; `equal_total` deprecation clock has not started
