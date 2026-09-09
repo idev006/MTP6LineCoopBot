@@ -192,3 +192,29 @@ test('downstream timeout configuration is an integer within the bounded fail-clo
     )
   }
 })
+
+
+test('gateway secrets must be independent values', () => {
+  const distinct=loadConfig({
+    CHANNEL_SECRET:'channel-secret',
+    DOWNSTREAM_URL:'https://script.google.com/macros/s/example/exec',
+    DOWNSTREAM_SECRET:'downstream-secret'
+  })
+  assert.equal(distinct.channelSecret,'channel-secret')
+  assert.equal(distinct.downstreamSecret,'downstream-secret')
+
+  const sameSecret='same-secret-value'
+  assert.throws(
+    () => loadConfig({
+      CHANNEL_SECRET:sameSecret,
+      DOWNSTREAM_URL:'https://script.google.com/macros/s/example/exec',
+      DOWNSTREAM_SECRET:sameSecret
+    }),
+    err => {
+      assert.equal(err?.code,'CONFIG_INVALID')
+      assert.match(String(err?.message),/SECRET_INDEPENDENCE/)
+      assert.equal(String(err?.message).includes(sameSecret),false)
+      return true
+    }
+  )
+})
