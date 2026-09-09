@@ -35,3 +35,22 @@ npm run check
 The service is provider-neutral Node 24 HTTP and includes a Dockerfile. See the project deployment runbook before staging/production cutover.
 
 Do not configure LINE Developers to point directly to Apps Script after production cutover.
+
+
+## Staging deployment verification
+
+After deploying the gateway and configuring its secrets:
+
+```sh
+GATEWAY_URL=https://<staging-host> \
+CHANNEL_SECRET=<read-from-secure-secret-source> \
+npm run verify:deployment
+```
+
+The verifier:
+- checks `GET /healthz`
+- proves a missing signature is rejected
+- proves an invalid signature is rejected
+- sends a valid signed synthetic `events:[]` webhook and requires a 2xx downstream response
+
+It never prints the channel secret. Use only against an environment whose downstream Apps Script endpoint is intentionally configured for verification.
