@@ -84,6 +84,10 @@ if (!/renewMember\(requireSessionToken\(\), memberCode\)/.test(memberSrc)) {
   console.error('FAIL security-scan: member renewal must use protected session API')
   failed = true
 }
+if (!/async function activateMember\(\)\s*\{\s*throw new Error\(/s.test(memberSrc)) {
+  console.error('FAIL security-scan: Web activate-on-behalf must remain fail-closed; identity binding belongs to verified LINE self-activation')
+  failed = true
+}
 
 const memberApiSrc = fs.readFileSync(new URL('../src/adapters/api/webMemberApi.js', import.meta.url), 'utf8')
 for (const path of ['/api/web/members/list', '/api/web/members/detail', '/api/web/members/renew']) {
@@ -91,6 +95,10 @@ for (const path of ['/api/web/members/list', '/api/web/members/detail', '/api/we
     console.error('FAIL security-scan: missing protected member endpoint ' + path)
     failed = true
   }
+}
+if (memberApiSrc.includes('/api/web/members/activate')) {
+  console.error('FAIL security-scan: arbitrary Web member activation/LINE binding endpoint must not be exposed')
+  failed = true
 }
 
 
