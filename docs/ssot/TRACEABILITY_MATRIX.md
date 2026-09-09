@@ -110,3 +110,6 @@
 
 
 | REQ-API-COMPAT-001 | Public loan API legacy `paymentType=equal_total` alias must follow an explicit controlled deprecation policy before retirement | API-COMPAT-001 / ADR-0006 / API_DATA_CONTRACT | policy documented; alias remains accepted and normalizes to canonical `equal_installment` | repository audit found no known first-party caller; production retirement evidence intentionally pending | POLICY VERIFIED / RETIREMENT CLOCK NOT STARTED |
+
+
+| REQ-ARCH-LEGACY-001 | Production member repository adapter selection must be owned by the canonical composition root; legacy Data.MemberRepository factory must remain retired | ADR-0002 / ADR-0003 / ARCH-LEGACY-001 | SystemFactory DB_TYPE selection + MemberRepositoryPort enforcement; legacy factory removed @ 582b73c | backend CI #154 PASS including Test.js contracts, architecture retirement guard, port/application/security tests, protected delivery and gitleaks | VERIFIED / LEGACY REPOSITORY FACTORY RETIRED |

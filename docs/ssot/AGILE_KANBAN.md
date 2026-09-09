@@ -227,3 +227,14 @@ Status: POLICY_ACCEPTED / RETIREMENT_PENDING
 - Current code/CI evidence does not claim staging or production verification.
 
 Next gate: establish the real production cutover date through the release pipeline, then compute the retirement date from that evidence.
+
+
+### ARCH-LEGACY-001 Checkpoint
+
+- Legacy `Data.MemberRepository` compatibility factory — RETIRED @ 582b73c
+- DB adapter selection now belongs to `Composition.SystemFactory`
+- `Ports.MemberRepositoryPort` is enforced at the composition boundary
+- LINE content reads migrated through the canonical system repository
+- CI #154 PASS: syntax, Test.js contracts, architecture/retirement guard, ports, engines, application use cases, scheduled/security/protected-delivery gates, gitleaks
+- API_DATA_CONTRACT unchanged: no external request/response/auth contract changed
+- Remaining repository policy-helper cleanup stays tracked separately under BL-ARCH-003
