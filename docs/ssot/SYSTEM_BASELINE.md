@@ -158,7 +158,8 @@ repository/config/time/services ถูก resolve ผ่าน globals/factories
 - repository-wide ConfigPort invariant now scans every `app/**/*.js`; the remaining manual `checkTokenHealth()` direct `Config.get()` caller was migrated through `SystemFactory.createConfig()` and no direct Config global caller remains outside `AppsScriptConfigAdapter` @ 694ec4f; backend CI #180 PASS
 - repository-wide ClockPort invariant now scans every `app/**/*.js`; CI #182 exposed the remaining `DataDict.generateDocumentation()` zero-argument `new Date()` caller, which now requires caller-supplied `generatedAt`; zero-argument `new Date()` remains only in `ClockPort.systemClock()` @ 3e46875; backend CI #184 PASS
 - `Date.now()` used only for audit log identifier generation remains intentionally tracked separately from current-time/business-time authority
-- remaining hidden/global wiring outside repository-wide ConfigPort/ClockPort plus verified scheduled/repository/policy seams remains open
+- member audit persistence is no longer part of `MemberRepositoryPort`; `MemberAuditStorePort` + `SheetsMemberAuditStore` now back canonical `DurableAuditAdapter`, while admin audit remains behind `AdminAuditStorePort`; transitional `MemberRepositoryAuditAdapter` retired @ ebeb59f; backend CI #188 PASS
+- remaining hidden/global wiring outside repository-wide ConfigPort/ClockPort plus verified scheduled/repository/policy/audit-store seams remains open
 
 ### BL-ARCH-003 — Policy in repository contract
 Legacy `isActiveMember` / `hasRole` policy wrappers have been removed from `SheetsMemberRepository` and `SheetService`. The persistence port was already policy-free; `MemberAccessEngine` + `Core.MemberRules` + `ClockPort` remain the canonical policy authority.
