@@ -18,6 +18,16 @@ function close(server) {
   return new Promise(resolve => server.close(() => resolve()))
 }
 
+function createGatewayConfig(downstreamBase) {
+  return {
+    channelSecret:'integration-channel-secret',
+    downstreamUrl:downstreamBase + '/exec',
+    downstreamSecret:'integration-downstream-secret',
+    downstreamTimeoutMs:2000,
+    port:0
+  }
+}
+
 test('full HTTP path verifies signature and preserves exact bytes downstream', async t => {
   const received = { count:0, body:null, secret:null }
 
@@ -36,13 +46,7 @@ test('full HTTP path verifies signature and preserves exact bytes downstream', a
   const downstreamBase=await listen(downstream)
   t.after(()=>close(downstream))
 
-  const config={
-    channelSecret:'integration-channel-secret',
-    downstreamUrl:downstreamBase + '/exec',
-    downstreamSecret:'integration-downstream-secret',
-    downstreamTimeoutMs:2000,
-    port:0
-  }
+  const config=createGatewayConfig(downstreamBase)
   const gateway=createServer({
     config,
     logger:{info(){},warn(){},error(){}}
@@ -75,7 +79,7 @@ test('full HTTP path verifies signature and preserves exact bytes downstream', a
   assert.equal(received.secret,config.downstreamSecret)
 })
 
-test('invalid signature never reaches downstream over full HTTP path', async t => {
+test('all mandatory signature-negative cases fail closed before downstream', async t => {
   let downstreamCalls=0
   const downstream=http.createServer((req,res)=>{
     downstreamCalls += 1
@@ -85,13 +89,7 @@ test('invalid signature never reaches downstream over full HTTP path', async t =
   const downstreamBase=await listen(downstream)
   t.after(()=>close(downstream))
 
-  const config={
-    channelSecret:'integration-channel-secret',
-    downstreamUrl:downstreamBase + '/exec',
-    downstreamSecret:'integration-downstream-secret',
-    downstreamTimeoutMs:2000,
-    port:0
-  }
+  const config=createGatewayConfig(downstreamBase)
   const gateway=createServer({
     config,
     logger:{info(){},warn(){},error(){}}
@@ -99,12 +97,38 @@ test('invalid signature never reaches downstream over full HTTP path', async t =
   const gatewayBase=await listen(gateway)
   t.after(()=>close(gateway))
 
-  const response=await fetch(gatewayBase + '/webhook', {
-    method:'POST',
-    headers:{'x-line-signature':'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA='},
-    body:Buffer.from('{"events":[]}', 'utf8')
-  })
+  const body=Buffer.from('{"destination":"D","events":[]}', 'utf8')
+  const validSignature=computeLineSignature(body, config.channelSecret)
+  const cases=[
+    {
+      name:'missing signature',
+      headers:{},
+      body
+    },
+    {
+      name:'malformed Base64 signature',
+      headers:{'x-line-signature':'%%%not-base64%%%'},
+      body
+    },
+    {
+      name:'wrong signature',
+      headers:{'x-line-signature':'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA='},
+      body
+    },
+    {
+      name:'tampered body with previously-valid signature',
+      headers:{'x-line-signature':validSignature},
+      body:Buffer.from('{"destination":"D","events":[{}]}', 'utf8')
+    }
+  ]
 
-  assert.equal(response.status,401)
-  assert.equal(downstreamCalls,0)
+  for (const item of cases) {
+    const response=await fetch(gatewayBase + '/webhook', {
+      method:'POST',
+      headers:item.headers,
+      body:item.body
+    })
+    assert.equal(response.status,401,item.name)
+    assert.equal(downstreamCalls,0,item.name)
+  }
 })
