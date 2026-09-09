@@ -707,7 +707,7 @@ Next gate: establish the real production cutover date through the release pipeli
 
 ### Apps Script Deployment Sync Gate
 
-- backend coding baseline is complete at `MTLineCoopBot@c7df357d29b37f6c74e0203cea850190087fd122`; backend CI #199 PASS
+- backend coding baseline is complete; backend CI #199 PASS. Deployment must use the current canonical `MTLineCoopBot/main` and record its exact Git commit at deploy time
 - this does **not** prove the deployed Google Apps Script Web App is running that commit
 - backend repository has no build/bundle phase; `.clasp.json` uses `rootDir: app` and Apps Script runs V8 source directly
 - before real-environment verification, operator must checkout canonical backend `main`, verify HEAD, run `clasp push`, then create/update the Web App deployment version

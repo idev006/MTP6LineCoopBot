@@ -63,9 +63,10 @@ Rules:
 
 Before testing the gateway against Apps Script, first prove that the target Apps Script Web App is running the canonical backend source.
 
-Canonical backend for this release:
+Canonical backend source for deployment:
 - repo: `idev006/MTLineCoopBot`
-- commit: `c7df357d29b37f6c74e0203cea850190087fd122`
+- branch: current canonical `main`
+- record the exact commit returned by `git rev-parse HEAD` at deployment time
 - clasp root: `app/`
 - runtime: Apps Script V8
 
@@ -78,7 +79,7 @@ git rev-parse HEAD
 clasp push
 ```
 
-`git rev-parse HEAD` must match the approved backend commit before push.
+Before push, `main` must be up to date, the working tree must be clean, and the exact `git rev-parse HEAD` value must be recorded as deployment evidence.
 
 After `clasp push`, create or update the Apps Script Web App deployment so the deployed `/exec` endpoint uses the new source version. `clasp push` alone is not accepted as proof that the currently published Web App deployment is running the new code.
 
