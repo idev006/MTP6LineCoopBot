@@ -508,3 +508,18 @@ Next gate: establish the real production cutover date through the release pipeli
 - digest: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress@sha256:c30c1e56e6c59b74ade44b6b0a72c65d1a9849ac2e3b3a5021d693cd4e3f8c16`
 - REL-WEBHOOK-001 #68 remains RELEASE_READY / external-gate pending; no staging, LINE Console cutover or production claim is made
 - API_DATA_CONTRACT unchanged; `equal_total` deprecation clock has not started
+
+
+### REL-WEBHOOK-003 Checkpoint
+
+- issue #126 — DONE (release-readiness hardening scope)
+- canonical webhook security standard reconciled with runtime env/path contract @ `b1de92da`
+- deployment-contract regression test added; legacy env aliases fail the canonical runtime test
+- Webhook Ingress CI now triggers when the canonical security standard changes
+- PR #127 merged; Webhook Ingress CI #11 PASS
+- main Webhook Ingress CI #12 PASS
+- Publish Webhook Ingress Image #4 PASS
+- current immutable CODE_VERIFIED candidate: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress:sha-b1de92dab20f`
+- digest: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress@sha256:810a321094def55a6d612dc5c166c51fad53a900230e60378f5b47f27523ba84`
+- REL-WEBHOOK-001 #68 remains RELEASE_READY / CUTOVER PENDING; no staging or production claim
+- API_DATA_CONTRACT unchanged; `equal_total` deprecation clock has not started
