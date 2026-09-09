@@ -40,6 +40,8 @@ Input:
 - `POST /webhook`
 - raw `application/json` body
 - `x-line-signature` header
+- buffered body limit: 1 MiB (`1048576` bytes); declared or streamed overflow returns `413` before signature processing/downstream forwarding
+- non-POST requests are rejected with `405` before request-body collection
 
 Success:
 - verify signature
