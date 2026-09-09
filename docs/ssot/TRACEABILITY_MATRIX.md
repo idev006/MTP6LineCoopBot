@@ -161,3 +161,6 @@
 
 
 | REQ-ARCH-LEGACY-017 | Apps Script runtime globals must be confined to imperative-shell/infrastructure/tooling boundaries and must not leak into Core/Application/Engine/Ports/Composition/Data/Security | ADR-0002 / ADR-0003 / ARCH-LEGACY-017 / BL-ARCH-002 | repository-wide `app/**/*.js` architecture guard forbids SpreadsheetApp/UrlFetchApp/PropertiesService/Utilities/ContentService/HtmlService/ScriptApp/DriveApp/MailApp/LockService/CacheService in business/composition layers @ a38d997 | backend CI #194 PASS across syntax, Test.js, architecture, ports, engines, application, scheduled/security/protected-delivery tests and gitleaks | VERIFIED / BL-ARCH-002 CLOSED |
+
+
+| REQ-DOC-SSOT-001 | Project architecture/security/process/release/traceability documentation must have one canonical authority; backend must not carry substantive duplicate project documentation | ADR-0001 / DOC-SSOT-001 / BL-DOC-001 | backend `app/docs/*.md` substantive copies retired; `app/docs/README.md` reduced to legacy pointer; root README points canonical SSOT; CI governance guard added @ c7df357 | backend CI #198 PASS after CI #196/#197 exposed guard wording/stale-link issues; includes architecture, contracts, application/security/protected-delivery and gitleaks | VERIFIED / BL-DOC-001 CLOSED |
