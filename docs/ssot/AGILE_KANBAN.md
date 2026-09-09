@@ -610,3 +610,24 @@ Next gate: establish the real production cutover date through the release pipeli
 - pinned container base remains: `node:24-alpine@sha256:e67514e5d0f6c46656005e1b693b2ec9d52e80b641307de684d4a015ba7a4eaf`
 - REL-WEBHOOK-001 #68 remains RELEASE_READY / CUTOVER PENDING; no staging or production claim
 - API_DATA_CONTRACT unchanged; `equal_total` deprecation clock has not started
+
+
+### REL-WEBHOOK-009 Checkpoint
+
+- issue #144 — DONE (slow-client ingress availability hardening)
+- public webhook server no longer relies on broad Node HTTP defaults @ `51075b6c`
+- complete request receive timeout: 15 seconds
+- complete headers timeout: 10 seconds
+- incomplete-request timeout checking interval: 1 second
+- keep-alive idle timeout after response: 5 seconds
+- runtime regression asserts the configured `http.Server` request/header/keep-alive timeout properties
+- downstream forwarding timeout remains independently controlled by `DOWNSTREAM_TIMEOUT_MS`
+- PR #145 merged after Webhook Ingress CI #25 PASS
+- main Webhook Ingress CI #26 PASS
+- Publish Webhook Ingress Image #10 PASS
+- current immutable CODE_VERIFIED candidate: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress:sha-51075b6c3ee4`
+- candidate digest: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress@sha256:66939f32431c8f0825ba5a2b2599feba9bc93926d1715a23e873abbb9087ddb4`
+- GitHub Actions remain pinned: checkout `11d5960a326750d5838078e36cf38b85af677262`; setup-node `49933ea5288caeca8642d1e84afbd3f7d6820020`
+- pinned container base remains: `node:24-alpine@sha256:e67514e5d0f6c46656005e1b693b2ec9d52e80b641307de684d4a015ba7a4eaf`
+- REL-WEBHOOK-001 #68 remains RELEASE_READY / CUTOVER PENDING; no staging or production claim
+- API_DATA_CONTRACT unchanged; `equal_total` deprecation clock has not started
