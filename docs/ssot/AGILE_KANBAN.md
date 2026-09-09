@@ -261,3 +261,15 @@ Next gate: establish the real production cutover date through the release pipeli
 - CI #158 PASS across syntax, Test.js contracts, architecture, ports, engines, application, scheduled/security/protected-delivery gates, and gitleaks
 - BL-ARCH-002 remains OPEN for other hidden/global wiring outside this delivery sub-scope
 - API_DATA_CONTRACT unchanged: request/response/auth semantics did not change
+
+
+### ARCH-LEGACY-004 Checkpoint
+
+- direct `Config.validate()` in `RichMenu.Deployer.deploy()` — RETIRED @ b5a8d36
+- direct `Config.validate()` in `testConnection()` — RETIRED @ b5a8d36
+- `ConfigPort.assertValidatable()` added as a separate capability; read-only ConfigPort consumers remain compatible
+- `AppsScriptConfigAdapter.validate()` delegates to the existing `Config.validate()` implementation, preserving fail-closed validation semantics
+- narrow `SystemFactory.createValidatedConfig()` composition seam added
+- CI #160 PASS across syntax, Test.js contracts, architecture, config/port contracts, engines, application, scheduled/security/protected-delivery gates, and gitleaks
+- BL-ARCH-002 remains OPEN for hidden/global wiring outside verified sub-scopes
+- API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
