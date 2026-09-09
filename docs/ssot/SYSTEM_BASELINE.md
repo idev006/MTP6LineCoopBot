@@ -114,7 +114,12 @@ LIFF เดิมแสดง mock profile/savings/loans เมื่อ backend
 ### BL-DOC-001 — Duplicate documentation
 เอกสารสำเนาระหว่างสอง repo มีโอกาส drift
 
-สถานะ: OPEN
+สถานะ: CLOSED / VERIFIED
+- substantive legacy Markdown copies under backend `app/docs/` retired @ c7df357; backend CI #198 PASS
+- backend `app/docs/README.md` remains a legacy pointer only to canonical `idev006/MTP6LineCoopBot/docs/ssot/`
+- backend root README now directs project documentation to the canonical SSOT
+- CI governance guard prevents substantive `app/docs/*.md` copies from returning
+- `.clasp.json` pushes only JS/GS/HTML/JSON runtime artifacts, so retiring Markdown copies does not affect Apps Script deployment
 
 ### BL-TEST-001 — Web automated tests
 เดิม webapp ไม่มี automated auth/security/build gates
