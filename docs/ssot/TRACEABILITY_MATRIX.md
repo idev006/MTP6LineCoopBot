@@ -164,3 +164,6 @@
 
 
 | REQ-DOC-SSOT-001 | Project architecture/security/process/release/traceability documentation must have one canonical authority; backend must not carry substantive duplicate project documentation | ADR-0001 / DOC-SSOT-001 / BL-DOC-001 | backend `app/docs/*.md` substantive copies retired; `app/docs/README.md` reduced to legacy pointer; root README points canonical SSOT; CI governance guard added @ c7df357 | backend CI #198 PASS after CI #196/#197 exposed guard wording/stale-link issues; includes architecture, contracts, application/security/protected-delivery and gitleaks | VERIFIED / BL-DOC-001 CLOSED |
+
+
+| REQ-TEST-WEB-001 | Active Web development baseline must include automated engine/API coverage, router/store wiring, component integration, security regression gates and production build validation | TEST-WEB-001 / BL-TEST-001 / TEST_STRATEGY | Vite SSR component smoke renders Home/Dashboard/StaffManage/AuditLog with real Vue + Pinia context @ 38964de; existing headless/router/security/build gates retained | Webapp CI #36 PASS across headless tests, router/store smoke, component integration smoke, security scan and production build | VERIFIED / BL-TEST-001 CLOSED FOR ACTIVE WEB BASELINE |
