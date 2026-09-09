@@ -466,3 +466,18 @@ Next gate: establish the real production cutover date through the release pipeli
 - BL-ARCH-002 is now `CLOSED / VERIFIED`
 - closure does not prohibit framework primitives at explicit infrastructure/delivery boundaries; it prevents hidden dependency wiring in the functional core/application architecture
 - API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
+
+
+### DOC-SSOT-001 Checkpoint
+
+- audited documentation trees across both repositories and confirmed extensive duplicate basenames under backend `app/docs/`
+- verified `.clasp.json` rootDir is `app`, but clasp runtime extensions are JS/GS/HTML/JSON; Markdown copies are not Apps Script runtime artifacts
+- retired all substantive backend `app/docs/*.md` copies
+- retained only `app/docs/README.md` as a short legacy pointer to `idev006/MTP6LineCoopBot/docs/ssot/`
+- updated backend root README to stop presenting `app/docs` as project-book authority
+- added CI governance guard preventing substantive backend documentation copies from returning
+- CI #196 exposed case-sensitive pointer assertion; fixed without weakening SSOT requirement
+- CI #197 exposed stale legacy README links that first replacement missed; root cause fixed by removing the legacy block
+- backend merge @ c7df357; CI #198 PASS across architecture, contracts, application/security/protected-delivery gates and gitleaks
+- BL-DOC-001 is now `CLOSED / VERIFIED`
+- API_DATA_CONTRACT unchanged: documentation-governance change only
