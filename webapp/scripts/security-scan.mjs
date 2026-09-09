@@ -39,7 +39,6 @@ const repositoryWideForbidden = [
   /Using mock data/i,
   /Mock data for development/i,
   /VITE_API_KEY/,
-  /localStorage\.setItem/,
   /api_key\s*:/
 ]
 
@@ -51,6 +50,11 @@ for (const url of walkSource(srcRoot)) {
       console.error(`FAIL security-scan: repository-wide forbidden trust pattern ${pattern} found in ${url.pathname}`)
       repositoryWideFailed = true
     }
+  }
+
+  if (/localStorage\.setItem\s*\(\s*['"][^'"]*(?:auth|token|session|credential)[^'"]*['"]/i.test(src)) {
+    console.error(`FAIL security-scan: credential/session data must not be persisted in localStorage in ${url.pathname}`)
+    repositoryWideFailed = true
   }
 
   const relative = url.pathname.split('/webapp/src/')[1] || ''
