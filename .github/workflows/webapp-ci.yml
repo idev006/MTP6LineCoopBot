@@ -39,6 +39,9 @@ jobs:
       - name: Router / store smoke
         run: node tests/router-store-smoke.test.cjs
 
+      - name: Component integration smoke
+        run: npm run test:components
+
       - name: Security scan
         run: npm run security:scan
 
