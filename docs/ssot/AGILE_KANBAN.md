@@ -82,10 +82,6 @@ Weekly review:
 
 - none
 
-### IN_PROGRESS / TEST
-
-- none
-
 ### READY
 
 1. `REL-WEBHOOK-001` — MTP6LineCoopBot #68  
