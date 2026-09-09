@@ -376,3 +376,18 @@ Next gate: establish the real production cutover date through the release pipeli
 - Config migration row is now `MIGRATED / REPOSITORY-WIDE CONFIGPORT AUTHORITY VERIFIED`
 - BL-ARCH-002 remains OPEN for non-Config hidden/global seams still requiring explicit evidence
 - API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
+
+
+### ARCH-LEGACY-012 Checkpoint
+
+- new architecture guard recursively scans every `app/**/*.js`
+- zero-argument `new Date()` is permitted only in `Ports.ClockPort.systemClock()`
+- input-derived `new Date(value)` parsing/copying remains allowed
+- `Date.now()` identifier generation is explicitly outside this checkpoint and tracked separately
+- CI #182 exposed one remaining current-time caller in `DataDict.generateDocumentation()`
+- root cause fixed by requiring caller-supplied `generatedAt`; DataDict does not depend upward on Composition/SystemFactory
+- guard strengthened to pin the explicit DataDict generation-time contract
+- backend merge @ 3e46875; CI #184 PASS across syntax, Test.js, architecture, ports, engines, application, scheduled/security/protected-delivery gates, and gitleaks
+- Clock/time migration row is now `MIGRATED / REPOSITORY-WIDE WALL-CLOCK AUTHORITY VERIFIED`
+- BL-ARCH-002 remains OPEN for non-Clock hidden/global seams, including audit identifier generation if it is to be migrated
+- API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
