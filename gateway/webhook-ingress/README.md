@@ -21,7 +21,7 @@ The gateway never logs raw webhook bodies or secret values.
 - `DOWNSTREAM_URL` — Apps Script `/exec` URL
 - `DOWNSTREAM_SECRET` — independent high-entropy secret matching Apps Script `WEBHOOK_SECRET`
 - `PORT` — optional, default 8080
-- `DOWNSTREAM_TIMEOUT_MS` — optional, default 8000
+- `DOWNSTREAM_TIMEOUT_MS` — optional integer, default 8000; allowed range 100–30000 ms
 
 ## Local verification
 
