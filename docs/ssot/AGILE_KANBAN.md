@@ -332,3 +332,18 @@ Next gate: establish the real production cutover date through the release pipeli
 - CI #171 PASS across syntax, Test.js contracts, architecture, ports, engines, application, scheduled/security/protected-delivery gates, and gitleaks
 - BL-ARCH-002 remains OPEN for remaining hidden/global wiring such as audit identifier generation and any unverified seams
 - API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
+
+
+### ARCH-LEGACY-009 Checkpoint
+
+- all registered `/api/member/me/*` routes are pinned to `auth: line-id-token`
+- `ApiHandlers.requireLinePrincipal()` accepts raw ID token only, authenticates through the LINE identity adapter, and requires canonical authenticated `Principal`
+- protected profile/finance API delivery delegates to `GetCurrentMemberProfileUseCase` / `GetCurrentMemberFinanceUseCase`
+- profile/finance Application use cases own authenticated, member-binding, and member-access policy
+- architecture guard forbids client body `lineUserId` identity authority in protected API handlers
+- LINE webhook profile/finance presentation delegates to the same canonical use cases using a server-created Principal derived from webhook event context
+- CI #173 failed because the new guard exposed a real missing `requireMemberBinding()` gate in the finance use case; root cause fixed and a fail-closed binding-denial test added
+- backend merge @ 89b668c; CI #175 PASS across syntax, Test.js, architecture, ports, engines, application, scheduled/security/protected-delivery gates, and gitleaks
+- stale SSOT Identity / Authorization / Member profile FOUNDATION/PARTIAL states reconciled to verified migrated status
+- registered LIFF/API identity boundary is verified in code/CI; **no staging/production webhook ingress cutover claim** is made—REL-WEBHOOK-001 remains external release gate
+- API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
