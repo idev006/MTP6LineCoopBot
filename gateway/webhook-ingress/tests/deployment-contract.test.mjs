@@ -10,6 +10,7 @@ const root=path.resolve(here,'../../..')
 const securityPath=path.join(root,'docs/ssot/security/WEBHOOK_INGRESS_SECURITY_STANDARD.md')
 const readmePath=path.join(root,'gateway/webhook-ingress/README.md')
 const workflowPath=path.join(root,'.github/workflows/webhook-ingress-ci.yml')
+const dockerfilePath=path.join(root,'gateway/webhook-ingress/Dockerfile')
 
 test('canonical deployment environment names are the only accepted runtime contract', () => {
   const cfg=loadConfig({
@@ -71,4 +72,14 @@ test('Webhook Ingress CI watches canonical security standard changes', () => {
   const workflow=fs.readFileSync(workflowPath,'utf8')
   const watched="'docs/ssot/security/WEBHOOK_INGRESS_SECURITY_STANDARD.md'"
   assert.ok(workflow.split(watched).length >= 3,'security standard must trigger both push and pull_request CI')
+})
+
+test('container base image is pinned by immutable sha256 digest', () => {
+  const dockerfile=fs.readFileSync(dockerfilePath,'utf8')
+  const firstLine=dockerfile.split(/\r?\n/,1)[0]
+  assert.match(
+    firstLine,
+    /^FROM node:24-alpine@sha256:[a-f0-9]{64}$/,
+    'Dockerfile base image must retain tag + immutable sha256 digest pin'
+  )
 })

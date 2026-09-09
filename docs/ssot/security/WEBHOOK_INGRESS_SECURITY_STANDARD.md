@@ -58,7 +58,6 @@ On suspected secret compromise:
 5. review rejection/downstream metrics
 6. record incident/evidence in project SSOT
 
-
 ## Deployment Contract Drift Rule
 
 The runtime names and path above are canonical for the current release candidate.
@@ -67,3 +66,12 @@ The runtime names and path above are canonical for the current release candidate
 - do not document a different public webhook path without a controlled runtime + test + SSOT change
 - Apps Script uses its own downstream-side `WEBHOOK_SECRET`; this is not a gateway environment variable
 - Webhook Ingress CI must fail if this standard drifts from the runtime deployment contract
+
+## Container Supply-Chain Rule
+
+The production gateway base image must be reproducible from source review evidence.
+
+- pin the Dockerfile base image by immutable `sha256` digest while retaining the human-readable Node 24 Alpine tag
+- do not use an unpinned mutable base tag for a release candidate
+- base-image upgrades require a controlled source change, CI pass and a newly published immutable gateway image
+- image publication evidence must record the gateway image digest separately from the base-image digest
