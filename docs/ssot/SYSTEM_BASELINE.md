@@ -124,10 +124,13 @@ LIFF เดิมแสดง mock profile/savings/loans เมื่อ backend
 ### BL-TEST-001 — Web automated tests
 เดิม webapp ไม่มี automated auth/security/build gates
 
-สถานะ: PARTIALLY CLOSED
-- headless engine tests + security scan + production build run in Webapp CI
-- auth/session/member API regressions are covered
-- broader component/E2E coverage remains pending
+สถานะ: CLOSED / VERIFIED FOR ACTIVE WEB BASELINE
+- headless engine/API tests run in Webapp CI
+- router/store smoke covers protected navigation/state wiring
+- repository-wide security scan covers browser trust boundaries
+- Vite SSR component integration smoke renders representative guest/protected/admin views with real Vue + Pinia context @ 38964de; Webapp CI #36 PASS
+- production build remains a required gate
+- production browser/deployment smoke remains a Release Pipeline concern and is not required to keep this development baseline closed
 
 ### BL-TEST-002 — CI run evidence not verified
 Initial baseline lacked workflow-run evidence.

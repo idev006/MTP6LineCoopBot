@@ -481,3 +481,16 @@ Next gate: establish the real production cutover date through the release pipeli
 - backend merge @ c7df357; CI #198 PASS across architecture, contracts, application/security/protected-delivery gates and gitleaks
 - BL-DOC-001 is now `CLOSED / VERIFIED`
 - API_DATA_CONTRACT unchanged: documentation-governance change only
+
+
+### TEST-WEB-001 Checkpoint
+
+- audited current Webapp test stack before adding dependencies
+- existing Vue/Vite install already includes `@vue/server-renderer` / compiler support; no new test framework dependency added
+- added Vite SSR component integration smoke for representative views: Home, Dashboard, StaffManage, AuditLog
+- tests use real Vue + Pinia context and compile/load `.vue` modules through Vite SSR without network calls
+- Webapp CI now gates: headless engine/API tests → router/store smoke → component integration smoke → repository-wide security scan → production build
+- frontend merge @ 38964de; Webapp CI #36 PASS across all gates
+- BL-TEST-001 is now `CLOSED / VERIFIED FOR ACTIVE WEB BASELINE`
+- production browser/deployment smoke remains a Release Pipeline concern rather than a development-baseline blocker
+- API_DATA_CONTRACT unchanged: test-coverage checkpoint only
