@@ -12,7 +12,7 @@
     "check": "npm run test:engine && npm run security:scan && npm run build"
   },
   "dependencies": {
-    "daisyui": "^5.7.28",
+    "daisyui": "^5.7.32",
     "pinia": "^4.0.3",
     "vue": "^3.5.42",
     "vue-router": "^5.3.1"
