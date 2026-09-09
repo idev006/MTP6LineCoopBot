@@ -195,6 +195,11 @@ Implemented:
 - exact raw-body HMAC-SHA256 verification before JSON parse
 - official LINE signature vector + tamper/missing/malformed/downstream failure tests
 - Apps Script raw webhook body logging removed @ `9019873`; backend CI #135 PASS
+- deployment verifier parity @ `74d8a447`: missing signature, malformed Base64, wrong signature and tampered-body cases are exercised against a deployed gateway; full HTTP integration proves these negative cases do not reach the downstream adapter in code
+- Webhook Ingress CI #9 (PR) and #10 (main) PASS; immutable image publish #3 PASS
+- current CODE_VERIFIED release candidate: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress:sha-74d8a4470905`
+- current candidate digest: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress@sha256:c30c1e56e6c59b74ade44b6b0a72c65d1a9849ac2e3b3a5021d693cd4e3f8c16`
+- this evidence does not establish STAGING_VERIFIED or PRODUCTION_VERIFIED; staging observation must still prove invalid requests do not reach Apps Script and valid traffic reaches EventHandler
 - ADR-0005 + deployment/cutover runbook
 
 Remaining release blocker:
