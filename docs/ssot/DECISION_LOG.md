@@ -32,3 +32,22 @@ Status: ACCEPTED under SEC-WEB-004.
 Decision: ACCEPTED
 
 LINE webhook production ingress must verify `x-line-signature` against the exact raw body before Apps Script/event processing. Because the Apps Script Web App event contract does not expose the needed request header, use a provider-neutral verification gateway in front of Apps Script. The existing downstream shared secret is defense-in-depth, not LINE-origin authentication.
+
+
+## 2026-09-09 — ADR-0006 Public loan API legacy alias deprecation
+
+Decision: ACCEPTED
+
+The public loan calculation input alias `paymentType=equal_total` remains temporarily accepted and normalizes to canonical `equal_installment`.
+
+Deprecation policy:
+- canonical input/output vocabulary remains `equal_principal|equal_installment`
+- new first-party UI/code must not emit `equal_total`
+- the deprecation clock starts only on the first production-verified cutover that includes this policy
+- retirement target is 60 calendar days after that verified production cutover
+- code/CI/staging evidence alone does not start the clock
+- before retirement, perform a fresh repository caller audit and satisfy production release evidence
+- compatibility telemetry, if added, may record only a coarse categorical alias occurrence/count; it must not log loan payloads, amounts, member/PII, or raw request bodies
+- if production evidence cannot establish a safe retirement at the target date, the alias remains accepted until a new controlled decision is recorded
+
+Tracked by: API-COMPAT-001 (#81).
