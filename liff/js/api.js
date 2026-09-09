@@ -66,6 +66,10 @@ const API = {
     return this.postProtected('member/me/activate', idToken, { activateCode: code });
   },
 
+  async renewCurrentMember(idToken) {
+    return this.postProtected('member/me/renew', idToken);
+  },
+
   async getCurrentSavings(idToken) {
     const data = await this.postProtected('member/me/savings', idToken);
     return data?.savings || [];
