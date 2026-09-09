@@ -50,7 +50,9 @@ npm run verify:deployment
 The verifier:
 - checks `GET /healthz`
 - proves a missing signature is rejected
-- proves an invalid signature is rejected
+- proves malformed Base64 is rejected
+- proves a wrong signature is rejected
+- proves a body tampered after signing is rejected
 - sends a valid signed synthetic `events:[]` webhook and requires a 2xx downstream response
 
 It never prints the channel secret. Use only against an environment whose downstream Apps Script endpoint is intentionally configured for verification.
