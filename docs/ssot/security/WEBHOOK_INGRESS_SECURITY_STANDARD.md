@@ -154,3 +154,14 @@ The LINE channel secret and the gateway-to-Apps-Script downstream secret are sep
 - the two values must never be identical
 - identical configured values are a `CONFIG_INVALID` startup failure
 - configuration errors must identify only the violated invariant and must not include either secret value
+
+
+## Native Node 24 GitHub Action Runtime
+
+Webhook release workflows must use the reviewed action generation whose own runtime targets Node 24 rather than relying on runner-side forced runtime substitution.
+
+Current approved pins:
+- `actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1` — upstream `v7.0.1`, `runs.using: node24`
+- `actions/setup-node@820762786026740c76f36085b0efc47a31fe5020` — upstream `v7.0.0`, `runs.using: node24`
+
+The immutable SHA rule remains authoritative. Version tags are recorded only as human-readable provenance and must not replace commit pins.
