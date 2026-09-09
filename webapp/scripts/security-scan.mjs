@@ -180,5 +180,18 @@ if (!reportApiSrc.includes('/api/web/reports/summary')) {
   failed = true
 }
 
-if (failed) process.exit(1)
+
 console.log('PASS security-scan: Web auth/member data require server session authority with no client API-key/mock trust')
+
+
+const envSrc = fs.readFileSync(new URL('../.env', import.meta.url), 'utf8')
+if (/VITE_LIFF_ID\s*=\s*(your_liff_id|YOUR_LIFF_ID|CHANGE_ME)/i.test(envSrc)) {
+  console.error('FAIL security-scan: VITE_LIFF_ID placeholder is not release-deployable')
+  failed = true
+}
+if (/^VITE_API_KEY=/m.test(envSrc)) {
+  console.error('FAIL security-scan: browser API key configuration must not be reintroduced')
+  failed = true
+}
+
+if (failed) process.exit(1)

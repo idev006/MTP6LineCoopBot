@@ -7,6 +7,7 @@ const vm = require('vm');
 
 const apiSrc = fs.readFileSync(path.join(__dirname, '..', 'liff', 'js', 'api.js'), 'utf8');
 const appSrc = fs.readFileSync(path.join(__dirname, '..', 'liff', 'js', 'app.js'), 'utf8');
+const configSrc = fs.readFileSync(path.join(__dirname, '..', 'liff', 'js', 'config.js'), 'utf8');
 
 async function run(fetchImpl, expression) {
   const sandbox = {
