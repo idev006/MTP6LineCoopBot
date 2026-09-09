@@ -407,3 +407,16 @@ Next gate: establish the real production cutover date through the release pipeli
 - backend merge @ ebeb59f; CI #188 PASS across syntax, Test.js, architecture, ports, engines, application, scheduled/security/protected-delivery gates, and gitleaks
 - Audit logging remains PARTIAL until a repository-wide caller guard proves durable SheetService audit writers are reachable only through dedicated audit-store adapters
 - API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
+
+
+### ARCH-LEGACY-014 Checkpoint
+
+- repository-wide architecture guard recursively scans every production `app/**/*.js`
+- direct `LineBot.SheetService.logActivation()` / `appendExpiryLog()` / `appendReminderLog()` calls are allowed only in `SheetsMemberAuditStore`
+- direct `LineBot.SheetService.appendAdminAuditLog()` is allowed only in `SheetsAdminAuditStore`
+- `SystemFactory -> DurableAuditAdapter -> dedicated audit stores` composition is pinned by the guard
+- no hidden production bypass was found
+- backend merge @ 314ec41; CI #190 PASS across syntax, Test.js, architecture, ports, engines, application, scheduled/security/protected-delivery gates, and gitleaks
+- Audit logging migration row is now `MIGRATED / REPOSITORY-WIDE DURABLE AUDIT AUTHORITY VERIFIED`
+- BL-ARCH-002 remains OPEN for non-audit hidden/global seams still requiring explicit evidence
+- API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
