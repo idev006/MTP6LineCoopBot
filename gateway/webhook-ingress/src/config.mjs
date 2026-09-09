@@ -29,6 +29,7 @@ export function loadConfig(env = process.env) {
   if (!cfg.channelSecret) missing.push('CHANNEL_SECRET')
   if (!cfg.downstreamUrl || !isSecureDownstreamUrl(cfg.downstreamUrl)) missing.push('DOWNSTREAM_URL')
   if (!cfg.downstreamSecret) missing.push('DOWNSTREAM_SECRET')
+  if (cfg.channelSecret && cfg.downstreamSecret && cfg.channelSecret === cfg.downstreamSecret) missing.push('SECRET_INDEPENDENCE')
   if (!Number.isInteger(cfg.port) || cfg.port < 1 || cfg.port > 65535) missing.push('PORT')
   if (!Number.isInteger(cfg.downstreamTimeoutMs) || cfg.downstreamTimeoutMs < MIN_DOWNSTREAM_TIMEOUT_MS || cfg.downstreamTimeoutMs > MAX_DOWNSTREAM_TIMEOUT_MS) missing.push('DOWNSTREAM_TIMEOUT_MS')
 

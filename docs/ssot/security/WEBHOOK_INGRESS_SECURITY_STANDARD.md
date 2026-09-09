@@ -19,7 +19,7 @@ Optional:
 - `PORT` — default `8080`
 - `DOWNSTREAM_TIMEOUT_MS` — integer milliseconds, default `8000`, allowed range `100`–`30000`
 
-Secrets must come from deployment secret management/environment. Never place real values in repo files.
+Secrets must come from deployment secret management/environment. Never place real values in repo files. `CHANNEL_SECRET` and `DOWNSTREAM_SECRET` must be different values; runtime configuration must fail closed if they are identical.
 
 ### Downstream transport
 
@@ -143,3 +143,14 @@ The gateway must fail closed on invalid downstream timeout configuration.
 - default: 8,000 ms
 - values outside the range, fractional values, `NaN`, and infinite values are configuration errors and must prevent startup
 - the bound limits accidental request retention during downstream degradation; it does not change the forwarding adapter's abort-on-timeout behavior
+
+
+## Secret Independence Boundary
+
+The LINE channel secret and the gateway-to-Apps-Script downstream secret are separate trust boundaries.
+
+- `CHANNEL_SECRET` authenticates LINE webhook signatures
+- `DOWNSTREAM_SECRET` authenticates the gateway to Apps Script
+- the two values must never be identical
+- identical configured values are a `CONFIG_INVALID` startup failure
+- configuration errors must identify only the violated invariant and must not include either secret value

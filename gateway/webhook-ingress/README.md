@@ -19,7 +19,7 @@ The gateway never logs raw webhook bodies or secret values.
 
 - `CHANNEL_SECRET` — LINE Messaging API channel secret
 - `DOWNSTREAM_URL` — Apps Script `/exec` URL
-- `DOWNSTREAM_SECRET` — independent high-entropy secret matching Apps Script `WEBHOOK_SECRET`
+- `DOWNSTREAM_SECRET` — independent high-entropy secret matching Apps Script `WEBHOOK_SECRET`; runtime rejects reuse of `CHANNEL_SECRET`
 - `PORT` — optional, default 8080
 - `DOWNSTREAM_TIMEOUT_MS` — optional integer, default 8000; allowed range 100–30000 ms
 
