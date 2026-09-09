@@ -177,9 +177,11 @@ test('HTTP boundary rejects non-POST and oversized bodies before handler/downstr
   const gatewayBase=await listen(gateway)
   t.after(()=>close(gateway))
 
+  const nonPostBody=Buffer.from('must-not-be-collected-for-routing')
   const methodRejected=await rawRequest(gatewayBase, {
     method:'GET',
-    headers:{'content-length':String(2 * 1024 * 1024)}
+    headers:{'content-length':String(nonPostBody.length)},
+    chunks:[nonPostBody]
   })
   assert.equal(methodRejected.status,405)
   assert.equal(downstreamCalls,0)
