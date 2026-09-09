@@ -437,3 +437,19 @@ Next gate: establish the real production cutover date through the release pipeli
 - Web frontend migration row is now `MIGRATED / REPOSITORY-WIDE TRUST BOUNDARY VERIFIED`
 - BL-TEST-001 remains separate/partially closed because broader component/E2E coverage is still pending
 - API_DATA_CONTRACT unchanged: this checkpoint enforces the existing registered contract rather than changing it
+
+
+### ARCH-LEGACY-016 Checkpoint
+
+- added `IdPort` as explicit identifier-generation boundary
+- added production `AppsScriptIdAdapter` using `Utilities.getUuid()`; no wall-clock fallback
+- `SystemFactory` now composes/injects `idGenerator`
+- `SheetsMemberAuditStore` generates prefixed `LOG` / `ELOG` / `RLOG` IDs before persistence
+- `SheetsAdminAuditStore` generates prefixed `ALOG` IDs before persistence
+- `SheetService` audit writers require caller-supplied `logId` and reject missing IDs before Spreadsheet access
+- all backend `Date.now()` calls in `app/**/*.js` are forbidden by architecture regression guard
+- IdPort production adapter contract and SystemFactory injection/default wiring are covered by CI
+- backend merge @ 9b5e7bb; CI #192 PASS across syntax, Test.js, architecture, ports, engines, application, scheduled/security/protected-delivery gates, and gitleaks
+- identifier generation migration is now `MIGRATED / EXPLICIT ID AUTHORITY VERIFIED`
+- BL-ARCH-002 remains OPEN pending audit of any remaining hidden/global service dependencies outside verified Config/Clock/ID/repository/audit/scheduled scopes
+- API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
