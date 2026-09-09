@@ -88,7 +88,10 @@
 | REQ-SEC-ROLE-001 | Canonical persisted member roles ต้องสอดคล้องกันทุก identity/member/Web path | ADR-0003 / API_DATA_CONTRACT | MemberAccessEngine + self-renew manager consistency @ a8beda3 | backend CI #100 PASS; manager known-role/profile/self-renew regression tests PASS | VERIFIED |
 
 
-| REQ-SEC-LEGACY-001A | Legacy lineUserId read/validity routes ต้อง retire หลัง caller migration | SEC-LEGACY-001 / ADR-0003 | legacy reads retired @ 95d4f66; legacy activation retired @ cc70d58b | CI #115 + activation retirement CI #126 PASS | VERIFIED / LEGACY RENEW COMPATIBILITY REMAINS |
+| REQ-SEC-LEGACY-001A | Legacy client identity/API-key member paths ต้อง retire หลัง caller migration | SEC-LEGACY-001 / ADR-0003 | reads retired @ 95d4f66; activation retired @ cc70d58b; renewal retired @ 787c79a8 | CI #115 + #126 + #131 PASS; LIFF renewal CI #11 + chat handoff CI #129 PASS | VERIFIED / LEGACY MEMBER IDENTITY PATHS RETIRED |
 
 
 | REQ-SEC-WEB-004 | Activation/LINE identity binding ต้อง derive subject จาก verified LINE identity และห้าม client lineUserId authority | SEC-WEB-004 / ADR-0004 / SEQ-MEMBER-ACTIVATE | secure self-activation @ 3f052961; LIFF caller @ e174e625; chat→LIFF handoff @ 09dbfc88; legacy activation retired @ cc70d58b | secure activation tests + chat handoff tests + legacy retirement CI #126 PASS | VERIFIED / LEGACY ACTIVATION RETIRED |
+
+
+| REQ-SEC-LEGACY-001B | Legacy renewal ต้องไม่ใช้ webhook/client lineUserId หรือ renewal code เป็น identity authority | SEC-LEGACY-001 / ADR-0003 | LIFF self-renew @ aade6512; chat handoff @ 4979d9b0; /api/member/renew + RenewalService retired @ 787c79a8 | LIFF CI #11 + backend CI #129/#131 PASS | VERIFIED / RETIRED |
