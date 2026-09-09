@@ -16,6 +16,8 @@ const files = [
   new URL('../src/adapters/api/webReportApi.js', import.meta.url)
 ]
 
+let failed = false
+
 const srcRoot = new URL('../src/', import.meta.url)
 
 function walkSource(dirUrl) {
@@ -83,7 +85,6 @@ const forbidden = [
   /api_key\s*:/
 ]
 
-let failed = false
 for (const url of files) {
   const src = fs.readFileSync(url, 'utf8')
   for (const pattern of forbidden) {
