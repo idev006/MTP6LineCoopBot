@@ -135,3 +135,72 @@ test('all mandatory signature-negative cases fail closed before downstream', asy
     assert.equal(downstreamCalls,0,item.name)
   }
 })
+
+
+function rawRequest(base, { method='POST', headers={}, chunks=[] } = {}) {
+  return new Promise((resolve, reject) => {
+    const target=new URL('/webhook', base)
+    const req=http.request({
+      hostname:target.hostname,
+      port:target.port,
+      path:target.pathname,
+      method,
+      headers
+    }, res => {
+      const body=[]
+      res.on('data', chunk => body.push(chunk))
+      res.on('end', () => resolve({
+        status:res.statusCode,
+        body:Buffer.concat(body).toString('utf8')
+      }))
+    })
+    req.on('error', reject)
+    for (const chunk of chunks) req.write(chunk)
+    req.end()
+  })
+}
+
+test('HTTP boundary rejects non-POST and oversized bodies before handler/downstream', async t => {
+  let downstreamCalls=0
+  const downstream=http.createServer((req,res)=>{
+    downstreamCalls += 1
+    res.writeHead(200)
+    res.end('ok')
+  })
+  const downstreamBase=await listen(downstream)
+  t.after(()=>close(downstream))
+
+  const gateway=createServer({
+    config:createGatewayConfig(downstreamBase),
+    logger:{info(){},warn(){},error(){}}
+  })
+  const gatewayBase=await listen(gateway)
+  t.after(()=>close(gateway))
+
+  const nonPostBody=Buffer.from('must-not-be-collected-for-routing')
+  const methodRejected=await rawRequest(gatewayBase, {
+    method:'GET',
+    headers:{'content-length':String(nonPostBody.length)},
+    chunks:[nonPostBody]
+  })
+  assert.equal(methodRejected.status,405)
+  assert.equal(downstreamCalls,0)
+
+  const declaredBody=Buffer.alloc(1024 * 1024 + 1, 0x62)
+  const declaredOversize=await rawRequest(gatewayBase, {
+    headers:{'content-length':String(declaredBody.length)},
+    chunks:[declaredBody]
+  })
+  assert.equal(declaredOversize.status,413)
+  assert.equal(JSON.parse(declaredOversize.body).error,'body_too_large')
+  assert.equal(downstreamCalls,0)
+
+  const chunk=Buffer.alloc(600 * 1024, 0x61)
+  const streamedOversize=await rawRequest(gatewayBase, {
+    headers:{'transfer-encoding':'chunked'},
+    chunks:[chunk,chunk]
+  })
+  assert.equal(streamedOversize.status,413)
+  assert.equal(JSON.parse(streamedOversize.body).error,'body_too_large')
+  assert.equal(downstreamCalls,0)
+})
