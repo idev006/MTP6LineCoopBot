@@ -163,9 +163,14 @@ Canonical enums:
 - `calcMode`: `installment_count` | `installment_amount`
 - `paymentType`: `equal_principal` | `equal_installment`
 
-Transitional compatibility:
-- legacy `equal_total` is accepted server-side and normalized to `equal_installment`
-- new UI code must not emit `equal_total`
+Transitional compatibility — ADR-0006:
+- legacy `equal_total` remains accepted server-side and is normalized to canonical `equal_installment`
+- new first-party UI/code must not emit `equal_total`
+- the deprecation clock starts only at the first production-verified cutover that includes ADR-0006
+- retirement target is 60 calendar days after that verified production cutover
+- code/CI/staging evidence alone does not start the clock
+- retirement requires a fresh repository caller audit plus production release evidence; if those gates are not satisfied, compatibility remains in place pending a new controlled decision
+- any compatibility telemetry must be coarse and non-sensitive: alias occurrence/count only; no loan payloads, amounts, member/PII, or raw request bodies
 
 Success data includes:
 - `contractVersion = "loan-calculation.v1"`
