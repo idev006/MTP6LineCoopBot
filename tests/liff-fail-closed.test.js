@@ -70,6 +70,27 @@ async function run(fetchImpl, expression) {
     throw new Error('secure activation must not send lineUserId or API key');
   }
 
+  let renewalCaptured = null;
+  const renewal = await run(
+    async (url, options) => {
+      renewalCaptured = { url, options };
+      return {
+        ok: true,
+        json: async () => ({ ok: true, data: { mem_code: 'M1', mem_exp_dt: '2027-09-09', mem_status: 'active' } })
+      };
+    },
+    'API.renewCurrentMember("raw-id-token")'
+  );
+  if (renewal.mem_status !== 'active') throw new Error('secure renewal success not returned');
+  if (!renewalCaptured.url.endsWith('/api/member/me/renew')) {
+    throw new Error('secure renewal must use /api/member/me/renew');
+  }
+  const renewalBody = JSON.parse(renewalCaptured.options.body);
+  if (renewalBody.idToken !== 'raw-id-token') throw new Error('secure renewal must send raw ID token');
+  if ('lineUserId' in renewalBody || 'activateCode' in renewalBody || 'api_key' in renewalBody) {
+    throw new Error('secure self-renew must not send lineUserId, activation code or API key');
+  }
+
   let missingFailed = false;
   try {
     await run(async () => ({ ok: true, json: async () => ({ ok: true, data: {} }) }),
@@ -101,7 +122,7 @@ async function run(fetchImpl, expression) {
   }
   if (!transportFailed) throw new Error('HTTP failure must throw');
 
-  for (const method of ['getCurrentMemberProfile', 'activateCurrentMember', 'getCurrentSavings', 'getCurrentLoans', 'getCurrentDividends']) {
+  for (const method of ['getCurrentMemberProfile', 'activateCurrentMember', 'renewCurrentMember', 'getCurrentSavings', 'getCurrentLoans', 'getCurrentDividends']) {
     if (!apiSrc.includes(method)) throw new Error('missing protected API method: ' + method);
   }
 
@@ -143,8 +164,13 @@ async function run(fetchImpl, expression) {
   console.log('PASS  raw ID token is body-only; no API key/lineUserId identity proof');
   console.log('PASS  missing/invalid/API failure paths fail closed');
   console.log('PASS  LIFF app uses getIDToken and no legacy getProfile identity path');
+  if (!/API\.renewCurrentMember\(idToken\)/.test(appSrc)) {
+    throw new Error('LIFF app must use secure self-renew endpoint');
+  }
+
   console.log('PASS  LIFF secure activation sends verified ID token + entitlement code only');
-  console.log('=== LIFF SECURITY TESTS PASS (5/5) ===');
+  console.log('PASS  LIFF secure renewal sends verified ID token only');
+  console.log('=== LIFF SECURITY TESTS PASS (6/6) ===');
 })().catch(err => {
   console.error(err);
   process.exit(1);
