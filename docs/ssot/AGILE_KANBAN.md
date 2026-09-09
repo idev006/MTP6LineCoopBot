@@ -84,12 +84,12 @@ Weekly review:
 
 ### IN_PROGRESS / TEST
 
-1. `SEC-WEBHOOK-001` — MTP6LineCoopBot #65  
-   Verified LINE webhook ingress gateway
+- none
 
 ### READY
 
-- none
+1. `REL-WEBHOOK-001` — MTP6LineCoopBot #68  
+   Deploy/cut over verified webhook ingress and collect production evidence
 
 ### BACKLOG
 
@@ -99,6 +99,7 @@ Weekly review:
 
 ### DONE
 
+- `SEC-WEBHOOK-001` — MTP6LineCoopBot #65 — DONE (code scope); gateway @ 110de3e CI #1 + Apps Script privacy @ 9019873 CI #135 PASS; production cutover tracked by #68
 - `UI-DEPS-001` — MTP6LineCoopBot #26 — DONE @ 49e656fc; Webapp CI #27 PASS; router/store smoke gate added
 - `SEC-LEGACY-001` — MTP6LineCoopBot #56 — DONE; reads @ 95d4f66 CI #115, activation @ cc70d58b CI #126, LIFF renew @ aade6512 CI #11, chat renewal @ 4979d9b0 CI #129, legacy renewal retirement @ 787c79a8 CI #131
 - `SEC-WEB-004` — MTP6LineCoopBot #46 — DONE; secure backend @ 3f052961, LIFF caller @ e174e625, chat handoff @ 09dbfc88, legacy activation retirement @ cc70d58b CI #126 PASS
@@ -190,7 +191,7 @@ Canonical process:
 
 - ADR/security standard — DONE
 - Verified Node 24 ingress gateway — CODE VERIFIED @ 110de3e; Webhook Ingress CI #1 PASS
-- Apps Script raw-body log hardening — IN TEST
+- Apps Script raw-body log hardening — CODE VERIFIED @ 9019873; backend CI #135 PASS
 - Deployment/config runbook — DOCUMENTED
-- Staging deployment + negative/positive signature verification — PENDING
-- LINE Developers production cutover — PENDING
+- Staging deployment + negative/positive signature verification — MOVED TO REL-WEBHOOK-001 #68
+- LINE Developers production cutover — MOVED TO REL-WEBHOOK-001 #68
