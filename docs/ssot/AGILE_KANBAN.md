@@ -523,3 +523,18 @@ Next gate: establish the real production cutover date through the release pipeli
 - digest: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress@sha256:810a321094def55a6d612dc5c166c51fad53a900230e60378f5b47f27523ba84`
 - REL-WEBHOOK-001 #68 remains RELEASE_READY / CUTOVER PENDING; no staging or production claim
 - API_DATA_CONTRACT unchanged; `equal_total` deprecation clock has not started
+
+
+### REL-WEBHOOK-004 Checkpoint
+
+- issue #129 — DONE (release-readiness supply-chain hardening)
+- webhook base image pinned by immutable digest @ `94839c90`
+- pinned base: `node:24-alpine@sha256:e67514e5d0f6c46656005e1b693b2ec9d52e80b641307de684d4a015ba7a4eaf`
+- deployment-contract regression test now rejects an unpinned base image
+- PR #130 merged; Webhook Ingress CI #13 PASS
+- main Webhook Ingress CI #14 PASS
+- Publish Webhook Ingress Image #5 PASS
+- current immutable CODE_VERIFIED candidate: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress:sha-94839c90d340`
+- candidate digest: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress@sha256:e7e567e14b155d8bfd093878297361e9a7baedc10108c3571e3550d1d5ef1b33`
+- REL-WEBHOOK-001 #68 remains RELEASE_READY / CUTOVER PENDING; no staging or production claim
+- API_DATA_CONTRACT unchanged; `equal_total` deprecation clock has not started
