@@ -250,3 +250,14 @@ Next gate: establish the real production cutover date through the release pipeli
 - CI #156 PASS across syntax, Test.js contracts, architecture, ports, engines, application, scheduled/security/protected-delivery gates, and gitleaks
 - BL-ARCH-003 — CLOSED / VERIFIED
 - API_DATA_CONTRACT unchanged: no external request/response/auth contract changed
+
+
+### ARCH-LEGACY-003 Checkpoint
+
+- direct `Config.get()` in `WebApp` webhook delivery — RETIRED @ d338068
+- direct `new Date()` in API health delivery — RETIRED @ d338068
+- narrow `SystemFactory.createConfig()` / `createClock()` seams added and guarded by ConfigPort/ClockPort
+- webhook secret verification still executes before webhook JSON parse and remains fail closed
+- CI #158 PASS across syntax, Test.js contracts, architecture, ports, engines, application, scheduled/security/protected-delivery gates, and gitleaks
+- BL-ARCH-002 remains OPEN for other hidden/global wiring outside this delivery sub-scope
+- API_DATA_CONTRACT unchanged: request/response/auth semantics did not change

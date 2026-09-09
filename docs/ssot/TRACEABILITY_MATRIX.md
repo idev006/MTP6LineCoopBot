@@ -116,3 +116,6 @@
 
 
 | REQ-ARCH-LEGACY-002 | Persistence adapters/services must not own member validity or role policy; policy authority remains MemberAccessEngine + Core.MemberRules + ClockPort | ADR-0002 / ADR-0003 / ARCH-LEGACY-002 / BL-ARCH-003 | repository/service policy wrappers removed @ c8491f7 | backend CI #156 PASS including deterministic Test.js engine coverage, architecture policy-retirement guard, ports, engines, application/security/protected-delivery tests and gitleaks | VERIFIED / BL-ARCH-003 CLOSED |
+
+
+| REQ-ARCH-LEGACY-003 | Delivery entrypoints must resolve config/time through canonical composition seams rather than direct global Config/wall-clock access | ADR-0002 / ADR-0003 / ARCH-LEGACY-003 / BL-ARCH-002 | WebApp uses SystemFactory.createConfig(); API health uses SystemFactory.createClock(); narrow seams enforce ConfigPort/ClockPort @ d338068 | backend CI #158 PASS including Test.js contracts, architecture delivery-wiring guard, ports, engines, application/security/protected-delivery tests and gitleaks | VERIFIED / DELIVERY CONFIG-TIME GLOBALS RETIRED |
