@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "test:engine": "node --test tests/*.test.mjs",
     "security:scan": "node scripts/security-scan.mjs",
-    "check": "npm run test:engine && npm run security:scan && npm run build"
+    "check": "npm run test:engine && npm run test:smoke && npm run security:scan && npm run build",
+    "test:smoke": "node tests/router-store-smoke.test.cjs"
   },
   "dependencies": {
     "daisyui": "^5.7.32",
