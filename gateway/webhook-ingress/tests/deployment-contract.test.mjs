@@ -3,7 +3,7 @@ import path from 'node:path'
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { fileURLToPath } from 'node:url'
-import { loadConfig } from '../src/config.mjs'
+import { loadConfig, MIN_DOWNSTREAM_TIMEOUT_MS, MAX_DOWNSTREAM_TIMEOUT_MS } from '../src/config.mjs'
 import { createServer, REQUEST_TIMEOUT_MS, HEADERS_TIMEOUT_MS, CONNECTIONS_CHECKING_INTERVAL_MS, KEEP_ALIVE_TIMEOUT_MS } from '../src/server.mjs'
 
 const here=path.dirname(fileURLToPath(import.meta.url))
@@ -166,4 +166,29 @@ test('HTTP server explicitly bounds slow-client ingress timeouts', () => {
   assert.equal(server.headersTimeout,HEADERS_TIMEOUT_MS)
   assert.equal(server.keepAliveTimeout,KEEP_ALIVE_TIMEOUT_MS)
   server.close()
+})
+
+
+test('downstream timeout configuration is an integer within the bounded fail-closed range', () => {
+  assert.equal(MIN_DOWNSTREAM_TIMEOUT_MS,100)
+  assert.equal(MAX_DOWNSTREAM_TIMEOUT_MS,30_000)
+
+  const baseEnv={
+    CHANNEL_SECRET:'channel-secret',
+    DOWNSTREAM_URL:'https://script.google.com/macros/s/example/exec',
+    DOWNSTREAM_SECRET:'downstream-secret'
+  }
+
+  for (const accepted of ['100','8000','30000']) {
+    const cfg=loadConfig({...baseEnv, DOWNSTREAM_TIMEOUT_MS:accepted})
+    assert.equal(cfg.downstreamTimeoutMs,Number(accepted),accepted)
+  }
+
+  for (const rejected of ['99','30001','100.5','NaN','Infinity']) {
+    assert.throws(
+      () => loadConfig({...baseEnv, DOWNSTREAM_TIMEOUT_MS:rejected}),
+      /DOWNSTREAM_TIMEOUT_MS/,
+      rejected
+    )
+  }
 })

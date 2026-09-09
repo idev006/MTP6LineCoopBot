@@ -1,3 +1,6 @@
+export const MIN_DOWNSTREAM_TIMEOUT_MS = 100
+export const MAX_DOWNSTREAM_TIMEOUT_MS = 30_000
+
 function isSecureDownstreamUrl(value) {
   try {
     const url = new URL(value)
@@ -27,7 +30,7 @@ export function loadConfig(env = process.env) {
   if (!cfg.downstreamUrl || !isSecureDownstreamUrl(cfg.downstreamUrl)) missing.push('DOWNSTREAM_URL')
   if (!cfg.downstreamSecret) missing.push('DOWNSTREAM_SECRET')
   if (!Number.isInteger(cfg.port) || cfg.port < 1 || cfg.port > 65535) missing.push('PORT')
-  if (!Number.isFinite(cfg.downstreamTimeoutMs) || cfg.downstreamTimeoutMs < 100) missing.push('DOWNSTREAM_TIMEOUT_MS')
+  if (!Number.isInteger(cfg.downstreamTimeoutMs) || cfg.downstreamTimeoutMs < MIN_DOWNSTREAM_TIMEOUT_MS || cfg.downstreamTimeoutMs > MAX_DOWNSTREAM_TIMEOUT_MS) missing.push('DOWNSTREAM_TIMEOUT_MS')
 
   if (missing.length) {
     const err = new Error('Missing/invalid configuration: ' + missing.join(', '))

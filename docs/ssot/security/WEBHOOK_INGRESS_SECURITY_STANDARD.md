@@ -17,7 +17,7 @@ Required secrets/config:
 
 Optional:
 - `PORT` — default `8080`
-- `DOWNSTREAM_TIMEOUT_MS` — default `8000`
+- `DOWNSTREAM_TIMEOUT_MS` — integer milliseconds, default `8000`, allowed range `100`–`30000`
 
 Secrets must come from deployment secret management/environment. Never place real values in repo files.
 
@@ -131,3 +131,15 @@ The public `POST /webhook` boundary must reject a missing or syntactically inval
 - well-formed signatures are not trusted by syntax alone; the exact raw body must still be collected within the body/time limits and verified by HMAC-SHA256 with `CHANNEL_SECRET`
 - the handler retains full signature verification as defense-in-depth
 - pre-body rejection must not forward to Apps Script/downstream
+
+
+## Downstream Timeout Configuration Boundary
+
+The gateway must fail closed on invalid downstream timeout configuration.
+
+- `DOWNSTREAM_TIMEOUT_MS` must be an integer
+- minimum: 100 ms
+- maximum: 30,000 ms
+- default: 8,000 ms
+- values outside the range, fractional values, `NaN`, and infinite values are configuration errors and must prevent startup
+- the bound limits accidental request retention during downstream degradation; it does not change the forwarding adapter's abort-on-timeout behavior
