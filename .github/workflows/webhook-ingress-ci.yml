@@ -6,6 +6,7 @@ on:
     paths:
       - 'gateway/webhook-ingress/**'
       - '.github/workflows/webhook-ingress-ci.yml'
+      - '.github/workflows/webhook-ingress-image.yml'
   pull_request:
     branches: [main]
     paths:
