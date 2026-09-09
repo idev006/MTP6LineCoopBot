@@ -125,3 +125,6 @@
 
 
 | REQ-ARCH-LEGACY-005 | Top-level scheduled trigger entrypoints must validate configuration through the canonical validated ConfigPort composition seam rather than direct global Config.validate() | ADR-0002 / ADR-0003 / ARCH-LEGACY-005 / BL-ARCH-002 | Expiry/Notice/LoanReminder trigger entrypoints use SystemFactory.createValidatedConfig().validate(); service-level Application delegation unchanged @ d62da78 | backend CI #162 PASS including scheduled runtime/compatibility regression coverage, architecture/port/application/security/protected-delivery tests and gitleaks | VERIFIED / SCHEDULED TRIGGER CONFIG GLOBALS RETIRED |
+
+
+| REQ-ARCH-LEGACY-006 | Persistence must not compute activation business dates/status from wall clock; activation policy authority remains ActivateMemberUseCase + MemberActivationEngine + ClockPort and persistence receives precomputed values via saveActivation() | ADR-0002 / ADR-0003 / ARCH-LEGACY-006 / BL-ARCH-002 | MemberRepositoryPort/SheetsMemberRepository/SheetService legacy activateMember seam removed; Test.js uses deterministic saveActivation; architecture guard added @ 8a3e55a | backend CI #164 PASS including Test.js contracts, repository port contract, activation policy retirement guard, engines, application/security/protected-delivery tests and gitleaks | VERIFIED / REPOSITORY ACTIVATION POLICY SEAM RETIRED |
