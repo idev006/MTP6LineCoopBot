@@ -347,3 +347,18 @@ Next gate: establish the real production cutover date through the release pipeli
 - stale SSOT Identity / Authorization / Member profile FOUNDATION/PARTIAL states reconciled to verified migrated status
 - registered LIFF/API identity boundary is verified in code/CI; **no staging/production webhook ingress cutover claim** is made—REL-WEBHOOK-001 remains external release gate
 - API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
+
+
+### ARCH-LEGACY-010 Checkpoint
+
+- legacy `MemberRepositoryPort.renewMember()` — RETIRED @ 7cf0583
+- `SheetsMemberRepository.renewMember()` wrapper — RETIRED @ 7cf0583
+- `SheetService.renewMember()` policy-bearing persistence operation — RETIRED @ 7cf0583
+- `InMemoryMemberRepository.renewMember()` compatibility method — RETIRED @ 7cf0583
+- legacy repository contract-test coverage removed; deterministic `saveRenewal()` coverage retained
+- canonical self/staff renewal remains `Application -> Core.MemberRules.computeRenewal(member, now) -> repo.saveRenewal(...)`
+- persistence no longer forces `memStatus='active'` or mutates `line_user_id` through a renewal compatibility API
+- architecture regression guard prevents `renewMember` from returning to repository/persistence adapters
+- CI #177 PASS across syntax, Test.js contracts, architecture, ports, engines, application, scheduled/security/protected-delivery gates, and gitleaks
+- BL-ARCH-002 remains OPEN for remaining hidden/global wiring outside verified sub-scopes
+- API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
