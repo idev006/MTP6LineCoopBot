@@ -109,6 +109,7 @@ LIFF เดิมแสดง mock profile/savings/loans เมื่อ backend
 - protected member routes are pinned to `line-id-token`; ApiHandlers create verified LINE Principal and delegate member profile/finance to canonical Application use cases @ 89b668c; backend CI #175 PASS
 - profile/finance use cases own authenticated + member-binding + member-access policy; CI #173 exposed and #175 closed a missing finance member-binding gate
 - LINE webhook profile/finance presentation also delegates to the same use cases using a server-created Principal from webhook event context; this code evidence does not claim production webhook ingress cutover
+- Web frontend source tree is now guarded repository-wide: browser API-key/mock trust patterns are forbidden across `webapp/src/**/*.{js,vue}` and direct `fetch()` is forbidden outside `src/adapters/api`; protected renewal and staff-role writes use opaque server-session APIs; arbitrary Web activation remains fail-closed @ 4e93b2f; Webapp CI #34 PASS
 
 ### BL-DOC-001 — Duplicate documentation
 เอกสารสำเนาระหว่างสอง repo มีโอกาส drift
