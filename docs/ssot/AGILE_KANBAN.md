@@ -685,3 +685,21 @@ Next gate: establish the real production cutover date through the release pipeli
 - pinned container base remains: `node:24-alpine@sha256:e67514e5d0f6c46656005e1b693b2ec9d52e80b641307de684d4a015ba7a4eaf`
 - REL-WEBHOOK-001 #68 remains RELEASE_READY / CUTOVER PENDING; no staging or production claim
 - API_DATA_CONTRACT unchanged; `equal_total` deprecation clock has not started
+
+
+### REL-WEBHOOK-013 Checkpoint
+
+- issue #156 — DONE (native Node 24 release-action upgrade)
+- reviewed upstream `actions/checkout` latest release v7.0.1 and pinned commit `3d3c42e5aac5ba805825da76410c181273ba90b1`
+- reviewed upstream `actions/setup-node` latest release v7.0.0 and pinned commit `820762786026740c76f36085b0efc47a31fe5020`
+- both reviewed upstream `action.yml` manifests declare `runs.using: node24`
+- webhook CI and image workflows retain immutable 40-hex action pins with human-readable version comments
+- regression guard prevents the previous Node 20-targeting v4 commits from returning
+- PR #157 merged after Webhook Ingress CI #34 PASS
+- main Webhook Ingress CI #35 PASS using the new exact pins
+- main CI log review found no Node 20 deprecation warning
+- Publish Webhook Ingress Image #14 PASS
+- current immutable CODE_VERIFIED candidate: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress:sha-352fc705612c`
+- candidate digest: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress@sha256:22ca6733eea5d1747bd2ecf52a5dbc060e173d1281ba5ef85f340e0d1fb99f8e`
+- REL-WEBHOOK-001 #68 remains RELEASE_READY / CUTOVER PENDING; no staging or production claim
+- API_DATA_CONTRACT unchanged; `equal_total` deprecation clock has not started

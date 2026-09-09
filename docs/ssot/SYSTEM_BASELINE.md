@@ -197,8 +197,8 @@ Implemented:
 - Apps Script raw webhook body logging removed @ `9019873`; backend CI #135 PASS
 - deployment verifier parity @ `74d8a447`: missing signature, malformed Base64, wrong signature and tampered-body cases are exercised against a deployed gateway; full HTTP integration proves these negative cases do not reach the downstream adapter in code
 - Webhook Ingress CI #9 (PR) and #10 (main) PASS; immutable image publish #3 PASS
-- current CODE_VERIFIED release candidate: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress:sha-f8e1db769d5f`
-- current candidate digest: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress@sha256:30f32c3d88b59001cdf17a9e872882d82e5923ddd651a50406fc893aa4d0cbde`
+- current CODE_VERIFIED release candidate: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress:sha-352fc705612c`
+- current candidate digest: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress@sha256:22ca6733eea5d1747bd2ecf52a5dbc060e173d1281ba5ef85f340e0d1fb99f8e`
 - this evidence does not establish STAGING_VERIFIED or PRODUCTION_VERIFIED; staging observation must still prove invalid requests do not reach Apps Script and valid traffic reaches EventHandler
 - deployment contract drift guard @ `b1de92da`: canonical security standard now matches runtime `CHANNEL_SECRET` / `DOWNSTREAM_URL` / `DOWNSTREAM_SECRET` / `POST /webhook`; Webhook Ingress CI #11 (PR) and #12 (main) PASS
 - container supply-chain reproducibility @ `94839c90`: Dockerfile pins `node:24-alpine` to base digest `sha256:e67514e5d0f6c46656005e1b693b2ec9d52e80b641307de684d4a015ba7a4eaf`; regression test forbids removal of the digest pin; Webhook Ingress CI #13 (PR) and #14 (main) PASS; immutable image publish #5 PASS
@@ -210,6 +210,7 @@ Implemented:
 - pre-body signature rejection @ `6dcb1b40`: missing/malformed/wrong-length `x-line-signature` is rejected with `401` at the HTTP boundary before body collection; well-formed signatures still require exact raw-body HMAC verification in the handler; body-limit coverage preserved with a well-formed incorrect-signature fixture; PR CI #27 failed on a missing test import and was fixed before CI #28 PASS; main CI #29 PASS; immutable image publish #11 PASS
 - bounded downstream timeout configuration @ `3eb75cd7`: `DOWNSTREAM_TIMEOUT_MS` must be an integer 100–30000 ms with default 8000 ms; fractional, NaN, Infinity and out-of-range values fail startup; forwarding adapter timeout/abort behavior unchanged; Webhook Ingress CI #30 (PR) and #31 (main) PASS; immutable image publish #12 PASS
 - enforced gateway secret independence @ `f8e1db76`: `CHANNEL_SECRET` and `DOWNSTREAM_SECRET` must be distinct; identical configured values fail startup with `CONFIG_INVALID` / `SECRET_INDEPENDENCE` without reflecting secret contents; Webhook Ingress CI #32 (PR) and #33 (main) PASS; immutable image publish #13 PASS
+- native Node 24 GitHub Actions runtime @ `352fc705`: webhook release workflows upgraded to `actions/checkout` v7.0.1 pin `3d3c42e5aac5ba805825da76410c181273ba90b1` and `actions/setup-node` v7.0.0 pin `820762786026740c76f36085b0efc47a31fe5020`; both upstream action manifests use `runs.using: node24`; Webhook Ingress CI #34 (PR) and #35 (main) PASS; main CI log contains no Node 20 deprecation warning; immutable image publish #14 PASS
 - ADR-0005 + deployment/cutover runbook
 
 Remaining release blocker:
