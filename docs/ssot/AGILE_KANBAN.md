@@ -316,3 +316,19 @@ Next gate: establish the real production cutover date through the release pipeli
 - CI #169 PASS across syntax, Test.js contracts, architecture, ports, engines, application, scheduled/security/protected-delivery gates, and gitleaks
 - BL-ARCH-002 remains OPEN for hidden/global wiring outside verified sub-scopes
 - API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
+
+
+### ARCH-LEGACY-008 Checkpoint
+
+- implicit wall-clock fallback in `Core.MemberRules.isActiveMember()` — RETIRED @ 2a1f4bb
+- implicit wall-clock fallback in `Core.MemberRules.getExpiryStatus()` — RETIRED @ 2a1f4bb
+- implicit wall-clock fallback in `Core.MemberRules.computeRenewal()` — RETIRED @ 2a1f4bb
+- implicit wall-clock fallback in `Core.NoticeRules.getPendingNotices()` — RETIRED @ 2a1f4bb
+- implicit wall-clock fallback in `Core.LoanRules.getDueLoans()` — RETIRED @ 2a1f4bb
+- production Engine/Application callers already provide ClockPort-derived `now`; no production caller migration was required
+- date parsing/copying constructors with supplied values remain allowed
+- missing `now` now fails explicitly for time-sensitive Core evaluation
+- architecture regression guard forbids zero-argument `new Date()` in these Core rule modules and verifies positive explicit-time behavior
+- CI #171 PASS across syntax, Test.js contracts, architecture, ports, engines, application, scheduled/security/protected-delivery gates, and gitleaks
+- BL-ARCH-002 remains OPEN for remaining hidden/global wiring such as audit identifier generation and any unverified seams
+- API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change

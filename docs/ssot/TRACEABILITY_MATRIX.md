@@ -131,3 +131,6 @@
 
 
 | REQ-ARCH-LEGACY-007 | Durable audit timestamps must originate from Application-owned ClockPort evidence; persistence must not synthesize current time and must fail closed before storage when timestamp evidence is missing | ADR-0002 / ADR-0003 / ARCH-LEGACY-007 / BL-ARCH-002 | activation/renewal timestamp propagation completed; SheetService durable audit writers require upstream timestamps and reject before Spreadsheet access; architecture guard added @ 4073c78 | backend CI #169 PASS after root-cause test fixes; includes Test.js, architecture, audit/config ports, application/scheduled/security/protected-delivery tests and gitleaks | VERIFIED / DURABLE AUDIT TIMESTAMP WALL-CLOCK RETIRED |
+
+
+| REQ-ARCH-LEGACY-008 | Time-sensitive functional Core rules must not read machine wall clock; callers must supply explicit time from Engine/Application ClockPort context | ADR-0002 / ADR-0003 / ARCH-LEGACY-008 / BL-ARCH-002 | zero-argument `new Date()` defaults removed from MemberRules/NoticeRules/LoanRules; missing `now` fails explicitly; positive explicit-time paths guarded @ 2a1f4bb | backend CI #171 PASS including Test.js, Core determinism architecture guard, ports, engines, application/scheduled/security/protected-delivery tests and gitleaks | VERIFIED / FUNCTIONAL CORE WALL-CLOCK RETIRED |
