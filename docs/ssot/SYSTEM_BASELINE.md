@@ -197,11 +197,12 @@ Implemented:
 - Apps Script raw webhook body logging removed @ `9019873`; backend CI #135 PASS
 - deployment verifier parity @ `74d8a447`: missing signature, malformed Base64, wrong signature and tampered-body cases are exercised against a deployed gateway; full HTTP integration proves these negative cases do not reach the downstream adapter in code
 - Webhook Ingress CI #9 (PR) and #10 (main) PASS; immutable image publish #3 PASS
-- current CODE_VERIFIED release candidate: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress:sha-94839c90d340`
-- current candidate digest: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress@sha256:e7e567e14b155d8bfd093878297361e9a7baedc10108c3571e3550d1d5ef1b33`
+- current CODE_VERIFIED release candidate: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress:sha-4947bed7bec3`
+- current candidate digest: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress@sha256:5dfcf5dfa42b9cef6b2d453b7c7924e3c871488178b1d624de7b875a76745fcb`
 - this evidence does not establish STAGING_VERIFIED or PRODUCTION_VERIFIED; staging observation must still prove invalid requests do not reach Apps Script and valid traffic reaches EventHandler
 - deployment contract drift guard @ `b1de92da`: canonical security standard now matches runtime `CHANNEL_SECRET` / `DOWNSTREAM_URL` / `DOWNSTREAM_SECRET` / `POST /webhook`; Webhook Ingress CI #11 (PR) and #12 (main) PASS
 - container supply-chain reproducibility @ `94839c90`: Dockerfile pins `node:24-alpine` to base digest `sha256:e67514e5d0f6c46656005e1b693b2ec9d52e80b641307de684d4a015ba7a4eaf`; regression test forbids removal of the digest pin; Webhook Ingress CI #13 (PR) and #14 (main) PASS; immutable image publish #5 PASS
+- secure downstream transport @ `4947bed7`: `DOWNSTREAM_URL` now fails closed unless HTTPS with hostname and without embedded credentials/fragment; forwarding redirects remain disabled; Webhook Ingress CI #15 (PR) and #16 (main) PASS; immutable image publish #6 PASS
 - ADR-0005 + deployment/cutover runbook
 
 Remaining release blocker:
