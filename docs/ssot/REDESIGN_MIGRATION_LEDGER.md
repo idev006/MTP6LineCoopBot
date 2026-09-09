@@ -65,3 +65,6 @@ Legacy implementation จะถูกลบเมื่อ:
 
 
 | Legacy member identity-sensitive routes | client/API-key lineUserId reads/activation/renewal | verified Principal + application use cases | RETIRED | reads 95d4f66 CI #115; activation cc70d58b CI #126; renewal 787c79a8 CI #131 | keep retirement guards; audit any future compatibility endpoint before adding |
+
+
+| LINE webhook ingress | direct LINE → Apps Script + downstream shared secret only | Verified Node ingress → signature verification → Apps Script downstream gate | CODE_VERIFIED / CUTOVER PENDING | gateway 110de3e CI #1; Apps Script privacy 9019873 CI #135 | deploy staging/prod gateway, LINE Console cutover, then retire direct ingress as supported production path |
