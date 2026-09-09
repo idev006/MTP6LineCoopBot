@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { computeLineSignature, getHeaderCaseInsensitive, verifyLineSignature } from '../src/signature.mjs'
+import { computeLineSignature, getHeaderCaseInsensitive, verifyLineSignature, isLineSignatureFormatValid } from '../src/signature.mjs'
 
 // Official LINE documentation verification vector.
 // The example channel secret is public documentation data and intentionally split
