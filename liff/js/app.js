@@ -19,6 +19,8 @@ const activationCodeEl = document.getElementById('activation-code');
 const activationErrorEl = document.getElementById('activation-error');
 const activationErrorMessageEl = document.getElementById('activation-error-message');
 const activationSubmitEl = document.getElementById('activation-submit');
+const renewButtonEl = document.getElementById('btn-renew-member');
+const renewStatusEl = document.getElementById('renew-status');
 
 // Initialize LIFF
 async function initLiff() {
@@ -111,6 +113,31 @@ async function handleActivationSubmit(event) {
     activationErrorEl.classList.remove('hidden');
   } finally {
     activationSubmitEl.disabled = false;
+  }
+}
+
+async function handleRenewMember() {
+  if (!idToken) {
+    showError('ไม่พบข้อมูลยืนยันตัวตนจาก LINE กรุณาเข้าสู่ระบบใหม่');
+    return;
+  }
+
+  renewButtonEl.disabled = true;
+  renewStatusEl.textContent = 'กำลังต่ออายุสมาชิก...';
+  renewStatusEl.className = 'text-sm text-info mt-2';
+
+  try {
+    const result = await API.renewCurrentMember(idToken);
+    renewStatusEl.textContent = 'ต่ออายุสมาชิกสำเร็จ สิทธิ์ใหม่ถึงวันที่ ' + formatDate(result.mem_exp_dt);
+    renewStatusEl.className = 'text-sm text-success mt-2';
+
+    const linked = await loadUserData();
+    if (linked) showApp();
+  } catch (error) {
+    renewStatusEl.textContent = error?.message || 'ไม่สามารถต่ออายุสมาชิกได้';
+    renewStatusEl.className = 'text-sm text-error mt-2';
+  } finally {
+    renewButtonEl.disabled = false;
   }
 }
 
@@ -300,6 +327,7 @@ function formatCurrency(amount) {
 }
 
 activationFormEl.addEventListener('submit', handleActivationSubmit);
+renewButtonEl.addEventListener('click', handleRenewMember);
 
 // Logout
 document.getElementById('btn-logout').addEventListener('click', () => {
