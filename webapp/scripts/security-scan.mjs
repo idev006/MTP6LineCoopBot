@@ -16,6 +16,55 @@ const files = [
   new URL('../src/adapters/api/webReportApi.js', import.meta.url)
 ]
 
+let failed = false
+
+const srcRoot = new URL('../src/', import.meta.url)
+
+function walkSource(dirUrl) {
+  const out = []
+  for (const entry of fs.readdirSync(dirUrl, { withFileTypes:true })) {
+    const child = new URL(entry.name + (entry.isDirectory() ? '/' : ''), dirUrl)
+    if (entry.isDirectory()) {
+      out.push(...walkSource(child))
+    } else if (/\.(?:js|vue)$/.test(entry.name)) {
+      out.push(child)
+    }
+  }
+  return out
+}
+
+const repositoryWideForbidden = [
+  /mock-token/i,
+  /mock-liff-token/i,
+  /Using mock data/i,
+  /Mock data for development/i,
+  /VITE_API_KEY/,
+  /api_key\s*:/
+]
+
+let repositoryWideFailed = false
+for (const url of walkSource(srcRoot)) {
+  const src = fs.readFileSync(url, 'utf8')
+  for (const pattern of repositoryWideForbidden) {
+    if (pattern.test(src)) {
+      console.error(`FAIL security-scan: repository-wide forbidden trust pattern ${pattern} found in ${url.pathname}`)
+      repositoryWideFailed = true
+    }
+  }
+
+  if (/localStorage\.setItem\s*\(\s*['"][^'"]*(?:auth|token|session|credential)[^'"]*['"]/i.test(src)) {
+    console.error(`FAIL security-scan: credential/session data must not be persisted in localStorage in ${url.pathname}`)
+    repositoryWideFailed = true
+  }
+
+  const relative = url.pathname.split('/webapp/src/')[1] || ''
+  if (!relative.startsWith('adapters/api/') && /\bfetch\s*\(/.test(src)) {
+    console.error(`FAIL security-scan: direct fetch() outside adapters/api in ${url.pathname}`)
+    repositoryWideFailed = true
+  }
+}
+if (repositoryWideFailed) failed = true
+
 const forbidden = [
   /mock-token/i,
   /mock-liff-token/i,
@@ -40,7 +89,6 @@ const forbidden = [
   /api_key\s*:/
 ]
 
-let failed = false
 for (const url of files) {
   const src = fs.readFileSync(url, 'utf8')
   for (const pattern of forbidden) {
