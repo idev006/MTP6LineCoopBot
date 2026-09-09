@@ -107,3 +107,16 @@ Webhook release workflows are part of the production release trust boundary.
 - mutable tags such as `@v4`, branches, and floating refs are forbidden as executable action references
 - action upgrades require an explicit source diff, review, passing Webhook Ingress CI, and new immutable image evidence when the publish workflow or gateway release candidate changes
 - changes to the image-publish workflow must trigger Webhook Ingress CI on both pull requests and `main`
+
+
+## Ingress Availability Boundary
+
+The public webhook server must not rely on broad Node.js defaults for slow or incomplete clients.
+
+Required runtime bounds:
+- complete request body receive timeout: 15 seconds
+- complete request headers timeout: 10 seconds
+- incomplete-request timeout checking interval: 1 second
+- keep-alive idle timeout after a response: 5 seconds
+
+These bounds protect the public ingress from unnecessarily long-lived slow-client connections. They do not replace the downstream forwarding timeout, body-size limit, signature verification, or platform-level rate limiting/reverse-proxy protections.
