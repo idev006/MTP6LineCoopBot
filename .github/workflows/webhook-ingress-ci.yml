@@ -1,0 +1,41 @@
+name: Webhook Ingress CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'gateway/webhook-ingress/**'
+      - '.github/workflows/webhook-ingress-ci.yml'
+      - '.github/workflows/webhook-ingress-image.yml'
+      - 'docs/ssot/security/WEBHOOK_INGRESS_SECURITY_STANDARD.md'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'gateway/webhook-ingress/**'
+      - '.github/workflows/webhook-ingress-ci.yml'
+      - 'docs/ssot/security/WEBHOOK_INGRESS_SECURITY_STANDARD.md'
+  workflow_dispatch:
+
+jobs:
+  gateway:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Syntax and tests
+        working-directory: gateway/webhook-ingress
+        run: npm run check
+
+      - name: Privacy/security static guard
+        shell: bash
+        run: |
+          set -e
+          ! grep -RInE 'console\.(log|info|warn|error).*rawBody|logger\.(info|warn|error).*rawBody' gateway/webhook-ingress/src
+          ! grep -RInE 'console\.(log|info|warn|error).*CHANNEL_SECRET|console\.(log|info|warn|error).*DOWNSTREAM_SECRET' gateway/webhook-ingress/src
+
+      - name: Container build
+        run: docker build -t mtp6-line-webhook-ingress:test gateway/webhook-ingress
