@@ -571,3 +571,23 @@ Next gate: establish the real production cutover date through the release pipeli
 - pinned base remains: `node:24-alpine@sha256:e67514e5d0f6c46656005e1b693b2ec9d52e80b641307de684d4a015ba7a4eaf`
 - REL-WEBHOOK-001 #68 remains RELEASE_READY / CUTOVER PENDING; no staging or production claim
 - API_DATA_CONTRACT unchanged; `equal_total` deprecation clock has not started
+
+
+### REL-WEBHOOK-007 Checkpoint
+
+- issue #138 — DONE (HTTP ingress body-limit correctness hardening)
+- existing 1 MiB buffered body cap preserved @ `3e655d51`
+- non-POST `/webhook` rejects with `405` before body collection
+- declared oversized `Content-Length` rejects with `413` before buffering
+- streamed overflow stops retaining bytes immediately, drains the remaining request without buffering and then returns deterministic `413`
+- oversized/non-POST cases never reach signature handler or downstream adapter
+- CI #19 failed on socket-reset behavior; root cause fixed rather than weakening assertions
+- CI #20 exposed an invalid HTTP test fixture; fixture corrected without reducing acceptance criteria
+- PR #139 merged after Webhook Ingress CI #21 PASS
+- main Webhook Ingress CI #22 PASS
+- Publish Webhook Ingress Image #8 PASS
+- current immutable CODE_VERIFIED candidate: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress:sha-3e655d51fa99`
+- candidate digest: `ghcr.io/idev006/mtp6linecoopbot-webhook-ingress@sha256:7184dac64af8e77fc5dac3cfdd0a4953523313bcafc3161571d59ed60a62c8ab`
+- pinned base remains: `node:24-alpine@sha256:e67514e5d0f6c46656005e1b693b2ec9d52e80b641307de684d4a015ba7a4eaf`
+- REL-WEBHOOK-001 #68 remains RELEASE_READY / CUTOVER PENDING; no staging or production claim
+- API_DATA_CONTRACT unchanged; `equal_total` deprecation clock has not started
