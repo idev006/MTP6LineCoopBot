@@ -50,6 +50,12 @@ Success:
 Rejected request:
 - never forward to Apps Script
 
+Public response boundary:
+- never reflect Apps Script/downstream response bodies through the public webhook ingress
+- downstream 2xx acceptance returns only a stable gateway-owned success payload
+- downstream response bodies are not buffered for public response construction
+- downstream non-2xx remains fail-closed
+
 ## Operational Metrics
 
 Minimum:

@@ -28,7 +28,7 @@ function createGatewayConfig(downstreamBase) {
   }
 }
 
-test('full HTTP path verifies signature and preserves exact bytes downstream', async t => {
+test('full HTTP path verifies signature, preserves exact bytes downstream, and hides downstream response body', async t => {
   const received = { count:0, body:null, secret:null }
 
   const downstream = http.createServer((req, res) => {
@@ -40,7 +40,7 @@ test('full HTTP path verifies signature and preserves exact bytes downstream', a
       const url = new URL(req.url, 'http://downstream.local')
       received.secret = url.searchParams.get('webhook_secret')
       res.writeHead(200, {'content-type':'application/json'})
-      res.end(JSON.stringify({ status:'ok' }))
+      res.end(JSON.stringify({ internal:'must-not-cross-public-boundary' }))
     })
   })
   const downstreamBase=await listen(downstream)
@@ -72,8 +72,11 @@ test('full HTTP path verifies signature and preserves exact bytes downstream', a
     },
     body:rawBody
   })
+  const publicBody=await response.text()
 
   assert.equal(response.status,200)
+  assert.equal(publicBody,JSON.stringify({ok:true}))
+  assert.equal(publicBody.includes('must-not-cross-public-boundary'),false)
   assert.equal(received.count,1)
   assert.equal(Buffer.compare(received.body, rawBody),0)
   assert.equal(received.secret,config.downstreamSecret)

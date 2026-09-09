@@ -68,11 +68,7 @@ export function createWebhookHandler({ config, fetchImpl = fetch, logger = conso
         eventCount,
         latencyMs:Date.now()-started
       })
-      return {
-        status:downstream.status,
-        headers:{ 'content-type':'application/json; charset=utf-8' },
-        body:downstream.body
-      }
+      return json(downstream.status, { ok:true })
     } catch (err) {
       logger.error?.({
         requestId:id,

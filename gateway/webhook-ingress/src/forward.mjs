@@ -24,7 +24,10 @@ export async function forwardVerifiedWebhook({
       redirect: 'error'
     })
 
-    const body = await response.text()
+    if (response.body?.cancel) {
+      await response.body.cancel()
+    }
+
     if (!response.ok) {
       const err = new Error('Downstream returned HTTP ' + response.status)
       err.code = 'DOWNSTREAM_HTTP_ERROR'
@@ -32,7 +35,7 @@ export async function forwardVerifiedWebhook({
       throw err
     }
 
-    return { status: response.status, body }
+    return { status: response.status }
   } finally {
     clearTimeout(timer)
   }
