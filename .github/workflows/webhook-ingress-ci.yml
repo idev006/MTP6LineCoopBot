@@ -7,11 +7,13 @@ on:
       - 'gateway/webhook-ingress/**'
       - '.github/workflows/webhook-ingress-ci.yml'
       - '.github/workflows/webhook-ingress-image.yml'
+      - 'docs/ssot/security/WEBHOOK_INGRESS_SECURITY_STANDARD.md'
   pull_request:
     branches: [main]
     paths:
       - 'gateway/webhook-ingress/**'
       - '.github/workflows/webhook-ingress-ci.yml'
+      - 'docs/ssot/security/WEBHOOK_INGRESS_SECURITY_STANDARD.md'
   workflow_dispatch:
 
 jobs:

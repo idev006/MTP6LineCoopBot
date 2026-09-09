@@ -11,20 +11,20 @@ A LINE webhook event MUST NOT be processed until the original `x-line-signature`
 ## Gateway Environment Contract
 
 Required secrets/config:
-- `LINE_CHANNEL_SECRET`
-- `DOWNSTREAM_WEBHOOK_URL`
-- `DOWNSTREAM_WEBHOOK_SECRET`
+- `CHANNEL_SECRET` — LINE Messaging API channel secret
+- `DOWNSTREAM_URL` — Apps Script `/exec` deployment URL
+- `DOWNSTREAM_SECRET` — independent high-entropy secret matching Apps Script `WEBHOOK_SECRET`
 
 Optional:
-- `PORT`
-- downstream timeout
+- `PORT` — default `8080`
+- `DOWNSTREAM_TIMEOUT_MS` — default `8000`
 
 Secrets must come from deployment secret management/environment. Never place real values in repo files.
 
 ## HTTP Contract
 
 Input:
-- `POST /` or configured webhook path
+- `POST /webhook`
 - raw `application/json` body
 - `x-line-signature` header
 
@@ -57,3 +57,13 @@ On suspected secret compromise:
 4. verify webhook
 5. review rejection/downstream metrics
 6. record incident/evidence in project SSOT
+
+
+## Deployment Contract Drift Rule
+
+The runtime names and path above are canonical for the current release candidate.
+
+- do not introduce alternate/legacy environment aliases in the gateway
+- do not document a different public webhook path without a controlled runtime + test + SSOT change
+- Apps Script uses its own downstream-side `WEBHOOK_SECRET`; this is not a gateway environment variable
+- Webhook Ingress CI must fail if this standard drifts from the runtime deployment contract
