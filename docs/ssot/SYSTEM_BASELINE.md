@@ -91,7 +91,7 @@ LIFF เดิมแสดง mock profile/savings/loans เมื่อ backend
 
 สถานะ: CLOSED IN CODE — `MTP6LineCoopBot@14c2da2`; LIFF CI run #1 PASS
 
-หมายเหตุ: การยืนยัน identity ของ LIFF ยังอยู่ใน BL-SEC-003/REQ-SEC-002 และยังไม่ถือว่าปลอดภัยครบ
+หมายเหตุ: registered LIFF/API identity boundary ถูกปิดและ verified แล้วภายใต้ BL-SEC-003; ส่วน production webhook ingress/cutover ยังคงเป็น release evidence แยกภายใต้ REL-WEBHOOK-001
 
 ### BL-SEC-003 — Client API key / unverified identity
 เดิม Web/LIFF ใช้ client API key และ client-provided identity ในหลาย path
@@ -106,6 +106,9 @@ LIFF เดิมแสดง mock profile/savings/loans เมื่อ backend
 - Apps Script Web API mount browser `api_key` fallback and `Config.API_KEY` retired @ dec540ef; backend CI #146 PASS
 - only `auth: none` routes are public; protected routes use `line-id-token` or `web-session`
 - unknown/unregistered API paths fail closed as `NOT_FOUND`; arbitrary legacy API-key input cannot authorize them
+- protected member routes are pinned to `line-id-token`; ApiHandlers create verified LINE Principal and delegate member profile/finance to canonical Application use cases @ 89b668c; backend CI #175 PASS
+- profile/finance use cases own authenticated + member-binding + member-access policy; CI #173 exposed and #175 closed a missing finance member-binding gate
+- LINE webhook profile/finance presentation also delegates to the same use cases using a server-created Principal from webhook event context; this code evidence does not claim production webhook ingress cutover
 
 ### BL-DOC-001 — Duplicate documentation
 เอกสารสำเนาระหว่างสอง repo มีโอกาส drift
