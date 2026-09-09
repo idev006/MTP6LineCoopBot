@@ -147,7 +147,8 @@ repository/config/time/services ถูก resolve ผ่าน globals/factories
 - WebApp webhook config and API health time now resolve through narrow SystemFactory ConfigPort/ClockPort seams @ d338068; backend CI #158 PASS
 - RichMenu deployment/test connection validated config now resolves through ConfigPort adapter + narrow SystemFactory seam @ b5a8d36; backend CI #160 PASS
 - top-level Expiry / Notice / Loan Reminder triggers now validate config through the canonical validated ConfigPort composition seam @ d62da78; backend CI #162 PASS
-- remaining hidden/global wiring outside scheduled delivery/repository selection/delivery config-time/RichMenu config/scheduled trigger config remains open
+- legacy repository `activateMember()` policy operation that computed `now + 365 days` inside persistence was retired; canonical activation remains `ActivateMemberUseCase -> MemberActivationEngine + ClockPort -> saveActivation()` @ 8a3e55a; backend CI #164 PASS
+- remaining hidden/global wiring outside scheduled delivery/repository selection/delivery config-time/RichMenu config/scheduled trigger config/activation policy seam remains open
 
 ### BL-ARCH-003 — Policy in repository contract
 Legacy `isActiveMember` / `hasRole` policy wrappers have been removed from `SheetsMemberRepository` and `SheetService`. The persistence port was already policy-free; `MemberAccessEngine` + `Core.MemberRules` + `ClockPort` remain the canonical policy authority.
