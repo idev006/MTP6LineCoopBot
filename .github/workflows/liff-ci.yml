@@ -27,5 +27,6 @@ jobs:
         run: |
           node --check liff/js/api.js
           node --check liff/js/app.js
+          node --check liff/js/config.js
       - name: Fail-closed security tests
         run: node tests/liff-fail-closed.test.js
