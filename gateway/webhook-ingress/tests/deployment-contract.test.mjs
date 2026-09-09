@@ -34,6 +34,32 @@ test('canonical deployment environment names are the only accepted runtime contr
   )
 })
 
+test('downstream transport config fails closed unless URL is clean HTTPS', () => {
+  const baseEnv={
+    CHANNEL_SECRET:'channel-secret',
+    DOWNSTREAM_SECRET:'downstream-secret'
+  }
+
+  for (const downstreamUrl of [
+    'http://script.google.com/macros/s/example/exec',
+    'not-a-url',
+    'https://user:pass@example.com/exec',
+    'https://example.com/exec#fragment'
+  ]) {
+    assert.throws(
+      () => loadConfig({...baseEnv, DOWNSTREAM_URL:downstreamUrl}),
+      /DOWNSTREAM_URL/,
+      downstreamUrl
+    )
+  }
+
+  const cfg=loadConfig({
+    ...baseEnv,
+    DOWNSTREAM_URL:'https://script.google.com/macros/s/example/exec?existing=1'
+  })
+  assert.equal(cfg.downstreamUrl,'https://script.google.com/macros/s/example/exec?existing=1')
+})
+
 test('canonical security standard matches runtime path and environment names', () => {
   const standard=fs.readFileSync(securityPath,'utf8')
   for (const required of [
@@ -41,7 +67,8 @@ test('canonical security standard matches runtime path and environment names', (
     '`DOWNSTREAM_URL`',
     '`DOWNSTREAM_SECRET`',
     '`DOWNSTREAM_TIMEOUT_MS`',
-    '`POST /webhook`'
+    '`POST /webhook`',
+    'HTTPS'
   ]) {
     assert.ok(standard.includes(required), `security standard missing ${required}`)
   }
