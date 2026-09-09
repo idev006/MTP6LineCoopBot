@@ -184,8 +184,10 @@ test('HTTP boundary rejects non-POST and oversized bodies before handler/downstr
   assert.equal(methodRejected.status,405)
   assert.equal(downstreamCalls,0)
 
+  const declaredBody=Buffer.alloc(1024 * 1024 + 1, 0x62)
   const declaredOversize=await rawRequest(gatewayBase, {
-    headers:{'content-length':String(1024 * 1024 + 1)}
+    headers:{'content-length':String(declaredBody.length)},
+    chunks:[declaredBody]
   })
   assert.equal(declaredOversize.status,413)
   assert.equal(JSON.parse(declaredOversize.body).error,'body_too_large')

@@ -21,53 +21,35 @@ export function collectRawBody(req, maxBytes = MAX_WEBHOOK_BODY_BYTES) {
   return new Promise((resolve, reject) => {
     const chunks = []
     let size = 0
-    let settled = false
+    let overflow = false
 
-    const cleanup = () => {
-      req.off('data', onData)
-      req.off('end', onEnd)
-      req.off('error', onError)
-    }
+    req.on('data', chunk => {
+      if (overflow) return
 
-    const fail = err => {
-      if (settled) return
-      settled = true
-      cleanup()
-      // Keep the socket usable long enough for the HTTP error response while
-      // discarding any unread request bytes without buffering them.
-      req.on('error', () => {})
-      req.resume()
-      reject(err)
-    }
-
-    const onData = chunk => {
       size += chunk.length
       if (size > maxBytes) {
-        const err = new Error('request body too large')
-        err.code = 'BODY_TOO_LARGE'
-        fail(err)
+        // Stop retaining body bytes immediately, but continue draining the
+        // request so the server can return a deterministic HTTP 413 instead
+        // of resetting the connection mid-stream.
+        overflow = true
+        chunks.length = 0
         return
       }
+
       chunks.push(chunk)
-    }
+    })
 
-    const onEnd = () => {
-      if (settled) return
-      settled = true
-      cleanup()
+    req.on('end', () => {
+      if (overflow) {
+        const err = new Error('request body too large')
+        err.code = 'BODY_TOO_LARGE'
+        reject(err)
+        return
+      }
       resolve(Buffer.concat(chunks))
-    }
+    })
 
-    const onError = err => {
-      if (settled) return
-      settled = true
-      cleanup()
-      reject(err)
-    }
-
-    req.on('data', onData)
-    req.on('end', onEnd)
-    req.on('error', onError)
+    req.on('error', reject)
   })
 }
 
