@@ -238,3 +238,15 @@ Next gate: establish the real production cutover date through the release pipeli
 - CI #154 PASS: syntax, Test.js contracts, architecture/retirement guard, ports, engines, application use cases, scheduled/security/protected-delivery gates, gitleaks
 - API_DATA_CONTRACT unchanged: no external request/response/auth contract changed
 - Remaining repository policy-helper cleanup stays tracked separately under BL-ARCH-003
+
+
+### ARCH-LEGACY-002 Checkpoint
+
+- `SheetsMemberRepository.isActiveMember/hasRole` — RETIRED @ c8491f7
+- `SheetService.isActiveMember/hasRole` — RETIRED @ c8491f7
+- validity/role Test.js coverage migrated to deterministic `MemberAccessEngine` with fixed clock
+- `MemberRepositoryPort` remains persistence-only
+- architecture regression guard prevents policy helpers from returning to persistence
+- CI #156 PASS across syntax, Test.js contracts, architecture, ports, engines, application, scheduled/security/protected-delivery gates, and gitleaks
+- BL-ARCH-003 — CLOSED / VERIFIED
+- API_DATA_CONTRACT unchanged: no external request/response/auth contract changed
