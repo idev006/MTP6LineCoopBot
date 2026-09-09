@@ -147,9 +147,12 @@ repository/config/time/services ถูก resolve ผ่าน globals/factories
 - remaining hidden/global wiring outside scheduled delivery/repository selection remains open
 
 ### BL-ARCH-003 — Policy in repository contract
-`isActiveMember` และ `hasRole` ยังอยู่ใน persistence contract
+Legacy `isActiveMember` / `hasRole` policy wrappers have been removed from `SheetsMemberRepository` and `SheetService`. The persistence port was already policy-free; `MemberAccessEngine` + `Core.MemberRules` + `ClockPort` remain the canonical policy authority.
 
-สถานะ: OPEN
+สถานะ: CLOSED / VERIFIED
+- backend @ c8491f7
+- CI #156 PASS
+- architecture regression guard prevents member validity/role policy from returning to the persistence adapter/service
 
 ## Baseline Rule
 
