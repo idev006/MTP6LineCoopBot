@@ -11,7 +11,7 @@ Authority: ADR-0003 + TARGET_SYSTEM_ARCHITECTURE.md
 |---|---|---|---|---|---|
 | Member validity | Core.MemberRules + repo policy helpers | MemberAccessEngine | MIGRATED / LEGACY REPOSITORY POLICY HELPERS RETIRED | backend 9a589db CI #46; policy-helper retirement c8491f7 CI #156 PASS | retain MemberAccessEngine/Core/Clock authority and architecture regression guard |
 | Repository contract | Data.MemberRepository mixed contract/factory | MemberRepositoryPort + composition | MIGRATED / LEGACY FACTORY + POLICY HELPERS RETIRED | f06dfb5 CI #41; InMemoryMemberRepository @ 255d862 CI #60 PASS; factory retirement @ 582b73c CI #154 PASS; policy-helper retirement @ c8491f7 CI #156 PASS | keep reusable adapter contracts and persistence-only architecture guards |
-| Clock/time | new Date() in multiple flows | ClockPort | PARTIAL | de7fc1f, CI #43 | all time-sensitive engines inject clock |
+| Clock/time | new Date() in multiple flows | ClockPort | PARTIAL / DELIVERY GLOBAL RETIRED | de7fc1f CI #43; delivery wiring d338068 CI #158 PASS | keep ClockPort in engines/application; continue auditing remaining non-delivery wall-clock reads |
 | Identity | client lineUserId/API key context | Principal + IdentityPort | FOUNDATION | a2253eb, CI #48 | protected delivery paths use verified identity adapter |
 | Authorization | distributed role/member checks | AuthorizationEngine | FOUNDATION | a2253eb, CI #48 | protected use cases own policy; UI/adapter checks non-authoritative |
 | Member profile | ApiHandlers direct repository lookup | GetCurrentMemberProfileUseCase | PARTIAL | backend 060fe63, CI #51 PASS | protected API/LINE delivery switch to verified Principal |
@@ -26,7 +26,7 @@ Authority: ADR-0003 + TARGET_SYSTEM_ARCHITECTURE.md
 | Web API authentication compatibility | query/body `api_key` + `Config.API_KEY` fallback in Apps Script Web mount | explicit public routes + route-owned `line-id-token` / `web-session` authentication | RETIRED | backend dec540ef; CI #146 PASS | keep API-key retirement CI guard; no browser shared-secret authentication reintroduction |
 | Web frontend | direct fetches + client API key/mock fallbacks | shared session-authorized API clients + presentation-only UI | PARTIAL / MEMBER + SETTINGS + AUDIT + REPORT READS MIGRATED | member d78a1bc/07ca08e; settings 3ea0171/60b4d35; audit 82cf8ee/481b175; reports 820bd14/dbb1df2 with CI PASS | migrate protected writes/admin capabilities; remove remaining legacy client trust |
 | Audit logging | mixed direct logs/sheets | AuditPort + adapter | PARTIAL | AuditPort + repository/in-memory adapters @ 58ee3d9, CI #67 PASS; activation/renewal migrated | migrate scheduled/admin critical writes through AuditPort |
-| Config | Config.get globals | ConfigPort | PARTIAL | ConfigPort + AppsScriptConfigAdapter @ 58ee3d9, CI #67 PASS; SystemFactory wired | migrate remaining direct global config reads incrementally |
+| Config | Config.get globals | ConfigPort | PARTIAL / DELIVERY GLOBAL RETIRED | ConfigPort + AppsScriptConfigAdapter @ 58ee3d9 CI #67 PASS; delivery wiring d338068 CI #158 PASS | keep SystemFactory ConfigPort authority; continue auditing remaining non-delivery direct config reads |
 
 ## Migration State Vocabulary
 
