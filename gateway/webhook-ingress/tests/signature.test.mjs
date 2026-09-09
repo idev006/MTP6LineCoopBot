@@ -50,3 +50,11 @@ test('header lookup is case-insensitive', () => {
     officialSignature
   )
 })
+
+
+test('signature format validator accepts only decoded 32-byte Base64 signatures', () => {
+  assert.equal(isLineSignatureFormatValid('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA='),true)
+  assert.equal(isLineSignatureFormatValid(undefined),false)
+  assert.equal(isLineSignatureFormatValid('%%%not-base64%%%'),false)
+  assert.equal(isLineSignatureFormatValid('YWJjZA=='),false)
+})

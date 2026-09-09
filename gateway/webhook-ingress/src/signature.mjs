@@ -8,11 +8,17 @@ export function getHeaderCaseInsensitive(headers, targetName) {
   return undefined
 }
 
-function decodeBase64Signature(value) {
+export function isLineSignatureFormatValid(value) {
   const text = String(value || '').trim()
   if (!text || !/^[A-Za-z0-9+/]+={0,2}$/.test(text) || text.length % 4 !== 0) {
-    return null
+    return false
   }
+  return Buffer.from(text, 'base64').length === 32
+}
+
+function decodeBase64Signature(value) {
+  if (!isLineSignatureFormatValid(value)) return null
+  const text = String(value || '').trim()
   const decoded = Buffer.from(text, 'base64')
   return decoded.length === 32 ? decoded : null
 }

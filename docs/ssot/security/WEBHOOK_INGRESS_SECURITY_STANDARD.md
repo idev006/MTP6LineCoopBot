@@ -120,3 +120,14 @@ Required runtime bounds:
 - keep-alive idle timeout after a response: 5 seconds
 
 These bounds protect the public ingress from unnecessarily long-lived slow-client connections. They do not replace the downstream forwarding timeout, body-size limit, signature verification, or platform-level rate limiting/reverse-proxy protections.
+
+
+## Pre-Body Signature Boundary
+
+The public `POST /webhook` boundary must reject a missing or syntactically invalid `x-line-signature` before collecting the request body.
+
+- missing signature -> `401`
+- malformed Base64 or a decoded signature length other than 32 bytes -> `401`
+- well-formed signatures are not trusted by syntax alone; the exact raw body must still be collected within the body/time limits and verified by HMAC-SHA256 with `CHANNEL_SECRET`
+- the handler retains full signature verification as defense-in-depth
+- pre-body rejection must not forward to Apps Script/downstream
