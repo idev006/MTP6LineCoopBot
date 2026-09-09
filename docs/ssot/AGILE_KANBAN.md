@@ -95,6 +95,7 @@ Weekly review:
 
 ### DONE
 
+- `SEC-LEGACY-003` — MTP6LineCoopBot #79 — DONE (backend code/CI complete; SSOT sync in this checkpoint); scheduled opts orchestration retired @ dc1a04e; backend CI #148 PASS
 - `SEC-LEGACY-002` — MTP6LineCoopBot #77 — DONE (backend code/CI complete; SSOT sync in this checkpoint); browser API-key mount/config retired @ dec540ef; backend CI #146 PASS
 - `SEC-WEBHOOK-001` — MTP6LineCoopBot #65 — DONE (code scope); gateway @ 110de3e CI #1 + Apps Script privacy @ 9019873 CI #135 PASS; production cutover tracked by #68
 - `UI-DEPS-001` — MTP6LineCoopBot #26 — DONE @ 49e656fc; Webapp CI #27 PASS; router/store smoke gate added
@@ -103,7 +104,7 @@ Weekly review:
 - `SEC-WEB-003` — MTP6LineCoopBot #37 — DONE; settings 3ea0171/60b4d35, audit 82cf8ee/481b175, reports 820bd14/dbb1df2, renewal 5fd6d28/3d6f04e, staff read 715318a/4b2987b, role catalog 1f8ec59/3051119, audited role assignment 841b37a/96e77a5 — all recorded CI PASS
 - `SEC-WEB-002` — MTP6LineCoopBot #16 — DONE; server session 1406a00f CI #81, LINE exchange fe332fde CI #85, Web client auth 97dc634e CI #8, member RBAC d78a1bc CI #87, client member migration 07ca08e CI #11 PASS
 - `CORE-FIN-001` — MTLineCoopBot #14 — DONE; backend authority @ 45582b4 CI #74, frontend @ 0de0c0e UI CI #1, duplicate retirement @ daffda7 CI #76 PASS
-- `APP-SCHEDULED-001` — MTLineCoopBot #13 — DONE @ 5489622; foundation CI #70 + runtime CI #72 PASS
+- `APP-SCHEDULED-001` — MTLineCoopBot #13 — DONE @ 5489622; foundation CI #70 + runtime CI #72 PASS; legacy scheduled shells retired @ dc1a04e CI #148
 
 - `SEC-LIFF-001` — MTP6LineCoopBot #15 — DONE @ d3deac7; LIFF CI #5 PASS
 - `ARCH-DATA-001` — MTLineCoopBot #9 — DONE @ 255d862; backend CI #60 PASS
@@ -192,6 +193,13 @@ Canonical process:
 - Legacy activation compatibility — DONE / RETIRED @ cc70d58b CI #126
 - Legacy renewal compatibility — DONE / RETIRED @ 787c79a8 CI #131
 
+
+### SEC-LEGACY-003 Checkpoint
+
+- ExpiryService opts compatibility shell — RETIRED @ dc1a04e; CI #148 PASS
+- NoticeService opts compatibility shell — RETIRED @ dc1a04e; CI #148 PASS
+- LoanReminderService opts compatibility shell — RETIRED @ dc1a04e; CI #148 PASS
+- LineBot scheduled services are thin Application adapters; canonical behavior remains in headless Application tests
 
 ### SEC-WEBHOOK-001 Checkpoints
 
