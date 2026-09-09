@@ -122,3 +122,6 @@
 
 
 | REQ-ARCH-LEGACY-004 | RichMenu operational entrypoints must obtain validated configuration through the canonical config adapter/composition seam while preserving existing Config.validate() fail-closed semantics | ADR-0002 / ADR-0003 / ARCH-LEGACY-004 / BL-ARCH-002 | ConfigPort validatable capability + AppsScriptConfigAdapter.validate() + SystemFactory.createValidatedConfig(); RichMenu direct Config.validate() removed @ b5a8d36 | backend CI #160 PASS including config contract validation, RichMenu architecture guard, ports, engines, application/security/protected-delivery tests and gitleaks | VERIFIED / RICHMENU CONFIG GLOBAL RETIRED |
+
+
+| REQ-ARCH-LEGACY-005 | Top-level scheduled trigger entrypoints must validate configuration through the canonical validated ConfigPort composition seam rather than direct global Config.validate() | ADR-0002 / ADR-0003 / ARCH-LEGACY-005 / BL-ARCH-002 | Expiry/Notice/LoanReminder trigger entrypoints use SystemFactory.createValidatedConfig().validate(); service-level Application delegation unchanged @ d62da78 | backend CI #162 PASS including scheduled runtime/compatibility regression coverage, architecture/port/application/security/protected-delivery tests and gitleaks | VERIFIED / SCHEDULED TRIGGER CONFIG GLOBALS RETIRED |
