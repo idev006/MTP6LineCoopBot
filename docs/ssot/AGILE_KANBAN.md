@@ -288,3 +288,16 @@ Next gate: establish the real production cutover date through the release pipeli
 - CI #162 PASS across syntax, Test.js contracts, architecture, ports, engines, application, scheduled runtime/compatibility, security/protected-delivery gates, and gitleaks
 - BL-ARCH-002 remains OPEN for hidden/global wiring outside verified sub-scopes
 - API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
+
+
+### ARCH-LEGACY-006 Checkpoint
+
+- `MemberRepositoryPort.activateMember` — RETIRED @ 8a3e55a
+- `SheetsMemberRepository.activateMember` wrapper — RETIRED @ 8a3e55a
+- `SheetService.activateMember()` wall-clock +365-day policy operation — RETIRED @ 8a3e55a
+- canonical activation remains `ActivateMemberUseCase -> MemberActivationEngine + ClockPort -> repo.saveActivation()`
+- Test.js header-reordering persistence coverage now uses deterministic precomputed activation values
+- architecture regression guard prevents policy-bearing `activateMember` from returning to persistence
+- CI #164 PASS across syntax, Test.js contracts, architecture, repository/port contracts, engines, application, scheduled/security/protected-delivery gates, and gitleaks
+- BL-ARCH-002 remains OPEN for hidden/global wiring outside verified sub-scopes
+- API_DATA_CONTRACT unchanged: external request/response/auth semantics did not change
